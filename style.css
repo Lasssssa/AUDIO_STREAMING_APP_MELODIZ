@@ -1,0 +1,118 @@
+.colorRed{
+    background-color: #D80536;
+    border-color: #D80536;
+}
+.colorRed:hover{
+    background-color: #D80536;
+    border-color: #D80536;
+}
+.clear{
+    border: none;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    text-decoration: none;
+}
+.sliderTest{
+    display: flex;
+    overflow: scroll;
+    text-align: center;
+}
+
+.lastEcoute{
+    padding: 2%;
+    margin: 2%;
+}
+
+.ecarted{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 15%;
+}
+
+.onclicktest{
+    cursor: pointer;
+    /* background-color: red; */
+}
+.music{
+   background-color: #EDF2F4;
+   display : grid;
+   grid-template-columns: 1fr 1fr 2fr 2fr 2fr 1fr 2fr 1fr 1fr;
+   padding:5px;
+   margin:2%;
+   max-height: 60px;
+}
+.musicArtist{
+    background-color: #EDF2F4;
+    display : grid;
+    grid-template-columns: 1fr 1fr 2fr 2fr 1fr 1fr 1fr;
+    padding:5px;
+    margin:2%;
+    max-height: 60px;
+}
+.musicArtist h2{
+    font-size: 1.2em;
+    color: #2B2E42;
+}
+
+.side{
+    margin: 3%;
+}
+
+.music h2{
+    font-size: 1.2em;
+    color: #2B2E42;
+}
+.little{
+    margin: 3%;
+    max-height: 50px;
+    max-width: 50px;
+}
+.center{
+    text-align: center;
+    margin: auto;
+}
+.topPlaylist{
+    margin:2%;
+    display : grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr;
+    column-gap: 5%;
+}
+.all{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    margin: 2%;
+}
+.all h1{
+    font-size: 2.5em;
+    color: #2B2E42;
+}
+.albumPart{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    margin:2%;
+    font-size: 2.5em;
+    color: #2B2E42;
+}
+.img{
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+.infoPlaylist{
+    grid-column-start: 3;
+    grid-column-end: 3;
+    /* Espace bien les choses */
+    display: flex;
+    flex-direction: column;
+}
+.topPlaylist h1{
+    font-size: 2em;
+    color: #2B2E42;
+}
+.topPlaylist h2{
+    font-size: 1em;
+    color: #2B2E42;
+}
