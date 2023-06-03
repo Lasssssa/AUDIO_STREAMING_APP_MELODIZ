@@ -3,6 +3,7 @@
     $_SESSION['identified'] = false;
     $_SESSION['alreadyExist'] = false;
     $_SESSION['passwordNotConfirmed'] = false;
+
 ?>
 
 <!DOCTYPE html>
