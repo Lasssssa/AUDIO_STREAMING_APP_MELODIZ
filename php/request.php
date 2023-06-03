@@ -7,6 +7,11 @@
 
     $type = $_SERVER['REQUEST_METHOD'];
 
+    // $request = substr($_SERVER['PATH_INFO'], 1);
+    // $request = explode('/', $request);
+    // $requestRessource = array_shift($request);
+
+
     if(isset($_GET['request']) && $_GET['request'] == 'last_ecoute'){
         $last_ecoute = dbGetLastEcoute($dbConnection, $_GET['id_perso']);
         echo json_encode($last_ecoute);
@@ -55,5 +60,21 @@
         // echo 'coucuo';
         $music = dbDeleteMusic($dbConnection, $_GET['idMusic'], $_GET['idPlaylist']);
         echo json_encode($music);
+    }
+
+    if(isset($_GET['request']) && $_GET['request']=='playMusic'){
+        $music = dbGetOneMusic($dbConnection, $_GET['idMusic'], $_GET['idPerso']);
+        echo json_encode($music);
+    }
+
+    if($type=='POST'){
+        // parse_str(file_get_contents('php://input'), $_POST);
+        if(isset($_POST['request']) && $_POST['request']=='upDateHistory'){
+            // echo json_encode("coucou");
+            // echo $_PUT['idMusic'];
+            // echo $_PUT['idPerso'];
+            $playlist = dbUpdateHistory($dbConnection, $_POST['idMusic'],$_POST['idPerso']);
+            echo json_encode($playlist);
+        }
     }
 ?>

@@ -1,4 +1,4 @@
-import { playMusic, likeMusic,addModal, addModalMore, deleteMusic} from './update.js';
+import { playMusic, likeMusic,addModal, deleteMusic} from './update.js';
 import { getPlaylistAccueil, getOneArtist, getOneAlbum} from './get.js';
 import { ajaxRequest } from './ajax.js';
 
@@ -40,7 +40,7 @@ export function displayLastEcoute(data) {
 
             let image = document.createElement('img');
             image.classList.add('card-img-top');
-            image.src = 'imgMusic/' + title + '.png';
+            image.src = data[i].music_chemin;
             image.alt = 'Card image cap';
             image.style.maxWidth = '250px';
             image.style.maxHeight = '250px';
@@ -293,7 +293,7 @@ export function displayOnePlaylistResponse(data) {
 
             let img = document.createElement('img');
             img.classList.add('center');
-            img.src = 'imgMusic/' + data[i].music_title + '.png';
+            img.src = data[i].music_chemin;
             img.style.maxWidth = '50px';
             img.style.maxHeight = '50px';
             musicDiv.appendChild(img);
@@ -408,7 +408,7 @@ export function displayOneArtistResponse(data){
     imgDiv.classList.add('img');
 
     let img = document.createElement('img');
-    img.src = 'imgArtist/' + name + '.png';
+    img.src = data[0].artiste_chemin;
     img.style.maxWidth = '250px';
     img.style.maxHeight = '250px';
     imgDiv.appendChild(img);
@@ -462,7 +462,7 @@ export function displayOneArtistResponse(data){
     for (let i = 0; i < data.length; i++) {
         let album = data[i].album_title;
         let artist = data[i].artiste_name;
-        let imgSrc = 'imgAlbum/Dans l espace.png';
+        let imgSrc = data[i].album_chemin;
         let style = data[i].album_style;
 
         let cardDiv = document.createElement('div');
@@ -503,46 +503,161 @@ export function displayOneArtistResponse2(data){
     // console.log(data);
     let container = document.getElementById('top3');
     container.innerHTML = '';
-    let html = ''; 
-    html += '<div class="music">';
-    html += '<div class="center"><h2>#</h2></div>'; 
-    html += '<div class="center"><span class="material-symbols-outlined">image</span></div>';
-    html += '<div class="center"><h2>Titre</h2></div>';
-    html += '<div class="center"><h2>Artiste</h2></div>';
-    html += '<div class="center"><h2>Album</h2></div>';
-    html += '<div class="center"><h2>Durée</h2></div>';
-    html += '<div class="center"><h2>Album Création</h2></div>';
-    html += '<div class="center"><h2>Like</h2></div>';
-    html += '<div class="center"><h2>Playlist</h2></div>'
-    html += '</div>';
+
+    let musicContainer = document.createElement('div');
+    musicContainer.classList.add('music');
+
+    let numberHeader = document.createElement('div');
+    numberHeader.classList.add('center');
+    numberHeader.innerHTML = '<h2>#</h2>';
+    musicContainer.appendChild(numberHeader);
+
+    let imageHeader = document.createElement('div');
+    imageHeader.classList.add('center');
+    imageHeader.innerHTML = '<span class="material-symbols-outlined">image</span>';
+    musicContainer.appendChild(imageHeader);
+
+    let titleHeader = document.createElement('div');
+    titleHeader.classList.add('center');
+    titleHeader.innerHTML = '<h2>Titre</h2>';
+    musicContainer.appendChild(titleHeader);
+
+    let artistHeader = document.createElement('div');
+    artistHeader.classList.add('center');
+    artistHeader.innerHTML = '<h2>Artiste</h2>';
+    musicContainer.appendChild(artistHeader);
+
+    let albumHeader = document.createElement('div');
+    albumHeader.classList.add('center');
+    albumHeader.innerHTML = '<h2>Album</h2>';
+    musicContainer.appendChild(albumHeader);
+
+    let durationHeader = document.createElement('div');
+    durationHeader.classList.add('center');
+    durationHeader.innerHTML = '<h2>Durée</h2>';
+    musicContainer.appendChild(durationHeader);
+
+    let albumCreationHeader = document.createElement('div');
+    albumCreationHeader.classList.add('center');
+    albumCreationHeader.innerHTML = '<h2>Album Création</h2>';
+    musicContainer.appendChild(albumCreationHeader);
+
+    let likeHeader = document.createElement('div');
+    likeHeader.classList.add('center');
+    likeHeader.innerHTML = '<h2>Like</h2>';
+    musicContainer.appendChild(likeHeader);
+
+    let playlistHeader = document.createElement('div');
+    playlistHeader.classList.add('center');
+    playlistHeader.innerHTML = '<h2>Playlist</h2>';
+    musicContainer.appendChild(playlistHeader);
+
+    container.appendChild(musicContainer);
 
     for (let i = 0; i < data.length; i++) {
-        //Data contient 3 musiques
         let title_music = data[i].music_title;
         let name_artiste;
-        if(data[i].artiste_lastname == null){
+        if (data[i].artiste_lastname == null) {
             name_artiste = data[i].artiste_name;
-        }
-        else{
+        } else {
             name_artiste = data[i].artiste_name + ' ' + data[i].artiste_lastname;
         }
         let name_album = data[i].album_title;
         let duree = data[i].music_duration;
         let date = data[i].album_creation;
-        html += '<div class="music">';
-        html += '<div class="center"><span class="material-symbols-outlined">play_circle</span></div>';
-        html += '<img src="imgMusic/' + title_music + '.png" alt="image artiste" style="max-width:50px;max-height:50px">';
-        html += '<div class="center"><h2>' + title_music + '</h2></div>';
-        html += '<div class="center"><h2>' + name_artiste + '</h2></div>';
-        html += '<div class="center"><h2>' + name_album + '</h2></div>';
-        html += '<div class="center"><h2>' + duree + '</h2></div>';
-        html += '<div class="center"><h2>' + date + '</h2></div>';
-        html += '<div class="center"><button class="btn btn-primary colorRed"><span class="material-symbols-outlined">favorite_border</span></button></div>';
-        html += '<div class="center"><button class="btn btn-primary colorRed"><span class="material-symbols-outlined">add</span></button></div>';
-        html += '</div>';
-    }
-    container.innerHTML = html;
 
+        let musicDiv = document.createElement('div');
+        musicDiv.classList.add('music');
+
+        let playButton = document.createElement('button');
+        playButton.classList.add('btn', 'btn-primary', 'colorRed', 'little', 'center');
+        playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
+        musicDiv.appendChild(playButton);
+
+        playButton.addEventListener('click', function () {
+            playMusic(data[i].music_id);
+        });
+
+        let image = document.createElement('img');
+        image.src = data[i].music_chemin;
+        image.alt = 'image artiste';
+        image.classList.add('center');
+        image.style.maxWidth = '50px';
+        image.style.maxHeight = '50px';
+        musicDiv.appendChild(image);
+
+        image.addEventListener('click', function () {
+            getOneAlbum(data[i].id_album);
+        });
+
+        let title = document.createElement('div');
+        title.classList.add('center');
+        title.innerHTML = '<h2>' + title_music + '</h2>';
+        musicDiv.appendChild(title);
+
+        title.addEventListener('click', function () {
+            getOneAlbum(data[i].id_album);
+        });
+
+        let artist = document.createElement('div');
+        artist.classList.add('center');
+        artist.innerHTML = '<h2>' + name_artiste + '</h2>';
+        musicDiv.appendChild(artist);
+
+        let album = document.createElement('div');
+        album.classList.add('center');
+        album.innerHTML = '<h2>' + name_album + '</h2>';
+        musicDiv.appendChild(album);
+
+        album.addEventListener('click', function () {
+            getOneAlbum(data[i].id_album);
+        });
+
+        let duration = document.createElement('div');
+        duration.classList.add('center');
+        duration.innerHTML = '<h2>' + duree + '</h2>';
+        musicDiv.appendChild(duration);
+
+        let albumCreation = document.createElement('div');
+        albumCreation.classList.add('center');
+        albumCreation.innerHTML = '<h2>' + date + '</h2>';
+        musicDiv.appendChild(albumCreation);
+
+        let likeButton = document.createElement('button');
+        likeButton.classList.add('btn', 'btn-primary', 'colorRed', 'like', 'little', 'center');
+        likeButton.id = 'likeArtist_' + data[i].music_id;
+        let iTag = document.createElement('i');
+        iTag.classList.add('material-icons');
+
+        if(data[i].isliked == 1) {
+            iTag.textContent = 'favorite';
+        }
+        else{
+            iTag.textContent = 'favorite_border';
+        }
+        likeButton.appendChild(iTag);
+        musicDiv.appendChild(likeButton);
+
+        likeButton.addEventListener('click', function() {
+            likeMusic(data[i].music_id,'artiste');
+        });    
+
+        let addButton = document.createElement('button');
+        addButton.className = 'btn btn-primary colorRed little center';
+        addButton.id = 'addAlbum_' + data[i].music_id;
+        let addIcon = document.createElement('span');
+        addIcon.className = 'material-icons';
+        addIcon.textContent = 'add';
+        addButton.appendChild(addIcon);
+        addButton.setAttribute('data-bs-toggle', 'modal');
+        addButton.setAttribute('data-bs-target', '#modalAlbum_'+data[i].music_id+'');
+        musicDiv.appendChild(addButton);
+
+        addModal(data[i].music_id);
+
+
+        container.appendChild(musicDiv);
+    }
 }
 
 export function displayOneAlbumResponse(data){
@@ -559,7 +674,7 @@ export function displayOneAlbumResponse(data){
     imgDiv.className = 'img';
 
     let img = document.createElement('img');
-    img.src = 'playlist/default.png';
+    img.src = data[0].album_chemin;
     img.style.maxWidth = '250px';
     img.style.maxHeight = '250px';
     imgDiv.appendChild(img);
@@ -633,7 +748,7 @@ export function displayOneAlbumResponse(data){
     let imgDiv = document.createElement('div');
     imgDiv.className = 'center';
     let img = document.createElement('img');
-    img.src = 'imgMusic/' + data[i].music_title + '.png';
+    img.src = data[i].music_chemin;
     img.alt = 'image artiste';
     img.style.maxWidth = '50px';
     img.style.maxHeight = '50px';

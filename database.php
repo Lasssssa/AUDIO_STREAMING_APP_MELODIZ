@@ -107,7 +107,7 @@
                     WHERE playlist_id = :playlist_id
                 ) pc ON pc.music_id = m.music_id
                 WHERE h.id = :id
-                ORDER BY h.last_ecoute
+                ORDER BY h.last_ecoute DESC
                 LIMIT 10';
             $statement = $db->prepare($query);
             $statement->bindParam(':id', $id);
@@ -119,6 +119,7 @@
         }
         return $result;
     }
+    
 
     function dbGetMusicInfo($db,$id_music){
         try{
@@ -400,4 +401,59 @@
         }
         return $id_playlist;
     }
+
+    function dbGetOneMusic($db,$id_music,$id_perso){
+        $id_PlaylistLike = getLikePlaylist($db,$id_perso);
+        try{
+            $query = 'SELECT DISTINCT music.*, album.*, artiste.*,
+            (CASE WHEN EXISTS (SELECT 1 FROM music_contenu WHERE music_contenu.music_id = music.music_id AND music_contenu.playlist_id = :id_playlist)
+                  THEN 1 ELSE 0 END) AS isliked
+            FROM music
+            JOIN album ON music.id_album = album.id_album
+            JOIN artiste ON album.artiste_id = artiste.artiste_id
+            WHERE music.music_id = :id_music';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_music', $id_music);
+            $statement->bindParam(':id_playlist', $id_PlaylistLike);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbUpdateHistory($db, $idMusic, $idPerso) {
+        try {
+            $query = 'SELECT * FROM historique WHERE music_id = :id_music AND id = :idPerso';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_music', $idMusic);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (count($result) > 0) {
+                $date = date("Y-m-d H:i:s");
+                $query = 'UPDATE historique SET last_ecoute = :date_ajout WHERE music_id = :id_music AND id = :idPerso';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':id_music', $idMusic);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->bindParam(':date_ajout', $date);
+                $statement->execute();
+            } else {
+                $date = date("Y-m-d H:i:s");
+                $query = 'INSERT INTO historique (music_id, id, last_ecoute) VALUES (:id_music, :idPerso, :date_ajout)';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':id_music', $idMusic);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->bindParam(':date_ajout', $date);
+                $statement->execute();
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    
+        return $idMusic;
+    }
+
 ?>

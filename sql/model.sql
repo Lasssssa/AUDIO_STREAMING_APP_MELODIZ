@@ -39,6 +39,8 @@ CREATE TABLE public.artiste(
 	artiste_name       VARCHAR (50) NOT NULL ,
 	artiste_lastname   VARCHAR (50),
 	artiste_type       VARCHAR (20) NOT NULL  ,
+	artiste_bio        VARCHAR (250)  ,
+	artiste_chemin     VARCHAR (100) NOT NULL ,
 	CONSTRAINT artiste_PK PRIMARY KEY (artiste_id)
 )WITHOUT OIDS;
 
@@ -52,6 +54,7 @@ CREATE TABLE public.album(
 	album_title      CHAR (50)  NOT NULL ,
 	album_style      VARCHAR (50) NOT NULL ,
 	artiste_id       INT  NOT NULL  ,
+	album_chemin      VARCHAR (100) NOT NULL ,
 	CONSTRAINT album_PK PRIMARY KEY (id_album)
 
 	,CONSTRAINT album_artiste_FK FOREIGN KEY (artiste_id) REFERENCES public.artiste(artiste_id)
@@ -67,6 +70,8 @@ CREATE TABLE public.music(
 	music_title      VARCHAR (50) NOT NULL ,
 	music_duration   FLOAT  NOT NULL ,
 	id_album         INT  NOT NULL  ,
+	music_chemin		   VARCHAR (100) NOT NULL ,
+	music_play_chemin  VARCHAR (100) NOT NULL ,
 	CONSTRAINT music_PK PRIMARY KEY (music_id)
 
 	,CONSTRAINT music_album_FK FOREIGN KEY (id_album) REFERENCES public.album(id_album)
@@ -82,6 +87,7 @@ CREATE TABLE public.playlist(
 	playlist_creation   DATE  NOT NULL ,
 	id                  INT  NOT NULL  ,
 	havePicture 	   BOOLEAN  NOT NULL ,
+	playlist_picture    VARCHAR (100)  ,
 	CONSTRAINT playlist_PK PRIMARY KEY (playlist_id)
 
 	,CONSTRAINT playlist_utilisateur_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
@@ -94,7 +100,7 @@ CREATE TABLE public.playlist(
 CREATE TABLE public.historique(
 	music_id      INT  NOT NULL ,
 	id            INT  NOT NULL ,
-	last_ecoute   DATE  NOT NULL  ,
+	last_ecoute   TIMESTAMP  NOT NULL ,
 	CONSTRAINT historique_PK PRIMARY KEY (music_id,id)
 
 	,CONSTRAINT historique_music_FK FOREIGN KEY (music_id) REFERENCES public.music(music_id)

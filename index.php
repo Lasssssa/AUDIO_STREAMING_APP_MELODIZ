@@ -1,6 +1,8 @@
 <?php
-    session_start();
-    
+    session_start();   
+    if(!isset($_SESSION['identified']) || !$_SESSION['identified']){
+        header("Location: login.php");
+    }
 ?>
 
 <!-- 
@@ -36,11 +38,11 @@
         <div>
             <nav class="navbar bg-danger">
                 <div class="container">
-                    <a class="navbar-brand" href="index.php">
+                    <button class="btn clear" id="reset">
                         <span class="material-symbols-outlined">
                             home
                         </span>
-                    </a>
+                    </button>
                     <div class="row">
                         <div class="col-12"><h4 class="navbar-brand text-center">Accueil</h4></div>
                     </div>
@@ -59,7 +61,48 @@
                 
         </div>
 
+        <div class="footbar bg-danger">
+            <div class="row">
+                <div class="col-1 d-flex align-items-center justify-content-center">
+                    <img src="playlist/default.png" id="imgMusic" alt="lecture" class="img-fluid littleMargin" style="max-width:55px;max-height:55px">
+                </div>
+                <div class="col-1 align-items-center justify-content-center">
+                    <div class="littleMargin titleMusic">
+                        <h3 id="titleMusic">Aucun Titre</h3>
+                        <h5 id="artistMusic">.</h5>
+                    </div>
+                </div>
+                <div class="col-1 position-relative">
+                    <button type="button" class="position-absolute top-50 start-50 translate-middle clear" id="buttonLiked">
+                        <span class="material-symbols-outlined">
+                            favorite
+                        </span>
+                    </button>
+                </div>
+                    <div class="col-6 text-center">
+                    <button type="button" class="btn clear" id="playMusic"><i class="material-icons">play_arrow</i></button><br>
+                    <label for="volume">0:00</label>
+                    <input type="range" class="progressBar" style="width: 500px; accent-color: #000000;">
+                    <label for="volume">1:00</label>
+                </div>
 
+                <div class="col-1 d-flex align-items-center justify-content-center">
+                    <audio class="music" id="musicPlaying" src="musique/gambino.mp3"></audio>
+                    <button type="button" class="btn clear" id="mute"><i class="material-icons">volume_up</i></button>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-center">
+                    <input type="range" name="" id="changeVolume" style="width:200px; accent-color: #000000;">
+                </div>
+
+            </div>
+        </div>
+
+        
     </body>
+
+    
     <script type="module" src="js/accueil.js"></script>
+
+    
 </html>
+

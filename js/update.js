@@ -1,5 +1,6 @@
 import {ajaxRequest} from "./ajax.js";
 import { displayOnePlaylist } from "./display.js";
+import { getLastEcoute } from "./get.js";
 
 export function likeMusic(idMusic,page) {
     let id_user = document.getElementById('id_perso').value;
@@ -13,7 +14,21 @@ export function likeMusic(idMusic,page) {
     if(page == 'playlist'){
         ajaxRequest('POST','php/request.php',likeMusicPlaylist,data);
     }
+    if(page == 'artiste'){
+        ajaxRequest('POST','php/request.php',likeMusicArtist,data);
+    }
 }
+
+function likeMusicArtist(data) {
+    console.log(data);
+    let buttonModif = document.getElementById('likeArtist_'+data[0]);
+    if(data[1] == 1){
+        buttonModif.innerHTML = '<i class="material-icons">favorite</i>';
+    }else{
+        buttonModif.innerHTML = '<i class="material-icons">favorite_border</i>';
+    }
+}
+
 export function likeMusicPlaylist(data){
     let buttonModif = document.getElementById('likePlaylist_'+data[0]);
     if(data[1] == 1){
@@ -39,38 +54,55 @@ export function likeMusicAlbum(data) {
     }
 }
 
-export function playMusic(playlist_id) {
-    console.log('play');
+export function playMusic(id_music) {
+    let id_user = document.getElementById('id_perso').value;
+    ajaxRequest('GET','php/request.php?request=playMusic&idMusic='+id_music+'&idPerso='+id_user,playMusicResponse);
+}
+
+function playMusicResponse(data) {
+    let imgMusic = document.getElementById('imgMusic');
+    let titleMusic = document.getElementById('titleMusic');
+    let artistMusic = document.getElementById('artistMusic');
+    let buttonLiked = document.getElementById('buttonLiked');
+    let musicPlaying = document.getElementById('musicPlaying');
+
+    let playMusic = document.getElementById('playMusic');
+
+    imgMusic.src = data[0]['music_chemin'];
+    titleMusic.textContent = data[0]['music_title'];
+    // let artistname = '';
+    // if(data[0].artist_lastname == null){
+    //     artistname = artistMusic.textContent = data[0]['artist_firstname'];
+    // }else{
+    //     artistname = artistMusic.textContent = data[0]['artist_firstname'] + ' ' + data[0]['artist_lastname'];
+    // }
+    // artistMusic.textContent = artistname;
+    musicPlaying.src = data[0]['music_play_chemin'];
+    if(data[0].isliked == 1){
+        buttonLiked.innerHTML = '<i class="material-icons">favorite</i>';
+    }else{
+        buttonLiked.innerHTML = '<i class="material-icons">favorite_border</i>';
+    }
+    playMusic.innerHTML = '<i class="material-icons">pause</i>';
+
+    musicPlaying.play();
+    let id_user = document.getElementById('id_perso').value;
+    let dataSend = 'request=upDateHistory&idMusic='+data[0]['music_id']+'&idPerso='+id_user;
+    ajaxRequest('POST','php/request.php',updateNbPlay,dataSend);
+}
+
+function updateNbPlay(data) {
+    let lastEcoute = document.querySelectorAll('.lastEcoute');
+    console.log(lastEcoute);
+    if(lastEcoute.length > 0){
+        getLastEcoute();
+    }
 }
 
 export function addModal($id_music){
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=playlistWithMusic&id_perso='+id_user+'&idMusic='+$id_music,addModalDisplay);
 }
-
-export function addModalMore($id_music){
-    let id_user = document.getElementById('id_perso').value;
-    ajaxRequest('GET','php/request.php?request=music&idMusic='+$id_music,addModalMoreDisplay);
-}
-
-function addModalMoreDisplay(data){
-    console.log(data);
-    let container = document.getElementById('container');
-    let html = '';
-    html += '<div class="modal fade" id="modalAdlbumMore_'+data[0]['music_id']+'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
-    html += '<div class="modal-dialog" role="document">';
-    html += '<div class="modal-content">';
-    html += '<div class="modal-header">';
-    html += '<h5 class="modal-title" id="exampleModalLabel">INFORMATIONS DE LA PLAYLIST</h5>';
-    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-    html += '<span aria-hidden="true">&times;</span>';
-    html += '</button>';
-    html += '</div>';
-    
-    container.innerHTML += html;
-
-}
-
 function addModalDisplay(data){
     console.log(data);
     let container = document.getElementById('container');

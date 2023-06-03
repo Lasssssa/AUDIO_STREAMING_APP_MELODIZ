@@ -6,6 +6,13 @@
     background-color: #D80536;
     border-color: #D80536;
 }
+.colorRed:active{
+    color: #D80536;
+    color: #D80536;
+}
+#container{
+    margin-bottom: 75px;
+}
 .clear{
     border: none;
     background: none;
@@ -20,8 +27,24 @@
     display: flex;
     overflow: scroll;
     text-align: center;
+    overflow-y: hidden;
 }
 
+::-webkit-scrollbar {
+    width:10px;
+}
+::-webkit-scrollbar-thumb{
+    background-color: #D80536;
+    border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: #2B2E42;
+}
+::-webkit-scrollbar-track{
+    background-color: gainsboro;
+    border-radius: 20px;
+
+}
 .lastEcoute{
     padding: 2%;
     margin: 2%;
@@ -61,7 +84,6 @@
 .side{
     margin: 3%;
 }
-
 .music h2{
     font-size: 1.2em;
     color: #2B2E42;
@@ -116,3 +138,45 @@
     font-size: 1em;
     color: #2B2E42;
 }
+
+.footbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-radius: 20px;
+    /* margin-left: 20px; */
+    /* margin-right: 20px; */
+  }
+.littleMargin{
+    padding: 5%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.titleMusic h3{
+    font-size: 1em;
+    color: #2B2E42;
+}
+.titleMusic h5{
+    font-size: 0.5em;
+    color: #2B2E42;
+}
+
+.centerLike{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
+}
+
+audio{
+    display: none;
+  }
+
+  body{
+    background-color: #F8F3F3;
+  }
+  
+
+

@@ -10,47 +10,47 @@ DELETE FROM music_contenu;
 INSERT INTO utilisateur(user_firstname,user_lastname,user_mail,user_password,user_birth,creation_date,user_telephone) 
 VALUES ('Théo','Porodo','theo@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my', '1998-12-12', '2018-12-12', '0606060606');
 
-INSERT INTO artiste(artiste_name, artiste_lastname, artiste_type) VALUES
-('Gambi',null,'Chanteur'),
-('Daniel','Balavoine','Chanteur'),
-('Michel','Sardou','Chanteur'),
-('PNL',null,'Groupe'),
-('Jul',null,'Chanteur');
+INSERT INTO artiste(artiste_name, artiste_lastname, artiste_type,artiste_chemin) VALUES
+('Gambi',null,'Chanteur','imgArtist/Gambi.png'),
+('Daniel','Balavoine','Chanteur','imgArtist/Balavoine.png'),
+('Michel','Sardou','Chanteur','imgArtist/Sardou.png'),
+('PNL',null,'Groupe','imgArtist/PNL.png'),
+('Jul',null,'Chanteur','imgArtist/Jul.png');
 
 
-INSERT INTO album(album_creation,album_title,album_style,artiste_id) VALUES 
-('2019-12-12','La vie est belle','Rap',1),
-('1980-12-12','Sauver l amour','Chanson',2),
-('1980-12-12','Les lacs du Connemara','Chanson',3),
-('2019-12-12','Deux frères','Rap',4),
-('2019-12-12','Rien 100 rien','Rap',5);
+INSERT INTO album(album_creation,album_title,album_style,artiste_id,album_chemin) VALUES 
+('2019-12-12','La vie est belle','Rap',1,'imgAlbum/espace.png'),
+('1980-12-12','Un autre monde','Chanson',2,'imgAlbum/un_autre_monde.png'),
+('1980-12-12','Les lacs du Connemara','Chanson',3,'imgAlbum/les_lacs_du_connemara.png'),
+('2019-12-12','Deux frères','Rap',4,'imgAlbum/deux_freres.png'),
+('2019-12-12','Rien 100 rien','Rap',5,'imgAlbum/rien_100_rien.png');
 
-INSERT INTO music(id_deezer,music_title,music_duration,id_album) VALUES 
-(1,'La vie',2.50,1),
-(2,'La vie est belle',2.50,1),
-(3,'Popopop',2.50,1),
-(4,'Hé oh',2.50,1),
-(5,'Dans l espace',2.50,1),
-(6,'Sauver l amour',2.50,2),
-(7,'Vivre ou survivre',2.50,2),
-(8,'L Aziza',2.50,2),
-(9,'Mon fils ma bataille',2.50,2),
-(10,'Dieu que c est beau',2.50,2),
-(11,'Les lacs du Connemara',2.50,3),
-(12,'Je vais t aimer',2.50,3),
-(13,'La maladie d amour',2.50,3),
-(14,'En chantant',2.50,3),
-(15,'Je vole',2.50,3),
-(16,'Au DD',2.50,4),
-(17,'91 s',2.50,4),
-(18,'Celsius',2.50,4),
-(19,'Déconnecté',2.50,4),
-(20,'Shenmue',2.50,4),
-(21,'Rien 100 rien',2.50,5),
-(22,'C est pas des lol',2.50,5),
-(23,'C est pas des lol',2.50,5),
-(24,'C est pas des lol',2.50,5),
-(25,'C est pas des lol',2.50,5);
+INSERT INTO music(id_deezer,music_title,music_duration,id_album,music_chemin,music_play_chemin) VALUES 
+(1,'La vie',2.50,1,'imgMusic/la_vie.png','musique/je_ne_suis_pas_un_heros.mp3'),
+(2,'La vie est belle',2.50,1,'imgMusic/vie_belle.png','musique/gambino.mp3'),
+(3,'Popopop',2.50,1,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(4,'Hé oh',2.50,1,'imgMusic/he_ho.png','musique/je_ne_suis_pas_un_heros.mp3'),
+(5,'Dans l espace',2.50,1,'imgMusic/espace.png','musique/gambino.mp3'),
+(6,'Sauver l amour',2.50,2,'imgMusic/sauver_amour.png','musique/aziza.mp3'),
+(7,'Vivre ou survivre',2.50,2,'imgMusic/vivre_survivre.png','musique/aziza.mp3'),
+(8,'L Aziza',2.50,2,'imgMusic/aziza.png','musique/je_ne_suis_pas_un_heros.mp3'),
+(9,'Mon fils ma bataille',2.50,2,'imgMusic/fils_bataille.png','musique/gambino.mp3'),
+(10,'Dieu que c est beau',2.50,2,'imgMusic/dieu_beau.png','musique/aziza.mp3'),
+(11,'Les lacs du Connemara',2.50,3,'imgMusic/Popopop.png','musique/gambino.mp3'),
+(12,'Je vais t aimer',2.50,3,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(13,'La maladie d amour',2.50,3,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(14,'En chantant',2.50,3,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(15,'Je vole',2.50,3,'imgMusic/Popopop.png','musique/gambino.mp3'),
+(16,'Au DD',2.50,4,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(17,'91 s',2.50,4,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(18,'Celsius',2.50,4,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(19,'Déconnecté',2.50,4,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(20,'Shenmue',2.50,4,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(21,'Rien 100 rien',2.50,5,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(22,'C est pas des lol',2.50,5,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(23,'C est pas des lol',2.50,5,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(24,'C est pas des lol',2.50,5,'imgMusic/Popopop.png','musique/aziza.mp3'),
+(25,'C est pas des lol',2.50,5,'imgMusic/Popopop.png','musique/aziza.mp3');
 
 INSERT INTO music_cree(music_id,artiste_id) VALUES
 (1,1),
