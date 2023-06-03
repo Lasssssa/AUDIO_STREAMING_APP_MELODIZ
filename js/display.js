@@ -1,6 +1,14 @@
-import { playMusic, likeMusic,addModal, deleteMusic} from './update.js';
-import { getPlaylistAccueil, getOneArtist, getOneAlbum} from './get.js';
+import { playMusic, likeMusic,addModal, deleteMusic, addNewPlaylist} from './update.js';
+import { getPlaylistAccueil, getOneArtist, getOneAlbum,getSearchAlbum ,getSearchArtist,getSearchMusic} from './get.js';
 import { ajaxRequest } from './ajax.js';
+
+
+export function displayCurrentUser(data){
+    let container = document.getElementById('container');
+    container.innerHTML = "";
+
+}
+
 
 export function displayLastEcoute(data) {
     // console.log(data);
@@ -40,7 +48,8 @@ export function displayLastEcoute(data) {
 
             let image = document.createElement('img');
             image.classList.add('card-img-top');
-            image.src = data[i].music_chemin;
+            // console.log(data[i].album_chemin);
+            image.src = data[i].album_chemin;
             image.alt = 'Card image cap';
             image.style.maxWidth = '250px';
             image.style.maxHeight = '250px';
@@ -73,17 +82,17 @@ export function displayLastEcoute(data) {
             ecartedDiv.classList.add('ecarted');
 
             let playButton = document.createElement('button');
-            playButton.classList.add('btn', 'btn-primary', 'colorRed');
+            playButton.classList.add('btn', 'btn-danger', 'colorRed');
             playButton.type = 'submit';
             playButton.id = 'play_' + id;
             playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
             ecartedDiv.appendChild(playButton);
 
             let likeButton = document.createElement('button');
-            likeButton.classList.add('btn', 'btn-primary', 'colorRed');
+            likeButton.classList.add('btn', 'btn-danger', 'colorRed');
             likeButton.type = 'submit';
             likeButton.id = 'like_' + id;
-            console.log(data[i]);
+            // console.log(data[i]);
             if (data[i].isliked == true) {
                 likeButton.innerHTML = '<i class="material-icons">favorite</i>';
             } else {
@@ -136,10 +145,11 @@ export function displayPlaylist(data) {
     divPlaylist.appendChild(titleHeading);
 
     let buttonAdd = document.createElement('button');
-    buttonAdd.classList.add('btn', 'btn-primary', 'colorRed');
-    buttonAdd.type = 'submit';
+    buttonAdd.classList.add('btn', 'btn-danger', 'colorRed');
     buttonAdd.id = 'addPlaylist';
     buttonAdd.style.margin = '0px 25px';
+    buttonAdd.setAttribute('data-bs-toggle', 'modal');
+    buttonAdd.setAttribute('data-bs-target', '#modalPlaylist');
     buttonAdd.innerHTML = '<span class="material-symbols-outlined">playlist_add</span>';
     divPlaylist.appendChild(buttonAdd);
 
@@ -251,7 +261,7 @@ export function displayOnePlaylistResponse(data) {
     infoPlaylistDiv.appendChild(dateH2);
 
     let button = document.createElement('button');
-    button.classList.add('btn', 'btn-primary', 'colorRed', 'center');
+    button.classList.add('btn', 'btn-danger', 'colorRed', 'center');
     button.innerHTML = '<span class="material-symbols-outlined">play_circle</span>&nbsp&nbsp Modifier';
     infoPlaylistDiv.appendChild(button);
 
@@ -274,7 +284,7 @@ export function displayOnePlaylistResponse(data) {
     }
 
     container.appendChild(musicDiv);
-    console.log(data);
+    // console.log(data);
     let size = data.length;
     if(data[0].music_id != null) {
             
@@ -283,7 +293,7 @@ export function displayOnePlaylistResponse(data) {
             musicDiv.classList.add('music');
 
             let playButton = document.createElement('button');
-            playButton.classList.add('btn', 'btn-primary', 'colorRed', 'little', 'center');
+            playButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');
             playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
             musicDiv.appendChild(playButton);
 
@@ -293,7 +303,7 @@ export function displayOnePlaylistResponse(data) {
 
             let img = document.createElement('img');
             img.classList.add('center');
-            img.src = data[i].music_chemin;
+            img.src = data[i].album_chemin;
             img.style.maxWidth = '50px';
             img.style.maxHeight = '50px';
             musicDiv.appendChild(img);
@@ -329,7 +339,7 @@ export function displayOnePlaylistResponse(data) {
             musicDiv.appendChild(artistDiv);
 
             let albumDiv = document.createElement('div');
-            albumDiv.classList.add('album', 'center');
+            albumDiv.classList.add('center');
             h2 = document.createElement('h2');
             h2.textContent = data[i].album_title;
             albumDiv.appendChild(h2);
@@ -353,7 +363,7 @@ export function displayOnePlaylistResponse(data) {
             musicDiv.appendChild(dateDiv);
 
             let likeButton = document.createElement('button');
-            likeButton.classList.add('btn', 'btn-primary', 'colorRed', 'like', 'little', 'center');
+            likeButton.classList.add('btn', 'btn-danger', 'colorRed', 'like', 'little', 'center');
             likeButton.id = 'likePlaylist_' + data[i].music_id;
             let iTag = document.createElement('i');
             iTag.classList.add('material-icons');
@@ -372,7 +382,7 @@ export function displayOnePlaylistResponse(data) {
             });
 
             let deleteButton = document.createElement('button');
-            deleteButton.classList.add('btn', 'btn-primary', 'colorRed', 'delete', 'little', 'center');
+            deleteButton.classList.add('btn', 'btn-danger', 'colorRed', 'delete', 'little', 'center');
             iTag = document.createElement('i');
             iTag.classList.add('material-icons');
             iTag.textContent = 'delete';
@@ -389,7 +399,7 @@ export function displayOnePlaylistResponse(data) {
     }
 }
 export function displayOneArtistResponse(data){
-    console.log(data);
+    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -478,6 +488,11 @@ export function displayOneArtistResponse(data){
         cardImg.style.maxWidth = '250px';
         cardImg.style.maxHeight = '250px';
         cardDiv.appendChild(cardImg);
+
+        cardImg.addEventListener('click', function() {
+            getOneAlbum(data[i].id_album);
+            // console.log('coucou');
+        });
 
         let cardBodyDiv = document.createElement('div');
         cardBodyDiv.classList.add('card-body');
@@ -570,7 +585,7 @@ export function displayOneArtistResponse2(data){
         musicDiv.classList.add('music');
 
         let playButton = document.createElement('button');
-        playButton.classList.add('btn', 'btn-primary', 'colorRed', 'little', 'center');
+        playButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');
         playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
         musicDiv.appendChild(playButton);
 
@@ -579,7 +594,7 @@ export function displayOneArtistResponse2(data){
         });
 
         let image = document.createElement('img');
-        image.src = data[i].music_chemin;
+        image.src = data[i].album_chemin;
         image.alt = 'image artiste';
         image.classList.add('center');
         image.style.maxWidth = '50px';
@@ -624,7 +639,7 @@ export function displayOneArtistResponse2(data){
         musicDiv.appendChild(albumCreation);
 
         let likeButton = document.createElement('button');
-        likeButton.classList.add('btn', 'btn-primary', 'colorRed', 'like', 'little', 'center');
+        likeButton.classList.add('btn', 'btn-danger', 'colorRed', 'like', 'little', 'center');
         likeButton.id = 'likeArtist_' + data[i].music_id;
         let iTag = document.createElement('i');
         iTag.classList.add('material-icons');
@@ -643,7 +658,7 @@ export function displayOneArtistResponse2(data){
         });    
 
         let addButton = document.createElement('button');
-        addButton.className = 'btn btn-primary colorRed little center';
+        addButton.className = 'btn btn-danger colorRed little center';
         addButton.id = 'addAlbum_' + data[i].music_id;
         let addIcon = document.createElement('span');
         addIcon.className = 'material-icons';
@@ -707,111 +722,612 @@ export function displayOneAlbumResponse(data){
     let musicArtistDiv = document.createElement('div');
     musicArtistDiv.className = 'musicArtist';
 
-    let headers = ['#', 'Image', 'Titre', 'Artiste', 'Durée', 'Like', 'Ajouter'];
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>', 'Titre', 'Artiste', 'Durée', 'Like', 'Ajouter'];
 
     for (let headerText of headers) {
     let headerDiv = document.createElement('div');
     headerDiv.className = 'center';
     let h2 = document.createElement('h2');
-    h2.textContent = headerText;
+    if(headerText == '<span class="material-symbols-outlined">image</span>'){
+        h2.innerHTML = headerText;
+    }else{
+        h2.textContent = headerText;
+    }
     headerDiv.appendChild(h2);
     musicArtistDiv.appendChild(headerDiv);
     }
     container.appendChild(musicArtistDiv);
 
     for (let i = 0; i < data.length; i++) {
-    let artist_lastname = data[i].artiste_lastname;
-    let name = '';
-    if (artist_lastname == null) {
-        name = data[i].artiste_name;
-    } else {
-        name = data[i].artiste_name + ' ' + artist_lastname;
+        let artist_lastname = data[i].artiste_lastname;
+        let name = '';
+        if (artist_lastname == null) {
+            name = data[i].artiste_name;
+        } else {
+            name = data[i].artiste_name + ' ' + artist_lastname;
+        }
+
+        let musicArtistItemDiv = document.createElement('div');
+        musicArtistItemDiv.className = 'musicArtist';
+
+        let playButton = document.createElement('button');
+        playButton.className = 'btn btn-danger colorRed little center';
+        playButton.id = 'play_album' + data[i].music_id;
+        let playIcon = document.createElement('span');
+        playIcon.className = 'material-symbols-outlined';
+        playIcon.textContent = 'play_circle';
+        playButton.appendChild(playIcon);
+        musicArtistItemDiv.appendChild(playButton);
+
+        playButton.addEventListener('click', function () {
+            let music_id = data[i].music_id;
+            playMusic(music_id);
+        });
+
+        let imgDiv = document.createElement('div');
+        imgDiv.className = 'center';
+        let img = document.createElement('img');
+        img.src = data[i].album_chemin;
+        img.alt = 'image artiste';
+        img.style.maxWidth = '50px';
+        img.style.maxHeight = '50px';
+        imgDiv.appendChild(img);
+        musicArtistItemDiv.appendChild(imgDiv);
+
+        let titleDiv = document.createElement('div');
+        titleDiv.className = 'center';
+        let h2 = document.createElement('h2');
+        h2.textContent = data[i].music_title;
+        titleDiv.appendChild(h2);
+        musicArtistItemDiv.appendChild(titleDiv);
+
+        let artistDiv = document.createElement('div');
+        artistDiv.className = 'center';
+        h2 = document.createElement('h2');
+        h2.textContent = name;
+        artistDiv.appendChild(h2);
+        musicArtistItemDiv.appendChild(artistDiv);
+
+        h2.addEventListener('click', function () {
+            // console.log('test');
+            let artist_id = data[i].artiste_id;
+            getOneArtist(artist_id);
+        });
+
+        let durationDiv = document.createElement('div');
+        durationDiv.className = 'center';
+        h2 = document.createElement('h2');
+        h2.textContent = data[i].music_duration;
+        durationDiv.appendChild(h2);
+        musicArtistItemDiv.appendChild(durationDiv);
+
+        let likeButton = document.createElement('button');
+        likeButton.className = 'btn btn-danger colorRed little center';
+        likeButton.id = 'likeAlbum_' + data[i].music_id;
+        let likeIcon = document.createElement('span');
+        likeIcon.className = 'material-icons';
+        likeIcon.textContent = data[i].isliked == 1 ? 'favorite' : 'favorite_border';
+        likeButton.appendChild(likeIcon);
+        musicArtistItemDiv.appendChild(likeButton);
+
+        likeButton.addEventListener('click', function () {
+            let music_id = data[i].music_id;
+            likeMusic(music_id,'album');
+        });
+
+        let addButton = document.createElement('button');
+        addButton.className = 'btn btn-danger colorRed little center';
+        addButton.id = 'addAlbum_' + data[i].music_id;
+        let addIcon = document.createElement('span');
+        addIcon.className = 'material-icons';
+        addIcon.textContent = 'add';
+        addButton.appendChild(addIcon);
+        addButton.setAttribute('data-bs-toggle', 'modal');
+        addButton.setAttribute('data-bs-target', '#modalAlbum_'+data[i].music_id+'');
+        musicArtistItemDiv.appendChild(addButton);
+
+        addModal(data[i].music_id);
+
+        container.appendChild(musicArtistItemDiv);
+        }
+}
+
+export function displayRechercheMusic(data){
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
+    let rechercheDiv = document.createElement('div');
+    rechercheDiv.classList.add('recherche');
+
+    let rechercheTitleDiv = document.createElement('div');
+    rechercheTitleDiv.classList.add('rechercheTitle');
+
+    let col12Div = document.createElement('div');
+    col12Div.classList.add('col-12');
+    let titleH4 = document.createElement('h4');
+    titleH4.classList.add('text-center');
+    titleH4.textContent = 'Recherche';
+    col12Div.appendChild(titleH4);
+    rechercheTitleDiv.appendChild(col12Div);
+    rechercheDiv.appendChild(rechercheTitleDiv);
+
+    let buttonRechercheDiv = document.createElement('div');
+    buttonRechercheDiv.classList.add('buttonRecherche', 'text-center');
+
+    let buttonMusique = document.createElement('button');
+    buttonMusique.setAttribute('type', 'button');
+    buttonMusique.classList.add('btn', 'btn-danger', 'ecart');
+    buttonMusique.setAttribute('id', 'buttonRecherche');
+    buttonMusique.textContent = 'Musique';
+
+    buttonMusique.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        // console.log(recherche);
+        getSearchMusic(recherche);
+    });
+
+    let buttonAlbum = document.createElement('button');
+    buttonAlbum.setAttribute('type', 'button');
+    buttonAlbum.classList.add('btn', 'btn-danger', 'ecart');
+    buttonAlbum.setAttribute('id', 'buttonRecherche');
+    buttonAlbum.textContent = 'Album';
+
+    buttonAlbum.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchAlbum(recherche);
+    });
+
+    let buttonArtiste = document.createElement('button');
+    buttonArtiste.setAttribute('type', 'button');
+    buttonArtiste.classList.add('btn', 'btn-danger', 'ecart');
+    buttonArtiste.setAttribute('id', 'buttonRecherche');
+    buttonArtiste.textContent = 'Artiste';
+
+    buttonArtiste.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchArtist(recherche);
+    });
+
+    buttonRechercheDiv.appendChild(buttonMusique);
+    buttonRechercheDiv.appendChild(buttonAlbum);
+    buttonRechercheDiv.appendChild(buttonArtiste);
+    rechercheDiv.appendChild(buttonRechercheDiv);
+
+    if(data.length == 0){
+        let col12Div = document.createElement('div');
+        col12Div.classList.add('col-12','marginTop');
+        let titleH4 = document.createElement('h4');
+        titleH4.classList.add('text-center');
+        titleH4.textContent = 'Aucun résultat';
+        col12Div.appendChild(titleH4);
+        rechercheDiv.appendChild(col12Div);
+        container.appendChild(rechercheDiv);
+    }else{
+
+        let musicArDiv = document.createElement('div');
+        musicArDiv.classList.add('musicAr');
+
+        let centerDiv1 = document.createElement('div');
+        centerDiv1.classList.add('center');
+        let h2Center1 = document.createElement('h2');
+        h2Center1.textContent = '#';
+        centerDiv1.appendChild(h2Center1);
+
+        let centerDiv2 = document.createElement('div');
+        centerDiv2.classList.add('center');
+        let spanCenter2 = document.createElement('span');
+        spanCenter2.classList.add('material-symbols-outlined');
+        spanCenter2.textContent = 'image';
+        centerDiv2.appendChild(spanCenter2);
+
+        let centerDiv3 = document.createElement('div');
+        centerDiv3.classList.add('center');
+        let h2Center3 = document.createElement('h2');
+        h2Center3.textContent = 'Titre';
+        centerDiv3.appendChild(h2Center3);
+
+        let centerDiv4 = document.createElement('div');
+        centerDiv4.classList.add('center');
+        let h2Center4 = document.createElement('h2');
+        h2Center4.textContent = 'Artiste';
+        centerDiv4.appendChild(h2Center4);
+
+        let centerDiv5 = document.createElement('div');
+        centerDiv5.classList.add('center');
+        let h2Center5 = document.createElement('h2');
+        h2Center5.textContent = 'Album';
+        centerDiv5.appendChild(h2Center5);
+
+        let centerDiv6 = document.createElement('div');
+        centerDiv6.classList.add('center');
+        let h2Center6 = document.createElement('h2');
+        h2Center6.textContent = 'Durée';
+        centerDiv6.appendChild(h2Center6);
+
+        let centerDiv7 = document.createElement('div');
+        centerDiv7.classList.add('center');
+        let h2Center7 = document.createElement('h2');
+        h2Center7.textContent = 'Like';
+        centerDiv7.appendChild(h2Center7);
+
+        let centerDiv8 = document.createElement('div');
+        centerDiv8.classList.add('center');
+        let h2Center8 = document.createElement('h2');
+        h2Center8.textContent = 'Playlist';
+        centerDiv8.appendChild(h2Center8);
+
+        musicArDiv.appendChild(centerDiv1);
+        musicArDiv.appendChild(centerDiv2);
+        musicArDiv.appendChild(centerDiv3);
+        musicArDiv.appendChild(centerDiv4);
+        musicArDiv.appendChild(centerDiv5);
+        musicArDiv.appendChild(centerDiv6);
+        musicArDiv.appendChild(centerDiv7);
+        musicArDiv.appendChild(centerDiv8);
+
+        rechercheDiv.appendChild(musicArDiv);
+
+        container.appendChild(rechercheDiv);
+
+        for (let i = 0; i < data.length; i++) {
+            let musicArDiv = document.createElement('div');
+            musicArDiv.classList.add('musicAr');
+
+            let centerDiv1 = document.createElement('div');
+            centerDiv1.classList.add('center');
+            let playButton = document.createElement('button');
+            playButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');
+            let playSpan = document.createElement('span');
+            playSpan.classList.add('material-symbols-outlined');
+            playSpan.textContent = 'play_circle';
+            playButton.appendChild(playSpan);
+            centerDiv1.appendChild(playButton);
+
+            playButton.addEventListener('click', function () {
+                let music_id = data[i].music_id;
+                playMusic(music_id);
+            });
+
+            let centerDiv2 = document.createElement('div');
+            centerDiv2.classList.add('center');
+            let imgArtist = document.createElement('img');
+            imgArtist.setAttribute('src', data[i].album_chemin);
+            imgArtist.setAttribute('alt', 'image artiste');
+            imgArtist.style.maxWidth = '50px';
+            imgArtist.style.maxHeight = '50px';
+            centerDiv2.appendChild(imgArtist);
+
+            imgArtist.addEventListener('click', function () {
+                let album_id = data[i].id_album;
+                getOneAlbum(album_id);
+            });
+
+            let centerDiv3 = document.createElement('div');
+            centerDiv3.classList.add('center');
+            let h2Center3 = document.createElement('h2');
+            h2Center3.textContent = data[i].music_title;
+            centerDiv3.appendChild(h2Center3);
+
+            h2Center3.addEventListener('click', function () {
+                let album_id = data[i].id_album;
+                getOneAlbum(album_id);
+            });
+
+            let centerDiv4 = document.createElement('div');
+            centerDiv4.classList.add('center');
+            let artistName = '';
+            if (data[i].artiste_lastname == null) {
+                artistName = data[i].artiste_name;
+            } else {
+                artistName = data[i].artiste_name + ' ' + data[i].artiste_lastname;
+            }
+            let h2Center4 = document.createElement('h2');
+            h2Center4.textContent = artistName;
+            centerDiv4.appendChild(h2Center4);
+
+            h2Center4.addEventListener('click', function () {
+                let artist_id = data[i].artiste_id;
+                getOneArtist(artist_id);
+            });
+
+            let centerDiv5 = document.createElement('div');
+            centerDiv5.classList.add('center');
+            let h2Center5 = document.createElement('h2');
+            h2Center5.textContent = data[i].album_title;
+            centerDiv5.appendChild(h2Center5);
+
+            h2Center5.addEventListener('click', function () {
+                let album_id = data[i].id_album;
+                getOneAlbum(album_id);
+            });
+
+            let centerDiv6 = document.createElement('div');
+            centerDiv6.classList.add('center');
+            let h2Center6 = document.createElement('h2');
+            h2Center6.textContent = data[i].music_duration;
+            centerDiv6.appendChild(h2Center6);
+
+            let centerDiv7 = document.createElement('div');
+            centerDiv7.classList.add('center');
+            let likeButton = document.createElement('button');
+            likeButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');
+            likeButton.id = 'likeRecherche_'+data[i].music_id;
+            let likeSpan = document.createElement('span');
+            if (data[i].isliked == 1) {
+                likeSpan.classList.add('material-icons');
+                likeSpan.textContent = 'favorite';
+            } else {
+                likeSpan.classList.add('material-icons');
+                likeSpan.textContent = 'favorite_border';
+            }
+            likeButton.appendChild(likeSpan);
+            centerDiv7.appendChild(likeButton);
+
+            likeButton.addEventListener('click', function () {
+                let music_id = data[i].music_id;
+                likeMusic(music_id,'recherche');
+            });
+
+
+            let centerDiv8 = document.createElement('div');
+            centerDiv8.classList.add('center');
+
+            let addButton = document.createElement('button');
+            addButton.className = 'btn btn-danger colorRed little center';
+            addButton.id = 'addAlbum_' + data[i].music_id;
+            let addIcon = document.createElement('span');
+            addIcon.className = 'material-icons';
+            addIcon.textContent = 'add';
+            addButton.appendChild(addIcon);
+            addButton.setAttribute('data-bs-toggle', 'modal');
+            addButton.setAttribute('data-bs-target', '#modalAlbum_'+data[i].music_id+'');
+            centerDiv8.appendChild(addButton);
+
+            addModal(data[i].music_id);
+
+            addModal(data[i].music_id);
+
+            musicArDiv.appendChild(centerDiv1);
+            musicArDiv.appendChild(centerDiv2);
+            musicArDiv.appendChild(centerDiv3);
+            musicArDiv.appendChild(centerDiv4);
+            musicArDiv.appendChild(centerDiv5);
+            musicArDiv.appendChild(centerDiv6);
+            musicArDiv.appendChild(centerDiv7);
+            musicArDiv.appendChild(centerDiv8);
+
+            container.appendChild(musicArDiv);
+        }
     }
+}
 
-    let musicArtistItemDiv = document.createElement('div');
-    musicArtistItemDiv.className = 'musicArtist';
+export function displayRechercheArtist(data){
+    console.log(data);
+    let container = document.getElementById('container');
+    container.innerHTML = '';
 
-    let playButton = document.createElement('button');
-    playButton.className = 'btn btn-primary colorRed little center';
-    playButton.id = 'play_album' + data[i].music_id;
-    let playIcon = document.createElement('span');
-    playIcon.className = 'material-icons';
-    playIcon.textContent = 'play_arrow';
-    playButton.appendChild(playIcon);
-    musicArtistItemDiv.appendChild(playButton);
+    let rechercheDiv = document.createElement('div');
+    rechercheDiv.classList.add('recherche');
 
-    playButton.addEventListener('click', function () {
-        let music_id = data[i].music_id;
-        playMusic(music_id);
+    let rechercheTitleDiv = document.createElement('div');
+    rechercheTitleDiv.classList.add('rechercheTitle');
+
+    let col12Div = document.createElement('div');
+    col12Div.classList.add('col-12');
+    let titleH4 = document.createElement('h4');
+    titleH4.classList.add('text-center');
+    titleH4.textContent = 'Recherche';
+    col12Div.appendChild(titleH4);
+    rechercheTitleDiv.appendChild(col12Div);
+    rechercheDiv.appendChild(rechercheTitleDiv);
+
+    let buttonRechercheDiv = document.createElement('div');
+    buttonRechercheDiv.classList.add('buttonRecherche', 'text-center');
+
+    let buttonMusique = document.createElement('button');
+    buttonMusique.setAttribute('type', 'button');
+    buttonMusique.classList.add('btn', 'btn-danger', 'ecart');
+    buttonMusique.setAttribute('id', 'buttonRecherche');
+    buttonMusique.textContent = 'Musique';
+
+    buttonMusique.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        // console.log(recherche);
+        getSearchMusic(recherche);
     });
 
-    let imgDiv = document.createElement('div');
-    imgDiv.className = 'center';
-    let img = document.createElement('img');
-    img.src = data[i].music_chemin;
-    img.alt = 'image artiste';
-    img.style.maxWidth = '50px';
-    img.style.maxHeight = '50px';
-    imgDiv.appendChild(img);
-    musicArtistItemDiv.appendChild(imgDiv);
+    let buttonAlbum = document.createElement('button');
+    buttonAlbum.setAttribute('type', 'button');
+    buttonAlbum.classList.add('btn', 'btn-danger', 'ecart');
+    buttonAlbum.setAttribute('id', 'buttonRecherche');
+    buttonAlbum.textContent = 'Album';
 
-    let titleDiv = document.createElement('div');
-    titleDiv.className = 'center';
-    let h2 = document.createElement('h2');
-    h2.textContent = data[i].music_title;
-    titleDiv.appendChild(h2);
-    musicArtistItemDiv.appendChild(titleDiv);
-
-    let artistDiv = document.createElement('div');
-    artistDiv.className = 'center';
-    h2 = document.createElement('h2');
-    h2.textContent = name;
-    artistDiv.appendChild(h2);
-    musicArtistItemDiv.appendChild(artistDiv);
-
-    h2.addEventListener('click', function () {
-        console.log('test');
-        let artist_id = data[i].artiste_id;
-        getOneArtist(artist_id);
+    buttonAlbum.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchAlbum(recherche);
     });
 
-    let durationDiv = document.createElement('div');
-    durationDiv.className = 'center';
-    h2 = document.createElement('h2');
-    h2.textContent = data[i].music_duration;
-    durationDiv.appendChild(h2);
-    musicArtistItemDiv.appendChild(durationDiv);
+    let buttonArtiste = document.createElement('button');
+    buttonArtiste.setAttribute('type', 'button');
+    buttonArtiste.classList.add('btn', 'btn-danger', 'ecart');
+    buttonArtiste.setAttribute('id', 'buttonRecherche');
+    buttonArtiste.textContent = 'Artiste';
 
-    let likeButton = document.createElement('button');
-    likeButton.className = 'btn btn-primary colorRed little center';
-    likeButton.id = 'likeAlbum_' + data[i].music_id;
-    let likeIcon = document.createElement('span');
-    likeIcon.className = 'material-icons';
-    likeIcon.textContent = data[i].isliked == 1 ? 'favorite' : 'favorite_border';
-    likeButton.appendChild(likeIcon);
-    musicArtistItemDiv.appendChild(likeButton);
-
-    likeButton.addEventListener('click', function () {
-        let music_id = data[i].music_id;
-        likeMusic(music_id,'album');
+    buttonArtiste.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchArtist(recherche);
     });
 
-    let addButton = document.createElement('button');
-    addButton.className = 'btn btn-primary colorRed little center';
-    addButton.id = 'addAlbum_' + data[i].music_id;
-    let addIcon = document.createElement('span');
-    addIcon.className = 'material-icons';
-    addIcon.textContent = 'add';
-    addButton.appendChild(addIcon);
-    addButton.setAttribute('data-bs-toggle', 'modal');
-    addButton.setAttribute('data-bs-target', '#modalAlbum_'+data[i].music_id+'');
-    musicArtistItemDiv.appendChild(addButton);
+    buttonRechercheDiv.appendChild(buttonMusique);
+    buttonRechercheDiv.appendChild(buttonAlbum);
+    buttonRechercheDiv.appendChild(buttonArtiste);
+    rechercheDiv.appendChild(buttonRechercheDiv);
 
-    addModal(data[i].music_id);
+    if(data.length == 0){
+        let col12Div = document.createElement('div');
+        col12Div.classList.add('col-12','marginTop');
+        let titleH4 = document.createElement('h4');
+        titleH4.classList.add('text-center');
+        titleH4.textContent = 'Aucun résultat';
+        col12Div.appendChild(titleH4);
+        rechercheDiv.appendChild(col12Div);
+        container.appendChild(rechercheDiv);
+    }else{
+        for (let i = 0; i < data.length; i++) {
+            let albumDiv = document.createElement('div');
+            albumDiv.classList.add('album');
+            
+            let imgAlbum = document.createElement('img');
+            imgAlbum.setAttribute('src', data[i].artiste_chemin);
+            imgAlbum.setAttribute('alt', 'album');
+            imgAlbum.classList.add('img-fluid');
+            imgAlbum.style.maxWidth = '150px';
+            imgAlbum.style.maxHeight = '150px';
+            albumDiv.appendChild(imgAlbum);
+            
+            let h1Title = document.createElement('h1');
+            let name = '';
+            if (data[i].artiste_lastname != null) {
+                name = data[i].artiste_name + ' ' + data[i].artiste_lastname;
+            } else {
+                name = data[i].artiste_name;
+            }
+            h1Title.textContent = name;
+            albumDiv.appendChild(h1Title);
+            
+            let h3Creation = document.createElement('h3');
+            let bio = '';
+            if (data[i].artiste_bio != null) {
+                bio = data[i].artiste_bio;
+            } else {
+                bio = 'Aucune biographie';
+            }
+            h3Creation.textContent = bio;
+            albumDiv.appendChild(h3Creation);
 
-    container.appendChild(musicArtistItemDiv);
+            let h3Name = document.createElement('h3');
+            h3Name.textContent = 'Type : '+data[i].artiste_type;
+            albumDiv.appendChild(h3Name);
+            
+            
+            let h3Style = document.createElement('h3');
+            h3Style.textContent = 'Album : ' + data[i].albumcount;
+            albumDiv.appendChild(h3Style);
+            
+            rechercheDiv.appendChild(albumDiv);            
+        }
+        container.appendChild(rechercheDiv);
     }
-    
-    
+}
 
+export function displayRechercheAlbum(data){
+    console.log(data);
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
+    let rechercheDiv = document.createElement('div');
+    rechercheDiv.classList.add('recherche');
+
+    let rechercheTitleDiv = document.createElement('div');
+    rechercheTitleDiv.classList.add('rechercheTitle');
+
+    let col12Div = document.createElement('div');
+    col12Div.classList.add('col-12');
+    let titleH4 = document.createElement('h4');
+    titleH4.classList.add('text-center');
+    titleH4.textContent = 'Recherche';
+    col12Div.appendChild(titleH4);
+    rechercheTitleDiv.appendChild(col12Div);
+    rechercheDiv.appendChild(rechercheTitleDiv);
+
+    let buttonRechercheDiv = document.createElement('div');
+    buttonRechercheDiv.classList.add('buttonRecherche', 'text-center');
+
+    let buttonMusique = document.createElement('button');
+    buttonMusique.setAttribute('type', 'button');
+    buttonMusique.classList.add('btn', 'btn-danger', 'ecart');
+    buttonMusique.setAttribute('id', 'buttonRecherche');
+    buttonMusique.textContent = 'Musique';
+
+    buttonMusique.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        // console.log(recherche);
+        getSearchMusic(recherche);
+    });
+
+    let buttonAlbum = document.createElement('button');
+    buttonAlbum.setAttribute('type', 'button');
+    buttonAlbum.classList.add('btn', 'btn-danger', 'ecart');
+    buttonAlbum.setAttribute('id', 'buttonRecherche');
+    buttonAlbum.textContent = 'Album';
+
+    buttonAlbum.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchAlbum(recherche);
+    });
+
+    let buttonArtiste = document.createElement('button');
+    buttonArtiste.setAttribute('type', 'button');
+    buttonArtiste.classList.add('btn', 'btn-danger', 'ecart');
+    buttonArtiste.setAttribute('id', 'buttonRecherche');
+    buttonArtiste.textContent = 'Artiste';
+
+    buttonArtiste.addEventListener('click', function () {
+        let recherche = document.getElementById('rechercheText').value;
+        getSearchArtist(recherche);
+    });
+
+    buttonRechercheDiv.appendChild(buttonMusique);
+    buttonRechercheDiv.appendChild(buttonAlbum);
+    buttonRechercheDiv.appendChild(buttonArtiste);
+    rechercheDiv.appendChild(buttonRechercheDiv);
+
+    if(data.length == 0){
+        let col12Div = document.createElement('div');
+        col12Div.classList.add('col-12','marginTop');
+        let titleH4 = document.createElement('h4');
+        titleH4.classList.add('text-center');
+        titleH4.textContent = 'Aucun résultat';
+        col12Div.appendChild(titleH4);
+        rechercheDiv.appendChild(col12Div);
+        container.appendChild(rechercheDiv);
+    }else{
+        for (let i = 0; i < data.length; i++) {
+            let albumDiv = document.createElement('div');
+            albumDiv.classList.add('album');
+            
+            let imgAlbum = document.createElement('img');
+            imgAlbum.setAttribute('src', data[i].album_chemin);
+            imgAlbum.setAttribute('alt', 'album');
+            imgAlbum.classList.add('img-fluid');
+            imgAlbum.style.maxWidth = '150px';
+            imgAlbum.style.maxHeight = '150px';
+            albumDiv.appendChild(imgAlbum);
+            
+            let h1Title = document.createElement('h1');
+            h1Title.textContent = data[i].album_title;
+            albumDiv.appendChild(h1Title);
+            
+            let h3Name = document.createElement('h3');
+            let name = '';
+            if (data[i].artiste_lastname != null) {
+                name = data[i].artiste_name + ' ' + data[i].artiste_lastname;
+            } else {
+                name = data[i].artiste_name;
+            }
+            h3Name.textContent = name;
+            albumDiv.appendChild(h3Name);
+            
+            let h3Creation = document.createElement('h3');
+            h3Creation.textContent = data[i].album_creation;
+            albumDiv.appendChild(h3Creation);
+            
+            let h3Style = document.createElement('h3');
+            h3Style.textContent = 'Style : ' + data[i].album_style;
+            albumDiv.appendChild(h3Style);
+            
+            rechercheDiv.appendChild(albumDiv);            
+        }
+        container.appendChild(rechercheDiv);
+    }
 }

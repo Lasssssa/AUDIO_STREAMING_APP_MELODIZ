@@ -7,17 +7,13 @@
 
 <!-- 
     - Footbar :
-        - Lecture
-        - Son 
-        - Image music 
-        - Titre music
-        - Artiste
         - Next
         - Previous 
         - Like 
         
     - Playlist :
 
+    - Sécurité inscription modification ect...
  -->
 
 <!DOCTYPE html>
@@ -34,8 +30,66 @@
     
     </head>
     <body>
+
+    <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalPlaylist" tabindex="1" aria-labelledby="modalPlaylist" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">AJOUTER UNE PLAYLIST À VOTRE COMPTE</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Input de type text : -->
+                <div class="mb-3">
+                    <label for="recipient-name" class="col-form-label">Nom de la playlist :</label>
+                    <input type="text" class="form-control" id="namePlaylist">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="addPlaylistButton" class="btn btn-danger colorRed">AJOUTER</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
         <input type="hidden" id="id_perso" value="<?php echo $_SESSION['id'] ?>">
-        <div>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-danger fixed-top">
+            <div class="container">
+                <button class="btn clear" id="reset">
+                    <span class="material-symbols-outlined">
+                        home
+                    </span>
+                </button>
+
+                <div class="col-6 d-flex justify-content-center">
+                    <input type="text" class="form-control" id="rechercheText">
+                    <button class="btn btn-secondary" id="recherche">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                </div>
+
+                <div class="col-3 d-flex justify-content-end">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $_SESSION['prenom'][0] .'.'. $_SESSION['nom'] ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="perso.php">Compte</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="login.php">Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <!-- <div>
             <nav class="navbar bg-danger">
                 <div class="container">
                     <button class="btn clear" id="reset">
@@ -49,16 +103,14 @@
                     <p> </p>
                 </div>
             </nav>
-        </div>
+        </div> -->
 
         <div id="errors">
 
         </div>
 
         <div id="container">
-
-
-                
+                   
         </div>
 
         <div class="footbar bg-danger">
@@ -66,8 +118,8 @@
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <img src="playlist/default.png" id="imgMusic" alt="lecture" class="img-fluid littleMargin" style="max-width:55px;max-height:55px">
                 </div>
-                <div class="col-1 align-items-center justify-content-center">
-                    <div class="littleMargin titleMusic">
+                <div class="col-1 position-relative">
+                    <div class="position-absolute top-50 start-50 translate-middle titleMusic">
                         <h3 id="titleMusic">Aucun Titre</h3>
                         <h5 id="artistMusic">.</h5>
                     </div>
@@ -82,12 +134,12 @@
                     <div class="col-6 text-center">
                     <button type="button" class="btn clear" id="playMusic"><i class="material-icons">play_arrow</i></button><br>
                     <label for="volume">0:00</label>
-                    <input type="range" class="progressBar" style="width: 500px; accent-color: #000000;">
+                    <input type="range" class="progressBar" min="0" max="100" value="0" style="width: 500px; accent-color: #000000;">
                     <label for="volume">1:00</label>
                 </div>
 
                 <div class="col-1 d-flex align-items-center justify-content-center">
-                    <audio class="music" id="musicPlaying" src="musique/gambino.mp3"></audio>
+                    <audio class="music" id="musicPlaying" src="xxx.mp3"></audio>
                     <button type="button" class="btn clear" id="mute"><i class="material-icons">volume_up</i></button>
                 </div>
                 <div class="col-2 d-flex align-items-center justify-content-center">

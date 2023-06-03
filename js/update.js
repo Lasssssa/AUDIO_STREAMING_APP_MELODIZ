@@ -17,6 +17,18 @@ export function likeMusic(idMusic,page) {
     if(page == 'artiste'){
         ajaxRequest('POST','php/request.php',likeMusicArtist,data);
     }
+    if(page == 'recherche'){
+        ajaxRequest('POST','php/request.php',likeMusicRecherche,data);
+    }
+}
+
+function likeMusicRecherche(data) {
+    let buttonModif = document.getElementById('likeRecherche_'+data[0]);
+    if(data[1] == 1){
+        buttonModif.innerHTML = '<i class="material-icons">favorite</i>';
+    }else{
+        buttonModif.innerHTML = '<i class="material-icons">favorite_border</i>';
+    }
 }
 
 function likeMusicArtist(data) {
@@ -68,7 +80,7 @@ function playMusicResponse(data) {
 
     let playMusic = document.getElementById('playMusic');
 
-    imgMusic.src = data[0]['music_chemin'];
+    imgMusic.src = data[0]['album_chemin'];
     titleMusic.textContent = data[0]['music_title'];
     // let artistname = '';
     // if(data[0].artist_lastname == null){
@@ -159,7 +171,7 @@ function addModalDisplay(data){
         let addButton = document.createElement('button');
         addButton.setAttribute('type', 'button');
         addButton.id = 'addPlaylistAlbumModal' + data[0][i]['playlist_id']+data[1];
-        addButton.classList.add('btn', 'btn-primary','colorRed');
+        addButton.classList.add('btn', 'btn-danger','colorRed');
         if(data[0][i]['isinplaylist'] == true){
             addButton.innerHTML = '<i class="material-icons">delete</i>';
         }
@@ -217,4 +229,38 @@ export function deleteMusic(id_music,id_playlist){
 
 function deleteMusicDisplay(data){
     displayOnePlaylist(data);
+}
+
+export function addNewPlaylist(id_user){
+
+}
+export function addModalPLaylist(){
+    let container = document.getElementById('container');
+    let html = '';
+    html += '<div class="modal" id="modalPlaylist" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">';
+    html += '<div class="modal-dialog" role="document">';
+    html += '<div class="modal-content">';
+    html += '<div class="modal-header">';
+    html += '<h5 class="modal-title" id="exampleModalLabel">AJOUTER UNE PLAYLIST</h5>';
+    html += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">';
+    html += '<span aria-hidden="true">&times;</span>';
+    html += '</button>';
+    html += '</div>';
+
+    html += '<div class="modal-body">';
+    html += '<div class="row">';
+    html += '<div class="col-12">';
+    html += '<input type="text" class="form-control" id="playlistName" placeholder="Nom de la playlist">';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="modal-footer">';
+    html += '<button type="button" class="btn btn-danger colorRed" data-bs-dismiss="modal">Ajouter</button>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    container.innerHTML += html;
 }

@@ -77,4 +77,27 @@
             echo json_encode($playlist);
         }
     }
+
+    if(isset($_GET['request']) && $_GET['request']=='getCurrentUser'){
+        $user = dbGetUser($dbConnection, $_GET['idPerso']);
+        echo json_encode($user);
+    }
+
+    if(isset($_GET['request']) && $_GET['request']=='searchMusic'){
+        $music = dbRechercheMusic($dbConnection, $_GET['recherche'],$_GET['idPerso']);
+        echo json_encode($music);
+    }
+    if(isset($_GET['request']) && $_GET['request']=='searchAlbum'){
+        $album = dbRechercheAlbum($dbConnection, $_GET['recherche']);
+        echo json_encode($album);
+    }
+    if(isset($_GET['request']) && $_GET['request']=='searchArtist'){
+        $artist = dbRechercheArtiste($dbConnection, $_GET['recherche']);
+        echo json_encode($artist);
+    }
+    if(isset($_POST['request']) && $_POST['request'] == 'addPlaylist'){
+        $addPlaylist = dbAddPlaylist($dbConnection, $_POST['idPerso'], $_POST['name']);
+        echo json_encode($addPlaylist);
+    }
+    
 ?>

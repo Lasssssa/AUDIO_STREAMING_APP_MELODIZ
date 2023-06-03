@@ -1,5 +1,5 @@
 import { ajaxRequest } from './ajax.js';
-import {getLastEcoute, getOneAlbum} from './get.js';
+import {getLastEcoute, getOneAlbum, getCurrentUser, getSearchMusic} from './get.js';
 import {} from './update.js'
 import {} from './display.js';
 
@@ -46,3 +46,27 @@ reset.addEventListener('click', function() {
     getLastEcoute();
     }
 );
+
+let recherche = document.getElementById('recherche');
+let rechercheText = document.getElementById('rechercheText');
+
+recherche.addEventListener('click', function() {
+    if(rechercheText.value != ""){
+        getSearchMusic(rechercheText.value);
+    }
+    }
+);
+
+let addPlaylistButton = document.getElementById('addPlaylistButton');
+
+addPlaylistButton.addEventListener('click', function() {
+    let id_user = document.getElementById('id_perso').value;
+    let name = document.getElementById('namePlaylist').value;
+    let data = 'request=addPlaylist&name='+name+'&idPerso='+id_user;
+    ajaxRequest('POST', 'php/request.php/playlist', addPlaylistResponse,data);
+    }
+);
+
+function addPlaylistResponse(data){
+    console.log(data);
+}

@@ -48,6 +48,35 @@
             return null;
         }
     }
+
+    function updateAccount($id, $prenom, $nom, $email,$date_naissance, $telephone, $db){
+        try{
+            $query = 'UPDATE utilisateur SET user_firstname = :prenom, user_lastname = :nom, user_mail = :email, user_birth = :date_naissance, user_telephone = :telephone WHERE id = :id';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':prenom', $prenom);
+            $statement->bindParam(':nom', $nom);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':date_naissance', $date_naissance);
+            $statement->bindParam(':telephone', $telephone);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    function updatePassword($id,$passwd,$dbConnection){
+        try{
+            $query = 'UPDATE utilisateur SET user_password = :passwd WHERE id = :id';
+            $statement = $dbConnection->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':passwd', $passwd);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
     function getUser($email, $dbConnection){
         try{
             $query = 'SELECT * FROM utilisateur WHERE user_mail = :email';
@@ -456,4 +485,118 @@
         return $idMusic;
     }
 
+    function dbGetUser($db,$id){
+        try{
+            $query = 'SELECT * FROM utilisateur WHERE id = :id';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function getProfilPicture($lastname_firstname){
+        //Récupérer une image de profil dans le dossier photo_profil
+        $dir = 'photo_profil';
+        $files = scandir($dir);
+        $img = null;
+        foreach($files as $file){
+            if($file != '.' && $file != '..'){
+                $name = explode('.',$file)[0];
+                if($name == $lastname_firstname){
+                    $img = $file;
+                }
+
+            }
+        }
+        return $img;
+    }
+
+    function dbRechercheMusic($db, $recherche,$idPerso){
+        $id_playlist = getLikePlaylist($db,$idPerso);
+        $recherche = '%'.$recherche.'%';
+        try{
+            $query = 'SELECT DISTINCT music.*, album.*, artiste.*, 
+                CASE WHEN music.music_id IN (
+                    SELECT music_id FROM music_contenu WHERE playlist_id = :id_playlistlike
+                ) THEN TRUE ELSE FALSE END AS isliked
+            FROM music
+            JOIN album ON music.id_album = album.id_album
+            JOIN artiste ON album.artiste_id = artiste.artiste_id
+            WHERE LOWER(music.music_title) LIKE LOWER(:recherche)';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':recherche', $recherche);
+            $statement->bindParam(':id_playlistlike', $id_playlist);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbRechercheAlbum($db,$recherche){
+        $recherche = '%'.$recherche.'%';
+        try{
+            $query = 'SELECT DISTINCT album.*, artiste.* FROM album
+            JOIN artiste ON album.artiste_id = artiste.artiste_id
+            WHERE LOWER(album.album_title) LIKE LOWER(:recherche)';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':recherche', $recherche);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbRechercheArtiste($db,$recherche){
+        $recherche = '%'.$recherche.'%';
+        try{
+            $query = 'SELECT DISTINCT artiste.*, 
+            (SELECT COUNT(*) FROM album WHERE album.artiste_id = artiste.artiste_id) AS albumcount
+            FROM artiste
+            WHERE LOWER(artiste.artiste_name) LIKE LOWER(:recherche) OR LOWER(artiste.artiste_lastname) LIKE LOWER(:recherche)';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':recherche', $recherche);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbAddPlaylist($db,$id_user,$name){
+        $dateAdd = date("Y-m-d H:i:s");
+        try{
+            $query = 'SELECT * FROM playlist WHERE id = :id_user AND playlist_name = :name';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_user', $id_user);
+            $statement->bindParam(':name', $name);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if(count($result) == 0){
+            try{
+                $query = 'INSERT INTO playlist (id, playlist_name, playlist_creation,havepicture) VALUES (:id_user, :namePlaylist, :dateAjout,\'false\')';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':id_user', $id_user);
+                $statement->bindParam(':namePlaylist', $name);
+                $statement->bindParam(':dateAjout', $dateAdd);
+                $statement->execute();
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+        }else{
+            return false;
+        }
+        return true;
+    }
 ?>
