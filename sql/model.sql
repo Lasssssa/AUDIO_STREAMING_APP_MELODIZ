@@ -86,8 +86,7 @@ CREATE TABLE public.playlist(
 	playlist_name       VARCHAR (50) NOT NULL ,
 	playlist_creation   DATE  NOT NULL ,
 	id                  INT  NOT NULL  ,
-	havePicture 	   BOOLEAN  NOT NULL ,
-	playlist_picture    VARCHAR (100)  ,
+	playlist_picture    VARCHAR (100) NOT NULL ,
 	CONSTRAINT playlist_PK PRIMARY KEY (playlist_id)
 
 	,CONSTRAINT playlist_utilisateur_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)

@@ -163,11 +163,7 @@ export function displayPlaylist(data) {
             let title = data[i].playlist_name;
             let id = data[i].playlist_id;
             let date = data[i].playlist_creation;
-            let havePicture = data[i].havepicture;
-            let playlist_title = 'default.png';
-            if (havePicture == true) {
-                playlist_title = title + '.png';
-            }
+            let playlist_title = data[i].playlist_picture;
 
             let cardDiv = document.createElement('div');
             cardDiv.classList.add('card','onclick');
@@ -179,7 +175,7 @@ export function displayPlaylist(data) {
 
             let image = document.createElement('img');
             image.classList.add('card-img-top');
-            image.src = 'playlist/' + playlist_title;
+            image.src = playlist_title;
             image.alt = 'Card image cap';
             image.style.maxWidth = '250px';
             image.style.maxHeight = '250px';
@@ -233,11 +229,7 @@ export function displayOnePlaylistResponse(data) {
     imgDiv.classList.add('img');
 
     let img = document.createElement('img');
-    if(data[0].havepicture == false) {
-        img.src = 'playlist/default.png';
-    } else {
-        img.src = 'playlist/' + data[0].playlist_name + '.png';
-    }
+    img.src = data[0].playlist_picture;
     img.style.maxWidth = '250px';
     img.style.maxHeight = '250px';
     imgDiv.appendChild(img);

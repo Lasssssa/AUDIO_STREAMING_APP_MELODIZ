@@ -79,13 +79,13 @@ INSERT INTO music_cree(music_id,artiste_id) VALUES
 (24,5),
 (25,5);
 
-INSERT INTO playlist (playlist_name, playlist_creation,id,havePicture) VALUES
-('Titres Likés','2019-12-12',1,'true'),
-('Playlist 1','2019-12-12',1,'false'),
-('Playlist 2','2019-12-12',1,'false'),
-('Playlist 3','2019-12-12',1,'false'),
-('Playlist 4','2019-12-12',1,'false'),
-('Playlist 5','2019-12-12',1,'false');
+INSERT INTO playlist (playlist_name, playlist_creation,id,playlist_picture) VALUES
+('Titres Likés','2019-12-12',1,'playlist/like.png'),
+('Playlist 1','2019-12-12',1,'playlist/default.png'),
+('Playlist 2','2019-12-12',1,'playlist/default.png'),
+('Playlist 3','2019-12-12',1,'playlist/default.png'),
+('Playlist 4','2019-12-12',1,'playlist/default.png'),
+('Playlist 5','2019-12-12',1,'playlist/default.png');
 
 INSERT INTO music_contenu (music_id,playlist_id,date_ajout) VALUES
 (1,1,'2019-12-12'),
