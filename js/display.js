@@ -9,7 +9,6 @@ export function displayCurrentUser(data){
 
 }
 
-
 export function displayLastEcoute(data) {
     // console.log(data);
     let container = document.getElementById('container');
@@ -219,10 +218,12 @@ export function displayPlaylist(data) {
 
     container.appendChild(lastEcouteDiv);
 }
+
 export function displayOnePlaylist(id_playlist) {
     let id = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=getOnePLaylist&idPlaylist=' + id_playlist+'&idPerso='+id,displayOnePlaylistResponse);
 }
+
 export function displayOnePlaylistResponse(data) {
     let container = document.getElementById('container');
     container.innerHTML = '';
@@ -262,8 +263,12 @@ export function displayOnePlaylistResponse(data) {
 
     let button = document.createElement('button');
     button.classList.add('btn', 'btn-danger', 'colorRed', 'center');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#modalModifyPlaylist');
     button.innerHTML = '<span class="material-symbols-outlined">play_circle</span>&nbsp&nbsp Modifier';
     infoPlaylistDiv.appendChild(button);
+
+    addModalModifyPlaylist(data[0].playlist_id,data[0].playlist_name);
 
     topPlaylistDiv.appendChild(infoPlaylistDiv);
 
@@ -396,6 +401,150 @@ export function displayOnePlaylistResponse(data) {
 
             container.appendChild(musicDiv);
         }
+    }
+}
+
+function addModalModifyPlaylist(id_playlist, playlist_title){
+    let container = document.getElementById('container');
+
+    // Création des éléments du modal
+    let modalDiv = document.createElement('div');
+    modalDiv.classList.add('modal', 'fade');
+    modalDiv.id = 'modalModifyPlaylist';
+    modalDiv.tabIndex = '1';
+    modalDiv.setAttribute('aria-labelledby', 'modalModifyPlaylist');
+    modalDiv.setAttribute('aria-hidden', 'true');
+
+    let modalDialogDiv = document.createElement('div');
+    modalDialogDiv.classList.add('modal-dialog');
+
+    let modalContentDiv = document.createElement('div');
+    modalContentDiv.classList.add('modal-content');
+
+    let modalHeaderDiv = document.createElement('div');
+    modalHeaderDiv.classList.add('modal-header');
+
+    let modalTitle = document.createElement('h1');
+    modalTitle.classList.add('modal-title', 'fs-5');
+    modalTitle.id = 'exampleModalLabel';
+    modalTitle.textContent = 'MODIFIER VOTRE PLAYLIST';
+
+    let closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.classList.add('btn-close');
+    closeButton.setAttribute('data-bs-dismiss', 'modal');
+    closeButton.setAttribute('aria-label', 'Close');
+
+    modalHeaderDiv.appendChild(modalTitle);
+    modalHeaderDiv.appendChild(closeButton);
+
+    let modalBodyDiv = document.createElement('div');
+    modalBodyDiv.classList.add('modal-body');
+
+    let nameLabel = document.createElement('label');
+    nameLabel.classList.add('col-form-label');
+    nameLabel.setAttribute('for', 'namePlaylist');
+    nameLabel.textContent = 'Nom de la playlist :';
+
+    let nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.classList.add('form-control');
+    nameInput.id = 'namePlaylistModal';
+    nameInput.value = playlist_title;
+
+    let imageLabel = document.createElement('label');
+    imageLabel.classList.add('col-form-label');
+    imageLabel.setAttribute('for', 'imagePlaylist');
+    imageLabel.textContent = 'Ajouter votre image :';
+
+    let imageInput = document.createElement('input');
+    imageInput.type = 'file';
+    imageInput.classList.add('form-control');
+    imageInput.id = 'imagePlaylist';
+
+    //Création d'un bouton pour supprimer la playlist
+    let deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.classList.add('btn', 'btn-danger', 'colorRed');
+    deleteButton.style.marginTop = '20px';
+    deleteButton.id = 'deletePlaylist';
+    deleteButton.textContent = 'Supprimer la playlist';
+    
+    deleteButton.addEventListener('click', function() {
+        deletePlaylist(id_playlist);
+    });
+
+    modalBodyDiv.appendChild(nameLabel);
+    modalBodyDiv.appendChild(nameInput);
+    modalBodyDiv.appendChild(imageLabel);
+    modalBodyDiv.appendChild(imageInput);
+    modalBodyDiv.appendChild(deleteButton);
+
+    let modalFooterDiv = document.createElement('div');
+    modalFooterDiv.classList.add('modal-footer');
+
+    let closeButton2 = document.createElement('button');
+    closeButton2.type = 'button';
+    closeButton2.classList.add('btn', 'btn-secondary');
+    closeButton2.setAttribute('data-bs-dismiss', 'modal');
+    closeButton2.textContent = 'Fermer';
+
+    let modifyButton = document.createElement('button');
+    modifyButton.type = 'button';
+    modifyButton.classList.add('btn', 'btn-danger', 'colorRed');
+    modifyButton.id = 'modifyPlaylist';
+    modifyButton.textContent = 'Modifier';
+
+    modifyButton.addEventListener('click', function() {
+        modifyPlaylist(id_playlist);
+    });
+
+
+    modalFooterDiv.appendChild(closeButton2);
+    modalFooterDiv.appendChild(modifyButton);
+
+    modalContentDiv.appendChild(modalHeaderDiv);
+    modalContentDiv.appendChild(modalBodyDiv);
+    modalContentDiv.appendChild(modalFooterDiv);
+
+    modalDialogDiv.appendChild(modalContentDiv);
+
+    modalDiv.appendChild(modalDialogDiv);
+
+    container.appendChild(modalDiv);
+
+}
+
+function modifyPlaylist(id_playlist){
+    let name = document.getElementById('namePlaylistModal').value;
+    let image = document.getElementById('imagePlaylist').files[0];
+    let id_user = document.getElementById('id_perso').value;
+    let request = 'modifyPlaylist';
+
+    let data = 'request='+request+'&id_playlist='+id_playlist+'&name='+name+'&image='+image+'&id_user='+id_user;
+
+    ajaxRequest('POST', 'php/request.php', modifyPlaylistResponse, data);
+}
+
+function modifyPlaylistResponse(data){
+    if(data == 1){
+        window.location.reload();
+    }else{
+        alert('Une erreur est survenue, vous ne pouvez pas modifier votre playlist !');
+    }
+    // console.log(data);
+}
+
+function deletePlaylist(id_playlist){
+    let id_user = document.getElementById('id_perso').value;
+    ajaxRequest('DELETE','php/request.php?request=deletePlaylist&id_playlist='+id_playlist+'&id_user='+id_user,deletePlaylistResponse);
+}
+
+function deletePlaylistResponse(data){
+    if(data == 1){
+        window.location.reload();
+    }else{
+        alert('Une erreur est survenue, vous ne pouvez pas supprimer votre playlist !');
     }
 }
 export function displayOneArtistResponse(data){
@@ -1102,7 +1251,7 @@ export function displayRechercheMusic(data){
 }
 
 export function displayRechercheArtist(data){
-    console.log(data);
+    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -1221,7 +1370,7 @@ export function displayRechercheArtist(data){
 }
 
 export function displayRechercheAlbum(data){
-    console.log(data);
+    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
