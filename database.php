@@ -104,7 +104,8 @@
             return false;
         }else{
             try{
-                $query= 'INSERT INTO utilisateur (user_firstname, user_lastname, user_mail, user_password, user_telephone, creation_date, user_birth) VALUES (:prenom, :nom, :email, :password, :telephone, :creation_date, :birthdate)';
+                $chemin = "photo_profil/profil_defaut.png";
+                $query= 'INSERT INTO utilisateur (user_firstname, user_lastname, user_mail, user_password, user_telephone, creation_date, user_birth,user_chemin) VALUES (:prenom, :nom, :email, :password, :telephone, :creation_date, :birthdate,:chemin)';
                 $statement = $db->prepare($query);
                 $statement->bindParam(':prenom', $prenom);
                 $statement->bindParam(':nom', $nom);
@@ -113,6 +114,7 @@
                 $statement->bindParam(':telephone', $telephone);
                 $statement->bindParam(':creation_date', $creation_date);
                 $statement->bindParam(':birthdate', $birthdate);
+                $statement->bindParam(':chemin', $chemin);
                 $statement->execute();
                 return true;
             }catch(Exception $e){
@@ -180,7 +182,7 @@
     function setUpUser($db,$id,$date){
         try{
             $boolMusic = true;
-            $query = 'INSERT INTO playlist (playlist_name,playlist_creation,id,havepicture) VALUES (\'Titres likés\',:dateToday,:id,:boolMusic)';
+            $query = 'INSERT INTO playlist (playlist_name,playlist_creation,id,havepicture) VALUES (\'Titres Likés\',:dateToday,:id,:boolMusic)';
             $statement = $db->prepare($query);
             $statement->bindParam(':dateToday', $date);
             $statement->bindParam(':id', $id);
@@ -194,7 +196,7 @@
 
     function getLikePlaylist($dbConnection,$idPerso){
         try{
-            $query = 'SELECT * from playlist WHERE id = :idPerso AND playlist_name = \'Titres likés\'';
+            $query = 'SELECT * from playlist WHERE id = :idPerso AND playlist_name = \'Titres Likés\'';
             $statement = $dbConnection->prepare($query);
             $statement->bindParam(':idPerso', $idPerso);
             $statement->execute();
@@ -583,7 +585,7 @@
         }catch(Exception $e){
             echo $e->getMessage();
         }
-        if(count($result) == 0){
+        if(count($result) == 0 && strtolower($name) != 'titres likés' ){
             try{
                 $query = 'INSERT INTO playlist (id, playlist_name, playlist_creation,havepicture) VALUES (:id_user, :namePlaylist, :dateAjout,\'false\')';
                 $statement = $db->prepare($query);
@@ -599,4 +601,84 @@
         }
         return true;
     }
-?>
+
+
+    function dbDeletePlaylist($db,$id_playlist,$id_user){
+        $idplaylistLike = getLikePlaylist($db,$id_user);
+        if($idplaylistLike != $id_playlist){
+            try{
+                $query = 'DELETE FROM playlist WHERE id = :id_user AND playlist_id = :id_playlist';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':id_user', $id_user);
+                $statement->bindParam(':id_playlist', $id_playlist);
+                $statement->execute();
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function dbModifyPlaylist($db,$id_playlist,$name,$user_id){
+        $idLikedPlaylist = getLikePlaylist($db,$user_id);
+        $alreadyExist = alreadyExist($db,$user_id,$name);
+        if($idLikedPlaylist != $id_playlist && $alreadyExist == 0){
+            try{
+                $query = 'UPDATE playlist SET playlist_name = :namePlaylist WHERE playlist_id = :id_playlist';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':namePlaylist', $name);
+                $statement->bindParam(':id_playlist', $id_playlist);
+                $statement->execute();
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function alreadyExist($db,$user_id,$name){
+        try{
+            $query = 'SELECT playlist_id FROM playlist WHERE id = :user_id AND playlist_name = :name';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':user_id', $user_id);
+            $statement->bindParam(':name', $name);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if(count($result) == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    function dbModifyAccount($dbConnection, $name,$lastname,$email,$idPerso,$birthdate,$telephone){
+        try{
+            $query = 'UPDATE utilisateur SET user_firstname = :name, user_lastname = :lastname, user_mail = :email, user_birth = :birthdate, user_telephone = :telephone WHERE id = :idPerso';
+            $statement = $dbConnection->prepare($query);
+            $statement->bindParam(':name', $name);
+            $statement->bindParam(':lastname', $lastname);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':birthdate', $birthdate);
+            $statement->bindParam(':telephone', $telephone);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if($statement->rowCount() == 1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    
+    
+    ?>

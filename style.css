@@ -27,10 +27,11 @@
     width: 180px;
     height: 180px;
 }
+
 #mainAdding{
     display: grid;
-    grid-template-columns: 25% 50% 25%;
-    margin: 50px;
+    grid-template-columns: 10% 80% 10%;
+    margin: 75px;
 }
 #formAdding{
     grid-column-start: 2;

@@ -2,13 +2,14 @@ import { ajaxRequest } from './ajax.js';
 import {getLastEcoute, getOneAlbum, getCurrentUser, getSearchMusic} from './get.js';
 import {} from './update.js'
 import {} from './display.js';
+import {displayAccount} from './perso.js';
 
 getLastEcoute();
   
 
 let playMusic = document.getElementById('playMusic');
 let musicPlaying = document.getElementById('musicPlaying');
-console.log(playMusic);
+// console.log(playMusic);
 
 playMusic.addEventListener('click', function() {
   if(musicPlaying.paused){
@@ -64,6 +65,14 @@ addPlaylistButton.addEventListener('click', function() {
     let name = document.getElementById('namePlaylist').value;
     let data = 'request=addPlaylist&name='+name+'&idPerso='+id_user;
     ajaxRequest('POST', 'php/request.php/playlist', addPlaylistResponse,data);
+    }
+);
+
+let persoAccount = document.getElementById('persoAccount');
+
+persoAccount.addEventListener('click', function() {
+    let id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getUser&idPerso='+id_perso, displayAccount);
     }
 );
 

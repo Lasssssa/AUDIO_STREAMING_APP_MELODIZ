@@ -64,7 +64,7 @@
                     <img src="img/logo.png" alt="logo" width="150px">
                 </div>
                 <div class="titleLogin">
-                    <h1>RED BY SPOTIFY</h1>
+                    <h1>MÉLODIZ</h1>
                 </div>
                 <div id="mainAdding">
                     <div id="formAdding" class="shadow">

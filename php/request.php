@@ -100,4 +100,56 @@
         echo json_encode($addPlaylist);
     }
     
+    if($type == 'DELETE' && isset($_GET['request']) && $_GET['request']=='deletePlaylist'){
+        // echo 'coucuo';
+        $isDeleted = dbDeletePlaylist($dbConnection, $_GET['id_playlist'], $_GET['id_user']);
+        echo json_encode($isDeleted);
+    }
+
+    if (isset($_POST['request']) && $_POST['request'] == 'modifyPlaylist') {
+        $modified = dbModifyPlaylist($dbConnection, $_POST['id_playlist'],$_POST['name'],$_POST['id_user']);
+        echo json_encode($modified);
+    }
+
+    if(isset($_GET['request']) && $_GET['request']=='getUser'){
+        $user = dbGetUser($dbConnection,$_GET['idPerso']);
+        echo json_encode($user);
+    }
+    
+    parse_str(file_get_contents('php://input'), $_PUT);
+    // echo json_encode($_PUT);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['request']) && $_GET['request'] == 'modifyAccount') {
+        $name = $_GET['name'];
+        $lastname = $_GET['lastname'];
+        $email = $_GET['email'];
+        $idPerso = $_GET['idPerso'];
+        $birthdate = $_GET['birthdate'];
+        $telephone = $_GET['telephone'];
+
+        $modified = dbModifyAccount($dbConnection, $name, $lastname, $email, $idPerso, $birthdate, $telephone);
+        echo json_encode($modified);
+    }
+        // $name = $_POST['name'];
+        // $id_playlist = $_POST['id_playlist'];
+        // $id_user = $_POST['id_user'];
+    
+        // if (isset($_FILES['image'])) {
+        //     // Traitement du fichier ici
+        //     $file = $_FILES['image'];
+        //     // ...
+        //     $destinationPath = '../playlist/';
+          
+        //     // Déplacer le fichier vers le dossier de destination
+        //     $targetPath = $destinationPath . $file['name'];
+        //     move_uploaded_file($file['tmp_name'], $targetPath);
+          
+        //     // Répondre avec un message de succès ou autre information
+        //     echo json_encode(true);
+        // }else{
+        //     // Répondre avec un message d'erreur ou autre information
+        //     echo json_encode(false);
+        // }
+        
+
 ?>

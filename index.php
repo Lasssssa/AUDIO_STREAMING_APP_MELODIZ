@@ -35,25 +35,25 @@
 
         <!-- Modal -->
         <div class="modal fade" id="modalPlaylist" tabindex="1" aria-labelledby="modalPlaylist" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">AJOUTER UNE PLAYLIST À VOTRE COMPTE</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Input de type text : -->
-                <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label">Nom de la playlist :</label>
-                    <input type="text" class="form-control" id="namePlaylist">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">AJOUTER UNE PLAYLIST À VOTRE COMPTE</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Input de type text : -->
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Nom de la playlist :</label>
+                        <input type="text" class="form-control" id="namePlaylist">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">FERMER</button>
+                    <button type="button" id="addPlaylistButton" class="btn btn-danger colorRed">AJOUTER</button>
+                </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="addPlaylistButton" class="btn btn-danger colorRed">AJOUTER</button>
-            </div>
-            </div>
-        </div>
         </div>
 
         <input type="hidden" id="id_perso" value="<?php echo $_SESSION['id'] ?>">
@@ -79,7 +79,7 @@
                             <?php echo $_SESSION['prenom'][0] .'.'. $_SESSION['nom'] ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="perso.php">Compte</a></li>
+                            <li><a class="dropdown-item" id="persoAccount" >Compte</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="login.php">Déconnexion</a></li>
                         </ul>
@@ -110,7 +110,10 @@
         </div>
 
         <div id="container">
-                   
+        
+        
+
+
         </div>
 
         <div class="footbar bg-danger">

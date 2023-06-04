@@ -27,6 +27,7 @@ CREATE TABLE public.utilisateur(
 	creation_date    DATE  NOT NULL ,
 	user_telephone   VARCHAR (50) NOT NULL ,
 	user_bio         VARCHAR (250)  ,
+	user_chemin      VARCHAR (100) NOT NULL ,
 	CONSTRAINT utilisateur_PK PRIMARY KEY (id)
 )WITHOUT OIDS;
 
@@ -130,7 +131,7 @@ CREATE TABLE public.music_contenu(
 	CONSTRAINT music_contenu_PK PRIMARY KEY (music_id,playlist_id)
 
 	,CONSTRAINT music_contenu_music_FK FOREIGN KEY (music_id) REFERENCES public.music(music_id)
-	,CONSTRAINT music_contenu_playlist0_FK FOREIGN KEY (playlist_id) REFERENCES public.playlist(playlist_id)
+	,CONSTRAINT music_contenu_playlist0_FK FOREIGN KEY (playlist_id) REFERENCES public.playlist(playlist_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
 

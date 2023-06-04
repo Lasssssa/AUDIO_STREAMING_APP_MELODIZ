@@ -3,7 +3,6 @@ import {displayRechercheArtist, displayRechercheAlbum ,displayLastEcoute, displa
 
 export function getLastEcoute(){
     let id = document.getElementById('id_perso').value;
-    console.log()
     ajaxRequest('GET','php/request.php?request=last_ecoute&id_perso='+id,displayLastEcoute,null);
 }
 

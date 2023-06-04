@@ -7,8 +7,8 @@ DELETE FROM historique;
 DELETE FROM music_cree;
 DELETE FROM music_contenu;
 
-INSERT INTO utilisateur(user_firstname,user_lastname,user_mail,user_password,user_birth,creation_date,user_telephone) 
-VALUES ('Théo','Porodo','theo@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my', '1998-12-12', '2018-12-12', '0606060606');
+INSERT INTO utilisateur(user_firstname,user_lastname,user_mail,user_password,user_birth,creation_date,user_telephone,user_chemin) 
+VALUES ('Théo','Porodo','theo@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my', '1998-12-12', '2018-12-12', '0606060606','photo_profil/profil_defaut.png');
 
 INSERT INTO artiste(artiste_name, artiste_lastname, artiste_type,artiste_chemin) VALUES
 ('Gambi',null,'Chanteur','imgArtist/Gambi.png'),
@@ -80,7 +80,7 @@ INSERT INTO music_cree(music_id,artiste_id) VALUES
 (25,5);
 
 INSERT INTO playlist (playlist_name, playlist_creation,id,havePicture) VALUES
-('Titres likés','2019-12-12',1,'true'),
+('Titres Likés','2019-12-12',1,'true'),
 ('Playlist 1','2019-12-12',1,'false'),
 ('Playlist 2','2019-12-12',1,'false'),
 ('Playlist 3','2019-12-12',1,'false'),

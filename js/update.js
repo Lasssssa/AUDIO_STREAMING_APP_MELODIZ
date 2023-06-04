@@ -32,7 +32,7 @@ function likeMusicRecherche(data) {
 }
 
 function likeMusicArtist(data) {
-    console.log(data);
+    // console.log(data);
     let buttonModif = document.getElementById('likeArtist_'+data[0]);
     if(data[1] == 1){
         buttonModif.innerHTML = '<i class="material-icons">favorite</i>';
@@ -105,7 +105,7 @@ function playMusicResponse(data) {
 
 function updateNbPlay(data) {
     let lastEcoute = document.querySelectorAll('.lastEcoute');
-    console.log(lastEcoute);
+    // console.log(lastEcoute);
     if(lastEcoute.length > 0){
         getLastEcoute();
     }
@@ -116,7 +116,7 @@ export function addModal($id_music){
     ajaxRequest('GET','php/request.php?request=playlistWithMusic&id_perso='+id_user+'&idMusic='+$id_music,addModalDisplay);
 }
 function addModalDisplay(data){
-    console.log(data);
+    // console.log(data);
     let container = document.getElementById('container');
     let modal = document.createElement('div');
     modal.classList.add('modal');
@@ -184,7 +184,7 @@ function addModalDisplay(data){
         addButton.addEventListener('click', function () {
             let id_playlist = data[0][i].playlist_id;
             let id_music = data[1];
-            console.log('add')
+            // console.log('add')
             addPlaylist(id_playlist,id_music,'album');
         });
         row.appendChild(col1);
@@ -204,7 +204,7 @@ function addModalDisplay(data){
 function addPlaylist(id_playlist,id_music,page){
     let id_user = document.getElementById('id_perso').value;
     let data = 'request=addToPlaylist&idPlaylist='+id_playlist+'&idMusic='+id_music+'&idPerso='+id_user;
-    console.log(data);
+    // console.log(data);
     if(page == 'album'){
         ajaxRequest('POST','php/request.php',updatePlaylistAlbum,data);
     }
@@ -212,8 +212,6 @@ function addPlaylist(id_playlist,id_music,page){
 
 function updatePlaylistAlbum(data){
     let buttonModal = document.getElementById('addPlaylistAlbumModal'+data[1]+data[0]);
-    console.log(buttonModal);
-    console.log(data);
     if(data[2]==true){
         buttonModal.innerHTML = '<i class="material-icons">delete</i>';
     }else{
@@ -223,7 +221,7 @@ function updatePlaylistAlbum(data){
 }
 
 export function deleteMusic(id_music,id_playlist){
-    console.log(id_music+' '+id_playlist);
+    // console.log(id_music+' '+id_playlist);
     ajaxRequest('DELETE','php/request.php?request=deleteMusicFromPlaylist&idMusic='+id_music+'&idPlaylist='+id_playlist,deleteMusicDisplay);
 }
 
