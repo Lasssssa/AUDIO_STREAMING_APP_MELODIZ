@@ -40,7 +40,8 @@
         <link href="style.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-    
+        <link href="test.css" rel="stylesheet">
+        <script src="script.js" defer></script>
     </head>
     <body>
 
@@ -95,7 +96,7 @@
                         <ul class="dropdown-menu dropdown-menu-dark">
                             <li><a class="dropdown-item" id="persoAccount" >Compte</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" id="friend">Amis</a></li>
+                            <li><a class="dropdown-item" href="test.php">Amis</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="login.php">Déconnexion</a></li>
                         </ul>
@@ -108,7 +109,78 @@
         </div>
 
         <div id="container">
-        
+            <div class="friend">
+                <div class="partFriend">
+                    <h1>Amis</h>
+
+                    <!-- Demander un ami :  -->
+
+                    <div class="demandeAmi">
+                        <input type="text" id="demandeAmiText" class="form-control" placeholder="Rechercher un ami">
+                        <button class="btn btn-danger" id="demandeAmiButton">Ajouter</button>
+                    </div>
+                </div>
+
+                <div class="partFriend">
+                    <!-- dbGetDemandeAmis($db, $_SESSION['id']); -->
+                    <h2>Demande d'amis en attente :</h2>
+                    <div class="demandeAmi" id="demandeAmi">
+                        <p>Théo Porodo</p>
+                        <button class="btn btn-success" id="acceptAmi"><span class="material-symbols-outlined">done</span></button>
+                        <button class="btn btn-danger" id="refuserAmi"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                </div>
+                
+                <div class="partFriend">
+                    <!-- dbGetDemandeAmisEnvoye($db, $_SESSION['id']); -->
+                    <h2>Demande d'amis envoyées :</h2>
+                    <div class="demandeAmi">
+                        <p>Théo Porodo</p>
+                        <button class="btn btn-danger" id="annuler"><span class="material-symbols-outlined">block</span></button>
+                    </div>
+                </div>
+
+                <div class="partFriend">
+                    <h2>Amis :</h2>
+
+                    <!-- $friends = dbGetFriends($db, $_SESSION['id']); -->
+                    <div class="accepted">
+                        <h2>Théo Porodo</h2>
+                        <button class="btn btn-danger"><span class="material-symbols-outlined">account_circle</span></button>
+                        <button class="btn btn-danger" id="chat"><span class="material-symbols-outlined">chat</span></button>
+                        <button class="btn btn-danger" id="deleteFriend"><span class="material-symbols-outlined">delete</span></button>
+                    </div>
+                </div>
+
+                <h2>Chat :</h2>
+
+                <div class="chat">
+                    <div class="chatMessage">
+                        <form>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">L'historique de vos messages avec : Théo Porodo</span>
+                                </div>
+                            </div>
+                            <textarea class="form-control" rows="10" id="chat-friend" readonly>
+                            </textarea>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1" name="message">Message </span>
+                                </div>
+                                <input type="text" class="form-control" id="text-message" placeholder="Entrez votre message" required autofocus>
+                            </div>
+                            <button type="submit" class="btn btn-danger float-right" id="send-message">
+                            Envoyer
+                            </button>
+                        </form>
+                </div>
+
+            </div>
+
+
+
+
         </div>
 
         <div class="footbar bg-danger">
@@ -131,9 +203,9 @@
                 </div>
                     <div class="col-6 text-center">
                     <button type="button" class="btn clear" id="playMusic"><i class="material-icons">play_arrow</i></button><br>
-                    <label for="volume" id="start">0:00</label>
-                    <input type="range" class="progressBar" id="progressMusic" min="0" max="100" step="1" value="0" style="width: 500px; accent-color: #000000;">
-                    <label for="volume" id="end">1:00</label>
+                    <label for="volume">0:00</label>
+                    <input type="range" class="progressBar" min="0" max="100" value="0" style="width: 500px; accent-color: #000000;">
+                    <label for="volume">1:00</label>
                 </div>
 
                 <div class="col-1 d-flex align-items-center justify-content-center">
@@ -151,7 +223,7 @@
     </body>
 
     
-    <script type="module" src="js/accueil.js"></script>
+    <!-- <script type="module" src="js/accueil.js"></script> -->
 
     
 </html>

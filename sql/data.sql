@@ -8,7 +8,12 @@ DELETE FROM music_cree;
 DELETE FROM music_contenu;
 
 INSERT INTO utilisateur(user_firstname,user_lastname,user_mail,user_password,user_birth,creation_date,user_telephone,user_chemin) 
-VALUES ('Théo','Porodo','theo@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my', '1998-12-12', '2018-12-12', '0606060606','photo_profil/profil_defaut.png');
+VALUES ('Théo','Porodo','theo@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my', '1998-12-12', '2018-12-12', '0606060606','photo_profil/profil_defaut.png'),
+('Vincent','Rocher','vincent.rocher@gmail.com','$2y$10$khpSwpAirYuBAyqICSaJ5eWM81ag9mWhFXNdTJiCNWaf7J/a5Y8my','1995-02-05','2019-05-06','0803050104','photo_profil/profil_defaut.png');
+
+INSERT INTO playlist(id, playlist_name, playlist_creation,playlist_picture) VALUES
+(1,'Titres Likés','2019-12-04','playlist/like.png'),
+(2,'Titres Likés','2020-02-06','playlist/like.png');
 
 INSERT INTO artiste(artiste_name, artiste_lastname, artiste_type,artiste_chemin) VALUES
 ('PNL',null,'Duo','imgArtist/PNL.png'),
@@ -93,7 +98,7 @@ INSERT INTO music(music_title,music_duration,id_album,music_play_chemin) VALUES
 ('Naha','4:45',2,'music/naha.mp3'),
 ('Mira','3:35',2,'music/mira.mp3'),
 ('J''suis QLF','2:45',2,'music/qlf.mp3'),
-('La vie est belle','3:45',2,'la_vie_belle.mp3'),
+('La vie est belle','3:45',2,'music/la_vie_belle.mp3'),
 ('Kratos','5:14',2,'music/Kratos.mp3'),
 ('Sheita','2:14',2,'music/Sheita.mp3'),
 ('Bené','5:10',2,'music/bene.mp3'),

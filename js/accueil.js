@@ -1,5 +1,5 @@
 import { ajaxRequest } from './ajax.js';
-import {getLastEcoute, getOneAlbum, getCurrentUser, getSearchMusic} from './get.js';
+import {getLastEcoute, getOneAlbum, getCurrentUser, getSearchMusic, getSearchAlbum, getSearchArtist, getAccountFriend} from './get.js';
 import {} from './update.js'
 import {} from './display.js';
 import {displayAccount} from './perso.js';
@@ -51,9 +51,21 @@ reset.addEventListener('click', function() {
 let recherche = document.getElementById('recherche');
 let rechercheText = document.getElementById('rechercheText');
 
-recherche.addEventListener('click', function() {
+let choice = document.getElementById('choice');
+
+rechercheText.addEventListener('input', function() {
     if(rechercheText.value != ""){
-        getSearchMusic(rechercheText.value);
+        if(choice.value == "album"){
+            getSearchAlbum(rechercheText.value);
+        }
+        else if(choice.value == "musique"){
+            getSearchMusic(rechercheText.value);
+        }
+        else if(choice.value == "artiste"){
+            getSearchArtist(rechercheText.value);
+        }
+    }else{
+        getLastEcoute();
     }
     }
 );
@@ -76,7 +88,46 @@ persoAccount.addEventListener('click', function() {
     }
 );
 
+let friend = document.getElementById('friend');
+
+friend.addEventListener('click', function() {
+    let id_perso = document.getElementById('id_perso').value;
+    getAccountFriend(id_perso);
+    }
+);
+
+const audio = document.getElementById('musicPlaying');
+const progressBar = document.getElementById('progressMusic');
+
+const startLabel = document.getElementById('start');
+const endLabel = document.getElementById('end');
+
+audio.addEventListener('timeupdate', function() {
+  const currentTime = formatTime(audio.currentTime);
+  const duration = formatTime(audio.duration);
+
+  startLabel.textContent = currentTime;
+  endLabel.textContent = duration;
+});
+
+
+audio.addEventListener('timeupdate', function() {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  progressBar.value = progress;
+});
 
 function addPlaylistResponse(data){
-    // getLastEcoute();
+    getLastEcoute();
 }
+
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${padZero(seconds)}`;
+  }
+  
+  function padZero(number) {
+    return number.toString().padStart(2, '0');
+  }
+
+

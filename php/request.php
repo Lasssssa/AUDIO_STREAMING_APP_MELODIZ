@@ -157,14 +157,11 @@
             echo json_encode(false);
         }
     }
-        // if($goodPassword){
-        //     $modified = dbModifyPassword($dbConnection, $_POST['id'], $_POST['password2']);
-        //     echo json_encode($modified);
-        // }
-        // else{
-        //     echo json_encode(false);
-        // }
 
+    if(isset($_GET['request']) && $_GET['request'] == 'getAccountFriend'){
+        $friend = dbGetUser($dbConnection, $_GET['idPerso']);
+        echo json_encode($friend);
+    }
     
     // $name = $_POST['name'];
         // $id_playlist = $_POST['id_playlist'];

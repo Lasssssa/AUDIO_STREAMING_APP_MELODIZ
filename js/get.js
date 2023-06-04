@@ -1,5 +1,5 @@
 import {ajaxRequest} from "./ajax.js";
-import {displayRechercheArtist, displayRechercheAlbum ,displayLastEcoute, displayPlaylist, displayOneArtistResponse,displayOneAlbumResponse, displayRechercheMusic} from "./display.js";
+import {displayAccountFriend, displayRechercheArtist, displayRechercheAlbum ,displayLastEcoute, displayPlaylist, displayOneArtistResponse,displayOneAlbumResponse, displayRechercheMusic} from "./display.js";
 
 export function getLastEcoute(){
     let id = document.getElementById('id_perso').value;
@@ -36,9 +36,7 @@ export function getSearchArtist(recherche){
     ajaxRequest('GET','php/request.php?request=searchArtist&recherche='+recherche,displayRechercheArtist);
 }
 
-
-
-
-
-// displayOneArtist(1);
+export function getAccountFriend(id){
+    ajaxRequest('GET','php/request.php?request=getAccountFriend&idPerso='+id,displayAccountFriend);
+}
 

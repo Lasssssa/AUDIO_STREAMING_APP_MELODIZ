@@ -455,6 +455,35 @@
         return $result;
     }
 
+    function clearHistory($db, $personId) {
+        // Requête SQL pour compter le nombre de musiques pour la personne donnée
+        $countSql = "SELECT COUNT(*) as total FROM historique WHERE id = :personId";
+        $countStmt = $db->prepare($countSql);
+        $countStmt->bindParam(':personId', $personId);
+        $countStmt->execute();
+        $countResult = $countStmt->fetch(PDO::FETCH_ASSOC);
+    
+        $totalMusics = intval($countResult['total']);
+    
+        if ($totalMusics > 10) {
+            // Requête SQL pour sélectionner la musique la plus ancienne de la personne donnée
+            $sql = "SELECT * FROM historique WHERE id = :personId ORDER BY last_ecoute ASC LIMIT 1";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':personId', $personId);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if ($result) {
+                // Supprimer la musique de la table history
+                $deleteSql = "DELETE FROM historique WHERE music_id = :musicId";
+                $deleteStmt = $db->prepare($deleteSql);
+                $deleteStmt->bindParam(':musicId', $result['music_id']);
+                $deleteStmt->execute();   
+            }
+        }
+    }
+    
+
     function dbUpdateHistory($db, $idMusic, $idPerso) {
         try {
             $query = 'SELECT * FROM historique WHERE music_id = :id_music AND id = :idPerso';
@@ -480,6 +509,8 @@
                 $statement->bindParam(':idPerso', $idPerso);
                 $statement->bindParam(':date_ajout', $date);
                 $statement->execute();
+
+                clearHistory($db, $idPerso);
             }
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -588,11 +619,13 @@
         }
         if(count($result) == 0 && strtolower($name) != 'titres likés' ){
             try{
-                $query = 'INSERT INTO playlist (id, playlist_name, playlist_creation,havepicture) VALUES (:id_user, :namePlaylist, :dateAjout,\'false\')';
+                $picture = 'playlist/default.png';
+                $query = 'INSERT INTO playlist (id, playlist_name, playlist_creation,playlist_picture) VALUES (:id_user, :namePlaylist, :dateAjout,:picture)';
                 $statement = $db->prepare($query);
                 $statement->bindParam(':id_user', $id_user);
                 $statement->bindParam(':namePlaylist', $name);
                 $statement->bindParam(':dateAjout', $dateAdd);
+                $statement->bindParam(':picture', $picture);
                 $statement->execute();
             }catch(Exception $e){
                 echo $e->getMessage();
@@ -719,6 +752,45 @@
             echo $e->getMessage();
         }
         return true;
+    }
+
+    function dbGetDemandeAmis($db,$id){
+        try{
+            $query = 'SELECT * from etre_ami ea JOIN utilisateur u ON u.id = ea.id_user  WHERE ea.id = :id AND isaccept = \'false\'';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbGetDemandeAmisEnvoye($db,$id){
+        try{
+            $query = 'SELECT * from etre_ami ea JOIN utilisateur u ON u.id = ea.id  WHERE ea.id_user = :id AND isaccept = \'false\'';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbGetFriends($db,$id){
+        try{
+            $query = 'SELECT * from etre_ami ea JOIN utilisateur u ON u.id = ea.id_user  WHERE ea.id = :id AND isaccept = \'true\'';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
     }
     
     ?>

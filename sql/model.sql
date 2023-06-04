@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS playlist CASCADE;
 DROP TABLE IF EXISTS historique CASCADE;
 DROP TABLE IF EXISTS music_cree CASCADE;
 DROP TABLE IF EXISTS music_contenu CASCADE;
+DROP TABLE IF EXISTS etre_ami CASCADE;
+DROP TABLE IF EXISTS discuter CASCADE;
 
 ------------------------------------------------------------
 --        Script Postgre 
@@ -132,5 +134,30 @@ CREATE TABLE public.music_contenu(
 	,CONSTRAINT music_contenu_playlist0_FK FOREIGN KEY (playlist_id) REFERENCES public.playlist(playlist_id) ON DELETE CASCADE
 )WITHOUT OIDS;
 
+------------------------------------------------------------
+-- Table: etre_ami
+------------------------------------------------------------
+CREATE TABLE public.etre_ami(
+	id        INT  NOT NULL ,
+	id_User   INT  NOT NULL  ,
+	isAccept  BOOLEAN  NOT NULL ,
+	CONSTRAINT etre_ami_PK PRIMARY KEY (id,id_User)
+
+	,CONSTRAINT etre_ami_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
+	,CONSTRAINT etre_ami_User0_FK FOREIGN KEY (id_User) REFERENCES public.utilisateur(id)
+)WITHOUT OIDS;
 
 
+------------------------------------------------------------
+-- Table: discuter
+------------------------------------------------------------
+CREATE TABLE public.discuter(
+	id                INT  NOT NULL ,
+	id_User           INT  NOT NULL ,
+	date_discussion   DATE  NOT NULL ,
+	message_text              VARCHAR (250) NOT NULL  ,
+	CONSTRAINT discuter_PK PRIMARY KEY (id,id_User)
+
+	,CONSTRAINT discuter_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
+	,CONSTRAINT discuter_User0_FK FOREIGN KEY (id_User) REFERENCES public.utilisateur(id)
+)WITHOUT OIDS;

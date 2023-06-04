@@ -266,3 +266,35 @@ audio{
     /* Background comme body */
     background-color: #F8F3F3;
 }
+
+.friend{
+    margin: 7%;
+}
+
+.demandeAmi{
+    display: flex;
+    flex-direction: row;
+    /* Colum gap : 10px */
+    column-gap: 2%;
+}
+.partFriend{
+    margin:2%;
+}
+
+.partFriend h2{
+    color: #2B2E42;
+}
+.partFriend h1{
+    color: #2B2E42;
+}
+
+.accepted{
+    display: flex;
+    flex-direction: row;
+    column-gap: 2%;
+}
+
+.accepted h2{
+    font-size: 1.2em;
+    color: #2B2E42;
+}

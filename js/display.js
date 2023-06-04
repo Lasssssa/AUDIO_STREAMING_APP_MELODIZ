@@ -1014,6 +1014,8 @@ export function displayRechercheMusic(data){
         let recherche = document.getElementById('rechercheText').value;
         // console.log(recherche);
         getSearchMusic(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'musique';
     });
 
     let buttonAlbum = document.createElement('button');
@@ -1025,6 +1027,8 @@ export function displayRechercheMusic(data){
     buttonAlbum.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchAlbum(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'album';
     });
 
     let buttonArtiste = document.createElement('button');
@@ -1036,6 +1040,8 @@ export function displayRechercheMusic(data){
     buttonArtiste.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchArtist(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'artiste';
     });
 
     buttonRechercheDiv.appendChild(buttonMusique);
@@ -1284,6 +1290,8 @@ export function displayRechercheArtist(data){
         let recherche = document.getElementById('rechercheText').value;
         // console.log(recherche);
         getSearchMusic(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'musique';
     });
 
     let buttonAlbum = document.createElement('button');
@@ -1295,6 +1303,8 @@ export function displayRechercheArtist(data){
     buttonAlbum.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchAlbum(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'album';
     });
 
     let buttonArtiste = document.createElement('button');
@@ -1306,6 +1316,8 @@ export function displayRechercheArtist(data){
     buttonArtiste.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchArtist(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'artiste';
     });
 
     buttonRechercheDiv.appendChild(buttonMusique);
@@ -1413,6 +1425,8 @@ export function displayRechercheAlbum(data){
         let recherche = document.getElementById('rechercheText').value;
         // console.log(recherche);
         getSearchMusic(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'musique';
     });
 
     let buttonAlbum = document.createElement('button');
@@ -1424,6 +1438,8 @@ export function displayRechercheAlbum(data){
     buttonAlbum.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchAlbum(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'album';
     });
 
     let buttonArtiste = document.createElement('button');
@@ -1435,6 +1451,8 @@ export function displayRechercheAlbum(data){
     buttonArtiste.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
         getSearchArtist(recherche);
+        let choice = document.getElementById('choice');
+        choice.value = 'artiste';
     });
 
     buttonRechercheDiv.appendChild(buttonMusique);
@@ -1505,4 +1523,266 @@ export function displayRechercheAlbum(data){
         }
         container.appendChild(rechercheDiv);
     }
+}
+
+export function displayAccountFriend(data){
+    let containerDiv = document.getElementById('container');
+    containerDiv.innerHTML = "";
+
+    // Création de la div friend
+    const friendDiv = document.createElement('div');
+    friendDiv.classList.add('friend');
+    containerDiv.appendChild(friendDiv);
+
+    // Création de la première partie partFriend
+    const partFriendDiv1 = document.createElement('div');
+    partFriendDiv1.classList.add('partFriend');
+    friendDiv.appendChild(partFriendDiv1);
+
+    // Création du titre h1
+    const amisH1 = document.createElement('h1');
+    amisH1.textContent = 'Amis';
+    partFriendDiv1.appendChild(amisH1);
+
+    // Création de la div demandeAmi
+    const demandeAmiDiv = document.createElement('div');
+    demandeAmiDiv.classList.add('demandeAmi');
+    partFriendDiv1.appendChild(demandeAmiDiv);
+
+    // Création de l'entrée de texte demandeAmiText
+    const demandeAmiText = document.createElement('input');
+    demandeAmiText.setAttribute('type', 'text');
+    demandeAmiText.setAttribute('id', 'demandeAmiText');
+    demandeAmiText.classList.add('form-control');
+    demandeAmiText.setAttribute('placeholder', 'Rechercher un ami');
+    demandeAmiDiv.appendChild(demandeAmiText);
+
+    // Création du bouton demandeAmiButton
+    const demandeAmiButton = document.createElement('button');
+    demandeAmiButton.classList.add('btn', 'btn-danger');
+    demandeAmiButton.setAttribute('id', 'demandeAmiButton');
+    demandeAmiButton.textContent = 'Ajouter';
+    demandeAmiDiv.appendChild(demandeAmiButton);
+
+    // Création de la deuxième partie partFriend
+    const partFriendDiv2 = document.createElement('div');
+    partFriendDiv2.classList.add('partFriend');
+    partFriendDiv2.id = 'demandeAmiAttente';
+    friendDiv.appendChild(partFriendDiv2);
+
+
+    // Création du titre h2 pour les demandes en attente
+    const demandesAttenteH2 = document.createElement('h2');
+    demandesAttenteH2.textContent = 'Demande d\'amis en attente :';
+    partFriendDiv2.appendChild(demandesAttenteH2);
+
+    // Création de la div demandeAmi pour une demande en attente spécifique
+
+    //-----------------------------------------------------------------------------------Demande d'ami en attente d'être accepté
+    
+    // const demandeAmiDiv2 = document.createElement('div');
+    // demandeAmiDiv2.classList.add('demandeAmi');
+    // demandeAmiDiv2.setAttribute('id', 'demandeAmi');
+    // partFriendDiv2.appendChild(demandeAmiDiv2);
+
+    // // Création du paragraphe pour le nom de l'ami en attente
+    // const demandeAmiP = document.createElement('p');
+    // demandeAmiP.textContent = 'Théo Porodo';
+    // demandeAmiDiv2.appendChild(demandeAmiP);
+
+    // // Création du bouton acceptAmi avec span
+    // const acceptAmiButton = document.createElement('button');
+    // acceptAmiButton.classList.add('btn', 'btn-success');
+    // acceptAmiButton.setAttribute('id', 'acceptAmi');
+    // demandeAmiDiv2.appendChild(acceptAmiButton);
+
+    // const acceptAmiSpan = document.createElement('span');
+    // acceptAmiSpan.classList.add('material-symbols-outlined');
+    // acceptAmiSpan.textContent = 'done';
+    // acceptAmiButton.appendChild(acceptAmiSpan);
+
+    // // Création du bouton refuserAmi avec span
+    // const refuserAmiButton = document.createElement('button');
+    // refuserAmiButton.classList.add('btn', 'btn-danger');
+    // refuserAmiButton.setAttribute('id', 'refuserAmi');
+    // demandeAmiDiv2.appendChild(refuserAmiButton);
+
+    // const refuserAmiSpan = document.createElement('span');
+    // refuserAmiSpan.classList.add('material-symbols-outlined');
+    // refuserAmiSpan.textContent = 'close';
+    // refuserAmiButton.appendChild(refuserAmiSpan);
+
+    //------------------------------------------------------------------------------------------------------------------------------------
+
+
+    // Création de la troisième partie partFriend
+    const partFriendDiv3 = document.createElement('div');
+    partFriendDiv3.classList.add('partFriend');
+    partFriendDiv3.id = 'demandeAmi';
+    friendDiv.appendChild(partFriendDiv3);
+
+    // Création du titre h2 pour les demandes envoyées
+    const demandesEnvoyeesH2 = document.createElement('h2');
+    demandesEnvoyeesH2.textContent = 'Demande d\'amis envoyées :';
+    partFriendDiv3.appendChild(demandesEnvoyeesH2);
+
+    //-----------------------------------------------------------------------------------Demande d'ami en attente d'être accepté de l'autre côté
+
+    // Création de la div demandeAmi pour une demande envoyée spécifique
+    // const demandeAmiDiv3 = document.createElement('div');
+    // demandeAmiDiv3.classList.add('demandeAmi');
+    // partFriendDiv3.appendChild(demandeAmiDiv3);
+
+    // // Création du paragraphe pour le nom de l'ami envoyé
+    // const demandeAmiP2 = document.createElement('p');
+    // demandeAmiP2.textContent = 'Théo Porodo';
+    // demandeAmiDiv3.appendChild(demandeAmiP2);
+
+    // // Création du bouton annuler avec span
+    // const annulerButton = document.createElement('button');
+    // annulerButton.classList.add('btn', 'btn-danger');
+    // annulerButton.setAttribute('id', 'annuler');
+    // demandeAmiDiv3.appendChild(annulerButton);
+
+    // const annulerSpan = document.createElement('span');
+    // annulerSpan.classList.add('material-symbols-outlined');
+    // annulerSpan.textContent = 'block';
+    // annulerButton.appendChild(annulerSpan);
+
+    //------------------------------------------------------------------------------------------------------------------------------------
+
+    // Création de la quatrième partie partFriend
+    const partFriendDiv4 = document.createElement('div');
+    partFriendDiv4.classList.add('partFriend');
+    friendDiv.appendChild(partFriendDiv4);
+
+    // Création du titre h2 pour les amis
+    const amisH2 = document.createElement('h2');
+    amisH2.textContent = 'Amis :';
+    partFriendDiv4.appendChild(amisH2);
+
+    //-----------------------------------------------------------------------------------Ami accepté
+
+    // Création de la div accepted pour un ami spécifique
+    // const acceptedDiv = document.createElement('div');
+    // acceptedDiv.classList.add('accepted');
+    // partFriendDiv4.appendChild(acceptedDiv);
+
+    // // Création du titre h2 pour le nom de l'ami
+    // const amiH2 = document.createElement('h2');
+    // amiH2.textContent = 'Théo Porodo';
+    // acceptedDiv.appendChild(amiH2);
+
+    // // Création du bouton pour le compte de l'ami avec span
+    // const compteButton = document.createElement('button');
+    // compteButton.classList.add('btn', 'btn-danger');
+    // acceptedDiv.appendChild(compteButton);
+
+    // const compteSpan = document.createElement('span');
+    // compteSpan.classList.add('material-symbols-outlined');
+    // compteSpan.textContent = 'account_circle';
+    // compteButton.appendChild(compteSpan);
+
+    // // Création du bouton chat avec span
+    // const chatButton = document.createElement('button');
+    // chatButton.classList.add('btn', 'btn-danger');
+    // chatButton.setAttribute('id', 'chat');
+    // acceptedDiv.appendChild(chatButton);
+
+    // const chatSpan = document.createElement('span');
+    // chatSpan.classList.add('material-symbols-outlined');
+    // chatSpan.textContent = 'chat';
+    // chatButton.appendChild(chatSpan);
+
+    // // Création du bouton deleteFriend avec span
+    // const deleteFriendButton = document.createElement('button');
+    // deleteFriendButton.classList.add('btn', 'btn-danger');
+    // deleteFriendButton.setAttribute('id', 'deleteFriend');
+    // acceptedDiv.appendChild(deleteFriendButton);
+
+    // const deleteFriendSpan = document.createElement('span');
+    // deleteFriendSpan.classList.add('material-symbols-outlined');
+    // deleteFriendSpan.textContent = 'delete';
+    // deleteFriendButton.appendChild(deleteFriendSpan);
+
+    //------------------------------------------------------------------------------------------------------------------------------------
+
+
+    //-----------------------------------------------------------------------------------Appelé que par le bouton chat
+    // Création du titre h2 pour le chat
+    // const chatH2 = document.createElement('h2');
+    // chatH2.textContent = 'Chat :';
+    // friendDiv.appendChild(chatH2);
+
+    // // Création de la div chat
+    // const chatDiv = document.createElement('div');
+    // chatDiv.classList.add('chat');
+    // friendDiv.appendChild(chatDiv);
+
+    // // Création de la div chatMessage
+    // const chatMessageDiv = document.createElement('div');
+    // chatMessageDiv.classList.add('chatMessage');
+    // chatDiv.appendChild(chatMessageDiv);
+
+    // // Création du formulaire
+    // const chatForm = document.createElement('form');
+    // chatMessageDiv.appendChild(chatForm);
+
+    // // Création du groupe de saisie pour l'historique des messages
+    // const inputGroup1 = document.createElement('div');
+    // inputGroup1.classList.add('input-group', 'mb-3');
+    // chatForm.appendChild(inputGroup1);
+
+    // const inputGroupPrepend1 = document.createElement('div');
+    // inputGroupPrepend1.classList.add('input-group-prepend');
+    // inputGroup1.appendChild(inputGroupPrepend1);
+
+    // const historiqueLabel = document.createElement('span');
+    // historiqueLabel.classList.add('input-group-text');
+    // historiqueLabel.setAttribute('id', 'basic-addon1');
+    // historiqueLabel.textContent = "L'historique de vos messages avec : Théo Porodo";
+    // inputGroupPrepend1.appendChild(historiqueLabel);
+
+    // // Création de la zone de texte pour l'historique des messages
+    // const historiqueTextarea = document.createElement('textarea');
+    // historiqueTextarea.classList.add('form-control');
+    // historiqueTextarea.setAttribute('rows', '10');
+    // historiqueTextarea.setAttribute('id', 'chat-friend');
+    // historiqueTextarea.setAttribute('readonly', true);
+    // chatForm.appendChild(historiqueTextarea);
+
+    // // Création du groupe de saisie pour le message
+    // const inputGroup2 = document.createElement('div');
+    // inputGroup2.classList.add('input-group', 'mb-3');
+    // chatForm.appendChild(inputGroup2);
+
+    // const inputGroupPrepend2 = document.createElement('div');
+    // inputGroupPrepend2.classList.add('input-group-prepend');
+    // inputGroup2.appendChild(inputGroupPrepend2);
+
+    // const messageLabel = document.createElement('span');
+    // messageLabel.classList.add('input-group-text');
+    // messageLabel.setAttribute('id', 'basic-addon1');
+    // messageLabel.setAttribute('name', 'message');
+    // messageLabel.textContent = 'Message';
+    // inputGroupPrepend2.appendChild(messageLabel);
+
+    // // Création de l'entrée de texte pour le message
+    // const messageInput = document.createElement('input');
+    // messageInput.setAttribute('type', 'text');
+    // messageInput.classList.add('form-control');
+    // messageInput.setAttribute('id', 'text-message');
+    // messageInput.setAttribute('placeholder', 'Entrez votre message');
+    // messageInput.setAttribute('required', true);
+    // messageInput.setAttribute('autofocus', true);
+    // inputGroup2.appendChild(messageInput);
+
+    // // Création du bouton d'envoi du message
+    // const sendButton = document.createElement('button');
+    // sendButton.setAttribute('type', 'submit');
+    // sendButton.classList.add('btn', 'btn-danger', 'float-right');
+    // sendButton.setAttribute('id', 'send-message');
+    // sendButton.textContent = 'Envoyer';
+    // chatForm.appendChild(sendButton);
+
 }

@@ -16,6 +16,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
         <script src="script.js" defer></script>
         <link href="styleLoginPage.css" rel="stylesheet">
+        <script src="script.js" defer></script>
     </head>   
     <body>
 
@@ -110,7 +111,7 @@
                                     </span>&nbspMot de passe</h4>
                                     <input type="password" class="form-control" name="password" id="password1">
                                     <div class="form-check form-switch" id="ecarted">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="showPassword1" onchange="togglePassword2()">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="showPassword1" onchange="togglePasswordRe()">
                                         <label class="form-check-label" for="flexSwitchCheckChecked">Afficher votre mot de passe</label>
                                     </div>
                                     <h4><span class="material-symbols-outlined">
@@ -118,7 +119,7 @@
                                     </span>&nbspConfirmation Mot de passe</h4>
                                     <input type="password" class="form-control" id="password2" name="passwordConfirmed">
                                     <div class="form-check form-switch" id="ecarted">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="showPassword2" onchange="togglePassword2()">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="showPassword2" onchange="togglePasswordRe2()">
                                         <label class="form-check-label" for="flexSwitchCheckChecked">Afficher votre mot de passe</label>
                                     </div>
                                     <?php
