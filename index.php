@@ -3,6 +3,23 @@
     if(!isset($_SESSION['identified']) || !$_SESSION['identified']){
         header("Location: login.php");
     }
+    $_SESSION['erreurIdentification'] = false;
+    $_SESSION['erreurCreation'] = false;
+
+    //PHP POUR UPLOAD DES PHOTOS + 2MO
+
+    //CHMOD 755 SUR PHOTO_PROFIL
+    //VERIFIER LE .HTACCESS
+    //a2enmod rewrite
+    //sudo service apache2 restart
+    //AllowOverride All dans le fichier /etc/apache2/ .conf
+    if(isset($_POST['submit_photo'])){
+        require_once("database.php");
+        $chemin = 'photo_profil/'.$_SESSION['nom'].'_'.$_SESSION['prenom'].'.png';
+        move_uploaded_file($_FILES['photo_profil']['tmp_name'], $chemin);
+        $db = dbConnect();
+        changePath($db, $_SESSION['id'], $chemin);
+    }
 ?>
 
 <!-- 
@@ -10,10 +27,6 @@
         - Next
         - Previous 
         - Like 
-        
-    - Playlist :
-
-    - Sécurité inscription modification ect...
  -->
 
 <!DOCTYPE html>
@@ -75,7 +88,7 @@
 
                 <div class="col-3 d-flex justify-content-end">
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle text-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-center" id="nameAccount" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo $_SESSION['prenom'][0] .'.'. $_SESSION['nom'] ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark">

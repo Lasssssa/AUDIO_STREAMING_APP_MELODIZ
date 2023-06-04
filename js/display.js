@@ -3,12 +3,6 @@ import { getPlaylistAccueil, getOneArtist, getOneAlbum,getSearchAlbum ,getSearch
 import { ajaxRequest } from './ajax.js';
 
 
-export function displayCurrentUser(data){
-    let container = document.getElementById('container');
-    container.innerHTML = "";
-
-}
-
 export function displayLastEcoute(data) {
     // console.log(data);
     let container = document.getElementById('container');
@@ -66,6 +60,10 @@ export function displayLastEcoute(data) {
             cardTitle.classList.add('card-title');
             cardTitle.textContent = title;
             cardBodyDiv.appendChild(cardTitle);
+
+            cardTitle.addEventListener('click', function() {
+                getOneAlbum(id_alb);
+            });
 
             let cardText = document.createElement('button');
             cardText.classList.add('card-text','clear');
@@ -283,7 +281,12 @@ export function displayOnePlaylistResponse(data) {
     let headerDiv = document.createElement('div');
     headerDiv.classList.add('center');
     let h2 = document.createElement('h2');
-    h2.textContent = header;
+    if(header == '') {
+        h2.innerHTML = '<span class="material-symbols-outlined">image</span>';
+    }
+    else{
+        h2.textContent = header;
+    }
     headerDiv.appendChild(h2);
     musicDiv.appendChild(headerDiv);
     }
@@ -1333,6 +1336,11 @@ export function displayRechercheArtist(data){
             imgAlbum.style.maxWidth = '150px';
             imgAlbum.style.maxHeight = '150px';
             albumDiv.appendChild(imgAlbum);
+
+            imgAlbum.addEventListener('click', function () {
+                let artiste_id = data[i].artiste_id;
+                getOneArtist(artiste_id);
+            });
             
             let h1Title = document.createElement('h1');
             let name = '';
@@ -1343,6 +1351,11 @@ export function displayRechercheArtist(data){
             }
             h1Title.textContent = name;
             albumDiv.appendChild(h1Title);
+            
+            h1Title.addEventListener('click', function () {
+                let artiste_id = data[i].artiste_id;
+                getOneArtist(artiste_id);
+            });
             
             let h3Creation = document.createElement('h3');
             let bio = '';
@@ -1452,10 +1465,20 @@ export function displayRechercheAlbum(data){
             imgAlbum.style.maxWidth = '150px';
             imgAlbum.style.maxHeight = '150px';
             albumDiv.appendChild(imgAlbum);
+
+            imgAlbum.addEventListener('click', function () {
+                let album_id = data[i].id_album;
+                getOneAlbum(album_id);
+            });
             
             let h1Title = document.createElement('h1');
             h1Title.textContent = data[i].album_title;
             albumDiv.appendChild(h1Title);
+
+            h1Title.addEventListener('click', function () {
+                let album_id = data[i].id_album;
+                getOneAlbum(album_id);
+            });
             
             let h3Name = document.createElement('h3');
             let name = '';
@@ -1466,6 +1489,11 @@ export function displayRechercheAlbum(data){
             }
             h3Name.textContent = name;
             albumDiv.appendChild(h3Name);
+            
+            h3Name.addEventListener('click', function () {
+                let artiste_id = data[i].artiste_id;
+                getOneArtist(artiste_id);
+            });
             
             let h3Creation = document.createElement('h3');
             h3Creation.textContent = data[i].album_creation;

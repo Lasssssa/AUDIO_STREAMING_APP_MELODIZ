@@ -21,7 +21,6 @@
     text-align: center;
     align-items: center;
 }
-
 .pp{
     border-radius: 50%;
     width: 180px;
@@ -258,3 +257,7 @@ audio{
     background-color: #F8F3F3;
   }
   
+  .test{
+    /* Background comme body */
+    background-color: #F8F3F3;
+}

@@ -1,6 +1,7 @@
 <?php 
     session_start();
     $_SESSION['identified'] = false;
+    $_SESSION['erreurIdentification'] = false;
 ?>
 
 <!DOCTYPE html>
@@ -20,10 +21,20 @@
 
         <?php
             if(isset($_POST['envoyer']) && isset($_POST['prenom']) && isset($_POST['nom']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['passwordConfirmed']) && isset($_POST['telephone']) && isset($_POST['naissance'])){
+                $date = date("Y-m-d");
+                $age = date_diff(date_create($_POST['naissance']), date_create($date))->format('%y');
                 if($_POST['password']!= $_POST['passwordConfirmed']){
                     $_SESSION['passwordNotConfirmed'] = true;
                 }
+                else if($age <5 || $age > 100 || strlen($_POST['naissance']) != 10){
+                    $_SESSION['ageNotValid'] = true;
+                }else if(strlen($_POST['telephone']) != 10){
+                    $_SESSION['erreurTelephone'] = true;
+                }
                 else{
+                    $_SESSION['erreurTelephone'] = false;
+                    $_SESSION['ageNotValid'] = false;
+                    $_SESSION['passwordNotConfirmed'] = false;
                     $prenom = $_POST['prenom'];
                     $nom = $_POST['nom'];
                     $email = $_POST['email'];
@@ -112,7 +123,7 @@
                                     </div>
                                     <?php
                                         if(isset($_SESSION['passwordNotConfirmed']) && $_SESSION['passwordNotConfirmed']){
-                                            echo '<div class="alert alert-danger" role="alert">
+                                            echo '<div class="alert alert-danger erreur" role="alert">
                                             Les mots de passe ne correspondent pas
                                             </div>';
                                         }
@@ -129,6 +140,13 @@
                                     <input type="number" class="form-control" name = "telephone">
                                 </div>
                             </div>
+                            <?php
+                                if(isset($_SESSION['erreurTelephone']) && $_SESSION['erreurTelephone']){
+                                    echo '<div class="alert alert-danger erreur" role="alert">
+                                    Votre numéro de téléphone est incorrect
+                                    </div>';
+                                }
+                            ?>
                             <br>
                             <div class="row">
                                 <div class="col">
@@ -137,6 +155,14 @@
                                     <input type="date" class="form-control" name = "naissance">
                                 </div>
                             </div>
+                            <?php
+                                        if(isset($_SESSION['ageNotValid']) && $_SESSION['ageNotValid']){
+                                            echo '<div class="alert alert-danger erreur" role="alert">
+                                            Vous devez avoir entre 5 et 100 ans
+                                            </div>';
+                                        }
+
+                                    ?>
                             <br>
                             <button type="submit" class="btn btn-primary colorRed" name ="envoyer">S'Inscrire</button>
                         </form>
@@ -146,7 +172,7 @@
                         </div>
                         <?php
                         if(isset($_SESSION['alreadyExist']) && $_SESSION['alreadyExist']){
-                            echo '<div class="alert alert-danger" role="alert">
+                            echo '<div class="alert alert-danger erreur" role="alert">
                             Il semblerait que votre compte existe déjà
                             </div>';
                         }

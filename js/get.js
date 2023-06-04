@@ -1,5 +1,5 @@
 import {ajaxRequest} from "./ajax.js";
-import {displayRechercheArtist, displayRechercheAlbum ,displayLastEcoute, displayPlaylist, displayOneArtistResponse,displayOneAlbumResponse, displayCurrentUser, displayRechercheMusic} from "./display.js";
+import {displayRechercheArtist, displayRechercheAlbum ,displayLastEcoute, displayPlaylist, displayOneArtistResponse,displayOneAlbumResponse, displayRechercheMusic} from "./display.js";
 
 export function getLastEcoute(){
     let id = document.getElementById('id_perso').value;

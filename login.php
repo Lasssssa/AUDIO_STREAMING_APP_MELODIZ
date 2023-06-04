@@ -2,8 +2,6 @@
     session_start();
     $_SESSION['identified'] = false;
     $_SESSION['alreadyExist'] = false;
-    $_SESSION['passwordNotConfirmed'] = false;
-
 ?>
 
 <!DOCTYPE html>
@@ -88,6 +86,14 @@
                     <div class="lien">
                         <a href="register.php">Pas encore inscrit ?</a>
                     </div>
+
+                    <?php
+                        if(isset($_SESSION['erreurIdentification']) && $_SESSION['erreurIdentification']){
+                            echo '<div class="alert alert-danger erreur" role="alert">
+                            Erreur d\'authentification, veuillez réessayer.
+                            </div>';
+                        }
+                        ?>
                 </div>
             </div>
             <div class="leftLogin">

@@ -1,4 +1,6 @@
 <?php
+
+    session_start(); 
     // ini_set('display_errors', 1);
     // error_reporting(E_ALL);
     require_once("../database.php");
@@ -127,10 +129,45 @@
         $birthdate = $_GET['birthdate'];
         $telephone = $_GET['telephone'];
 
-        $modified = dbModifyAccount($dbConnection, $name, $lastname, $email, $idPerso, $birthdate, $telephone);
-        echo json_encode($modified);
+        $age = date_diff(date_create($birthdate), date_create('today'))->y;
+        if($name == '' || $lastname == '' || $email == '' || $idPerso == '' || $birthdate == '' || $telephone == '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($telephone) != 10 || strlen($birthdate) != 10 || $age < 5 || $age > 100 ){
+            echo json_encode([false,[]]);
+        }else{
+            $modified = dbModifyAccount($dbConnection, $name, $lastname, $email, $idPerso, $birthdate, $telephone);
+            echo json_encode([$modified,['user_firstname'=>$name,'user_lastname'=>$lastname]]);
+            $user = getUser($email,$dbConnection);
+            $_SESSION['email'] = $user['user_mail'];
+            $_SESSION['nom'] = $user['user_lastname'];
+            $_SESSION['prenom'] = $user['user_firstname'];
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['telephone'] = $user['user_telephone'];
+            $_SESSION['naissance'] = $user['user_birth'];
+            $_SESSION['creation'] = $user['creation_date'];
+            $_SESSION['bio'] = $user['user_bio'];
+        }
     }
-        // $name = $_POST['name'];
+
+    if(isset($_POST['request']) && $_POST['request'] == 'modifyPassword'){
+        $hash = dbGetPassword($dbConnection, $_POST['id']);
+        $goodPassword = password_verify($_POST['password1'], $hash);
+        if($goodPassword){
+            $modified = dbModifyPassword($dbConnection, $_POST['id'], password_hash($_POST['password2'], PASSWORD_DEFAULT));
+            echo json_encode($modified);
+        }
+        else{
+            echo json_encode(false);
+        }
+    }
+        // if($goodPassword){
+        //     $modified = dbModifyPassword($dbConnection, $_POST['id'], $_POST['password2']);
+        //     echo json_encode($modified);
+        // }
+        // else{
+        //     echo json_encode(false);
+        // }
+
+    
+    // $name = $_POST['name'];
         // $id_playlist = $_POST['id_playlist'];
         // $id_user = $_POST['id_user'];
     

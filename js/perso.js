@@ -2,7 +2,21 @@
 import { ajaxRequest } from "./ajax.js";
 
 
+function calculateAge(dateOfBirth) {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+  
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+  
+    return age;
+}
+
 export function displayAccount(data){
+    console.log(data);
     let container = document.getElementById('container');
 
     container.innerHTML = "";
@@ -27,7 +41,7 @@ export function displayAccount(data){
     ppV2Div.classList.add('ppV2');
 
     let ppImg = document.createElement('img');
-    ppImg.src = 'photo_profil/profil_defaut.png';
+    ppImg.src = data[0]['user_chemin'];
     ppImg.classList.add('pp');
     ppImg.alt = 'photo de profil';
 
@@ -40,7 +54,7 @@ export function displayAccount(data){
     h5Import.textContent = 'Importer votre photo de profil';
 
     let formImport = document.createElement('form');
-    formImport.action = 'perso.php';
+    formImport.action = 'index.php';
     formImport.method = 'post';
     formImport.enctype = 'multipart/form-data';
 
@@ -79,7 +93,7 @@ export function displayAccount(data){
     inputPrenom.id = 'nameForm';
     inputPrenom.name = 'prenom';
     inputPrenom.type = 'text';
-    inputPrenom.value = 'Théo';
+    inputPrenom.value = data[0]['user_firstname'];
 
     col1Div.appendChild(h4Prenom);
     col1Div.appendChild(inputPrenom);
@@ -95,7 +109,7 @@ export function displayAccount(data){
     inputNom.id = 'lastnameForm';
     inputNom.name = 'nom';
     inputNom.type = 'text';
-    inputNom.value = 'Porodo';
+    inputNom.value = data[0]['user_lastname'];
 
     col2Div.appendChild(h4Nom);
     col2Div.appendChild(inputNom);
@@ -117,7 +131,7 @@ export function displayAccount(data){
     inputDateNaissance.id = 'birthdateForm';
     inputDateNaissance.name = 'date_naissance';
     inputDateNaissance.type = 'date';
-    inputDateNaissance.value = '1998-05-02';
+    inputDateNaissance.value = data[0]['user_birth'];
 
     col3Div.appendChild(h4DateNaissance);
     col3Div.appendChild(inputDateNaissance);
@@ -131,7 +145,8 @@ export function displayAccount(data){
     let inputAge = document.createElement('input');
     inputAge.classList.add('form-control');
     inputAge.type = 'text';
-    inputAge.value = '45';
+    let age = calculateAge(data[0]['user_birth']);
+    inputAge.value = age;
     inputAge.setAttribute('aria-label', 'Disabled input example');
     inputAge.disabled = true;
 
@@ -154,8 +169,8 @@ export function displayAccount(data){
     inputTelephone.classList.add('form-control');
     inputTelephone.id = 'telephoneForm';
     inputTelephone.name = 'telephone';
-    inputTelephone.type = 'text';
-    inputTelephone.value = '0781908419';
+    inputTelephone.type = 'number';
+    inputTelephone.value = data[0]['user_telephone'];
 
     col5Div.appendChild(h4Telephone);
     col5Div.appendChild(inputTelephone);
@@ -172,8 +187,8 @@ export function displayAccount(data){
     inputEmail.classList.add('form-control');
     inputEmail.id = 'emailForm';
     inputEmail.name = 'email';
-    inputEmail.type = 'text';
-    inputEmail.value = 'theo@gmail.com';
+    inputEmail.type = 'email';
+    inputEmail.value = data[0]['user_mail'];
 
     formGroup1.appendChild(h4Email);
     formGroup1.appendChild(inputEmail);
@@ -202,6 +217,8 @@ export function displayAccount(data){
     modifyAccountButton.id = 'modifyAccount';
     modifyAccountButton.name = 'submit_account';
     modifyAccountButton.textContent = 'Modifier';
+    modifyAccountButton.style.marginTop = '20px';
+    
 
     centerDiv.appendChild(modifyAccountButton);
 
@@ -212,7 +229,7 @@ export function displayAccount(data){
     accordionDiv.id = 'accordionPanelsStayOpenExample';
 
     let accordionItemDiv = document.createElement('div');
-    accordionItemDiv.classList.add('accordion-item');
+    accordionItemDiv.classList.add('accordion-item','test');
 
     let accordionHeader = document.createElement('h2');
     accordionHeader.classList.add('accordion-header');
@@ -237,7 +254,7 @@ export function displayAccount(data){
     accordionBodyDiv.classList.add('accordion-body');
 
     let formPassword = document.createElement('form');
-    formPassword.action = 'infoEnseignant.php';
+    formPassword.action = 'index.php';
     formPassword.method = 'post';
 
     let formGroup3 = document.createElement('div');
@@ -269,10 +286,26 @@ export function displayAccount(data){
     let brElement2 = document.createElement('br');
 
     let submitPasswordButton = document.createElement('button');
-    submitPasswordButton.type = 'submit';
-    submitPasswordButton.classList.add('btn', 'btn-primary', 'coloredV2');
+    submitPasswordButton.classList.add('btn', 'btn-danger', 'colorRed');
     submitPasswordButton.name = 'submit_password';
     submitPasswordButton.textContent = 'Modifier';
+
+    submitPasswordButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        let password1 = document.getElementById('password5').value;
+        let password2 = document.getElementById('password2').value;
+        if (password1 == '' || password2 == '') {
+            alert('Veuillez remplir tous les champs');
+        }
+        else {
+            let requete = 'request=modifyPassword&password1='+password1+'&password2='+password2+'&id='+data[0]['id'];
+            ajaxRequest('POST','php/request.php',displayModifyPassword,requete);
+        }
+    });
+    let errorForm = document.createElement('div');
+    errorForm.id = 'errorForm';
+
+    formPassword.appendChild(errorForm);
 
     formPassword.appendChild(formGroup3);
     formPassword.appendChild(brElement2);
@@ -315,7 +348,7 @@ export function displayAccount(data){
         let name = document.getElementById('nameForm').value;
         let lastname = document.getElementById('lastnameForm').value;
         let email = document.getElementById('emailForm').value;
-        let id_user = document.getElementById('id_user').value;
+        let id_user = document.getElementById('id_perso').value;
         let birthdate = document.getElementById('birthdateForm').value;
         let telephone = document.getElementById('telephoneForm').value;
         data = 'request=modifyAccount&name='+name+'&lastname='+lastname+'&email='+email+'&idPerso='+id_user+'&birthdate='+birthdate+'&telephone='+telephone;
@@ -325,7 +358,31 @@ export function displayAccount(data){
 
 }
 
+function displayModifyPassword(data){
+    let errorForm = document.getElementById('errorForm');
+    errorForm.innerHTML = '';
+    if(data == true){    
+        let divSucess = document.createElement('div');
+        divSucess.classList.add('alert', 'alert-success');
+        divSucess.textContent = 'Mot de passe modifié avec succès';
+        errorForm.appendChild(divSucess);
+    }else{
+        let divError = document.createElement('div');
+        divError.classList.add('alert', 'alert-danger');
+        divError.textContent = 'Erreur lors de la modification du mot de passe';
+        errorForm.appendChild(divError);
+    }
+}
+
 
 function displayModifyAccount(data){
-    console.log(data);
+    let id_perso = document.getElementById('id_perso').value;
+    if(data[0] == true){
+        ajaxRequest('GET', 'php/request.php?request=getUser&idPerso='+id_perso, displayAccount);
+        let nameAccount = document.getElementById('nameAccount');
+        nameAccount.innerHTML = data[1]['user_firstname'][0]+' '+data[1]['user_lastname'];
+    }else{
+        alert('Erreur lors de la modification');
+        ajaxRequest('GET', 'php/request.php?request=getUser&idPerso='+id_perso, displayAccount);
+    }
 }

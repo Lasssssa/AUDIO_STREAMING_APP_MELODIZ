@@ -19,6 +19,11 @@ body {
     height: 100vh; 
     box-sizing: border-box;
 }
+
+.erreur{
+    margin-top:3%;
+    text-align: center;
+}
 .container{
     display: grid;
     grid-template-columns: 1fr 3fr 1fr;

@@ -76,6 +76,7 @@ persoAccount.addEventListener('click', function() {
     }
 );
 
+
 function addPlaylistResponse(data){
-    console.log(data);
+    // getLastEcoute();
 }

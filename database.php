@@ -77,6 +77,7 @@
             echo $e->getMessage();
         }
     }
+
     function getUser($email, $dbConnection){
         try{
             $query = 'SELECT * FROM utilisateur WHERE user_mail = :email';
@@ -123,6 +124,7 @@
             }
         }
     }
+
     function dbGetLastEcoute($db,$id){
         try{
             $id_PlaylistLike = getLikePlaylist($db,$id);
@@ -151,7 +153,6 @@
         return $result;
     }
     
-
     function dbGetMusicInfo($db,$id_music){
         try{
             $query = 'SELECT * FROM music m JOIN album a ON m.id_album = a.id_album JOIN artiste ar ON a.artiste_id = ar.artiste_id WHERE m.music_id = :id_music';
@@ -602,7 +603,6 @@
         return true;
     }
 
-
     function dbDeletePlaylist($db,$id_playlist,$id_user){
         $idplaylistLike = getLikePlaylist($db,$id_user);
         if($idplaylistLike != $id_playlist){
@@ -677,8 +677,48 @@
         }else{
             return false;
         }
-
     }
-    
+
+    function dbGetPassword($db,$id){
+        try{
+            $query = 'SELECT user_password FROM utilisateur WHERE id = :id';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result[0]['user_password'];
+    }
+
+    function dbModifyPassword($db,$id,$passwd){
+        try{
+            $query = 'UPDATE utilisateur SET user_password = :passwd WHERE id = :id';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':passwd', $passwd);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return true;
+    }
+
+    function changePath($db, $id,$path){
+        try{
+            $query = 'UPDATE utilisateur SET user_chemin = :pathPicture WHERE id = :id';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':pathPicture', $path);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return true;
+    }
     
     ?>
