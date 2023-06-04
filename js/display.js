@@ -555,6 +555,10 @@ export function displayOneArtistResponse(data){
         name = data[0].artiste_name + ' ' + data[0].artiste_lastname;
     }
 
+    let artistDiv = document.createElement('div');
+    artistDiv.classList.add('artist');
+
+
     let topPlaylistDiv = document.createElement('div');
     topPlaylistDiv.classList.add('topPlaylist');
 
@@ -580,7 +584,7 @@ export function displayOneArtistResponse(data){
     infoPlaylistDiv.appendChild(h2);
 
     topPlaylistDiv.appendChild(infoPlaylistDiv);
-    container.appendChild(topPlaylistDiv);
+    artistDiv.appendChild(topPlaylistDiv);
 
     let allDiv = document.createElement('div');
     allDiv.classList.add('all');
@@ -588,7 +592,7 @@ export function displayOneArtistResponse(data){
     let h1All = document.createElement('h1');
     h1All.textContent = "TOP 3 des musiques les plus écoutées";
     allDiv.appendChild(h1All);
-    container.appendChild(allDiv);
+    artistDiv.appendChild(allDiv);
     
     let musicArtistDiv = document.createElement('div');
     musicArtistDiv.classList.add('musicArtist');
@@ -598,7 +602,7 @@ export function displayOneArtistResponse(data){
     divTOP3.classList.add('top3');
     divTOP3.id = 'top3';
 
-    container.appendChild(divTOP3);
+    artistDiv.appendChild(divTOP3);
 
     ajaxRequest('GET','php/request.php?request=getTop3&idArtist='+id,displayOneArtistResponse2);
 
@@ -608,7 +612,7 @@ export function displayOneArtistResponse(data){
     let h1Album = document.createElement('h1');
     h1Album.textContent = "Albums";
     albumPartDiv.appendChild(h1Album);
-    container.appendChild(albumPartDiv);
+    artistDiv.appendChild(albumPartDiv);
 
     let sliderTestDiv = document.createElement('div');
     sliderTestDiv.classList.add('d-flex', 'flex-row', 'sliderTest');
@@ -655,7 +659,9 @@ export function displayOneArtistResponse(data){
         sliderTestDiv.appendChild(cardDiv);
     }
 
-    container.appendChild(sliderTestDiv);
+    artistDiv.appendChild(sliderTestDiv);
+
+    container.appendChild(artistDiv);
 }
 
 export function displayOneArtistResponse2(data){

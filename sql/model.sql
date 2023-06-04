@@ -67,9 +67,8 @@ CREATE TABLE public.album(
 ------------------------------------------------------------
 CREATE TABLE public.music(
 	music_id         SERIAL NOT NULL ,
-	id_deezer        VARCHAR (50) NOT NULL ,
 	music_title      VARCHAR (50) NOT NULL ,
-	music_duration   FLOAT  NOT NULL ,
+	music_duration   TIME  NOT NULL ,
 	id_album         INT  NOT NULL  ,
 	music_play_chemin  VARCHAR (100) NOT NULL ,
 	CONSTRAINT music_PK PRIMARY KEY (music_id)

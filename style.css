@@ -27,6 +27,11 @@
     height: 180px;
 }
 
+.artist{
+    margin-left:3%;
+    margin-right:3%;
+}
+
 #mainAdding{
     display: grid;
     grid-template-columns: 10% 80% 10%;

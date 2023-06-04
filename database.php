@@ -182,12 +182,12 @@
 
     function setUpUser($db,$id,$date){
         try{
-            $boolMusic = true;
-            $query = 'INSERT INTO playlist (playlist_name,playlist_creation,id,havepicture) VALUES (\'Titres Likés\',:dateToday,:id,:boolMusic)';
+            $query = 'INSERT INTO playlist (playlist_name,playlist_creation,id,playlist_picture) VALUES (\'Titres Likés\',:dateToday,:id,:chemin)';
             $statement = $db->prepare($query);
             $statement->bindParam(':dateToday', $date);
             $statement->bindParam(':id', $id);
-            $statement->bindParam(':boolMusic', $boolMusic);
+            $chemin = "playlist/like.png";
+            $statement->bindParam(':chemin', $chemin);
             $statement->execute();
         }
         catch(Exception $e){

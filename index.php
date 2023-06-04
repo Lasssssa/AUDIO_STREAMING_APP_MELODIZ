@@ -100,33 +100,12 @@
                 </div>
             </div>
         </nav>
-
-
-        <!-- <div>
-            <nav class="navbar bg-danger">
-                <div class="container">
-                    <button class="btn clear" id="reset">
-                        <span class="material-symbols-outlined">
-                            home
-                        </span>
-                    </button>
-                    <div class="row">
-                        <div class="col-12"><h4 class="navbar-brand text-center">Accueil</h4></div>
-                    </div>
-                    <p> </p>
-                </div>
-            </nav>
-        </div> -->
-
         <div id="errors">
 
         </div>
 
         <div id="container">
         
-        
-
-
         </div>
 
         <div class="footbar bg-danger">

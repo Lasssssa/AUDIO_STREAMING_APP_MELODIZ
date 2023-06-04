@@ -13,7 +13,6 @@
     // $request = explode('/', $request);
     // $requestRessource = array_shift($request);
 
-
     if(isset($_GET['request']) && $_GET['request'] == 'last_ecoute'){
         $last_ecoute = dbGetLastEcoute($dbConnection, $_GET['id_perso']);
         echo json_encode($last_ecoute);
