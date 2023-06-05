@@ -109,6 +109,10 @@
 
         <div id="container">
         
+            <div class="friendAccount">
+                 
+            </div>
+
         </div>
 
         <div class="footbar bg-danger">
@@ -116,10 +120,9 @@
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <img src="playlist/default.png" id="imgMusic" alt="lecture" class="img-fluid littleMargin" style="max-width:55px;max-height:55px">
                 </div>
-                <div class="col-1 position-relative">
-                    <div class="position-absolute top-50 start-50 translate-middle titleMusic">
+                <div class="col-2">
+                    <div class="titleMusic">
                         <h3 id="titleMusic">Aucun Titre</h3>
-                        <h5 id="artistMusic">.</h5>
                     </div>
                 </div>
                 <div class="col-1 position-relative">
@@ -129,7 +132,7 @@
                         </span>
                     </button>
                 </div>
-                    <div class="col-6 text-center">
+                    <div class="col-5 text-center">
                     <button type="button" class="btn clear" id="playMusic"><i class="material-icons">play_arrow</i></button><br>
                     <label for="volume" id="start">0:00</label>
                     <input type="range" class="progressBar" id="progressMusic" min="0" max="100" step="1" value="0" style="width: 500px; accent-color: #000000;">
