@@ -996,4 +996,18 @@
         return true;
     }
 
+    function changePathPlaylist($db,$id_playlist,$chemin){
+        try{
+            $query = 'UPDATE playlist SET playlist_picture = :chemin WHERE playlist_id = :id_playlist';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_playlist', $id_playlist);
+            $statement->bindParam(':chemin', $chemin);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return true;
+    }
+
     ?>

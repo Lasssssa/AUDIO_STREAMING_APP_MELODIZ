@@ -447,15 +447,46 @@ function addModalModifyPlaylist(id_playlist, playlist_title){
     nameInput.id = 'namePlaylistModal';
     nameInput.value = playlist_title;
 
+
+    //MODAL : 
+    let form = document.createElement('form');
+    form.classList.add('row', 'g-3');
+    form.method = 'POST';
+    form.action = 'index.php';
+    
     let imageLabel = document.createElement('label');
     imageLabel.classList.add('col-form-label');
     imageLabel.setAttribute('for', 'imagePlaylist');
     imageLabel.textContent = 'Ajouter votre image :';
-
+    
+    form.appendChild(imageLabel);
+    
     let imageInput = document.createElement('input');
     imageInput.type = 'file';
     imageInput.classList.add('form-control');
     imageInput.id = 'imagePlaylist';
+    imageInput.name = 'photo_playlist';
+    
+    form.appendChild(imageInput);
+    
+    let inputHidden = document.createElement('input');
+    inputHidden.type = 'hidden';
+    inputHidden.name = 'id_playlist';
+    inputHidden.value = id_playlist;
+    
+    form.appendChild(inputHidden);
+    
+    // let imageButton = document.createElement('button');
+    // imageButton.type = 'submit';
+    // imageButton.name = 'submit_playlist';
+    // imageButton.classList.add('btn', 'btn-danger', 'colorRed');
+    // imageButton.id = 'submit_playlist';
+    // imageButton.textContent = 'Ajouter l\'image';
+    
+    // form.appendChild(imageButton);
+    
+    
+
 
     //Création d'un bouton pour supprimer la playlist
     let deleteButton = document.createElement('button');
@@ -471,8 +502,7 @@ function addModalModifyPlaylist(id_playlist, playlist_title){
 
     modalBodyDiv.appendChild(nameLabel);
     modalBodyDiv.appendChild(nameInput);
-    modalBodyDiv.appendChild(imageLabel);
-    modalBodyDiv.appendChild(imageInput);
+    modalBodyDiv.appendChild(form);
     modalBodyDiv.appendChild(deleteButton);
 
     let modalFooterDiv = document.createElement('div');
@@ -1752,7 +1782,7 @@ function displayAmi(data){
 function getChat(id_friend){
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=chat&idFriend='+id_friend+'&idPerso='+id_user,displayChat);
-}
+}   
 
 function displayChat(data){
     let friendDiv = document.getElementById('friendDiv');
@@ -1854,7 +1884,6 @@ function getChatFriend(idPerso,idFriend){
 function addMessage(idFriend,idPerso,message){
     ajaxRequest('POST','php/request.php',getChat,'request=addMessage&idFriend='+idFriend+'&idPerso='+idPerso+'&message='+message);
 }
-
 
 function updateChat(data){
     console.log(data);
@@ -2025,12 +2054,6 @@ function displayOnePlaylistFriend(data){
     }
     infoPlaylistDiv.appendChild(dateH2);
 
-    let button = document.createElement('button');
-    button.classList.add('btn', 'btn-danger', 'colorRed', 'center');
-    button.setAttribute('data-bs-toggle', 'modal');
-    button.setAttribute('data-bs-target', '#modalModifyPlaylist');
-    button.innerHTML = '<span class="material-symbols-outlined">play_circle</span>&nbsp&nbsp Modifier';
-    infoPlaylistDiv.appendChild(button);
 
     topPlaylistDiv.appendChild(infoPlaylistDiv);
 
@@ -2058,7 +2081,10 @@ function displayOnePlaylistFriend(data){
     container.appendChild(musicDiv);
     // console.log(data);
     let size = data.length;
-    let isValid = data.music_id != null;
+    console.log('Data :');
+    console.log(data);
+    let isValid = data[0].music_id != null;
+    console.log(isValid);
     if(data.length != 0 && isValid){
             
         for (let i = 0; i < size; i++) {

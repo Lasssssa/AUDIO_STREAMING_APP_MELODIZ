@@ -20,6 +20,12 @@
         $db = dbConnect();
         changePath($db, $_SESSION['id'], $chemin);
     }
+
+    // if(isset($_POST['submit_playlist']))
+    // {
+    //     move_uploaded_file($_FILES['photo_playlist']['tmp_name'], 'playlist/test.png');
+    // }
+    
 ?>
 
 <!-- 
@@ -104,13 +110,13 @@
             </div>
         </nav>
         <div id="errors">
-
+            
         </div>
 
         <div id="container">
         
             <div class="friendAccount">
-                 
+
             </div>
 
         </div>
