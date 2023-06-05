@@ -68,13 +68,15 @@
         echo json_encode($music);
     }
 
-    if($type=='POST'){
+    parse_str(file_get_contents('php://input'), $_PUT);
+
+    if($type=='PUT'){
         // parse_str(file_get_contents('php://input'), $_POST);
-        if(isset($_POST['request']) && $_POST['request']=='upDateHistory'){
+        if(isset($_PUT['request']) && $_PUT['request']=='upDateHistory'){
             // echo json_encode("coucou");
             // echo $_PUT['idMusic'];
             // echo $_PUT['idPerso'];
-            $playlist = dbUpdateHistory($dbConnection, $_POST['idMusic'],$_POST['idPerso']);
+            $playlist = dbUpdateHistory($dbConnection, $_PUT['idMusic'],$_PUT['idPerso']);
             echo json_encode($playlist);
         }
     }
@@ -107,9 +109,11 @@
         echo json_encode($isDeleted);
     }
 
-    if (isset($_POST['request']) && $_POST['request'] == 'modifyPlaylist') {
-        $modified = dbModifyPlaylist($dbConnection, $_POST['id_playlist'],$_POST['name'],$_POST['id_user']);
-        echo json_encode($modified);
+    if($type = 'PUT'){
+        if (isset($_PUT['request']) && $_PUT['request'] == 'modifyPlaylist') {
+            $modified = dbModifyPlaylist($dbConnection, $_PUT['id_playlist'],$_PUT['name'],$_PUT['id_user']);
+            echo json_encode($modified);
+        }
     }
 
     if(isset($_GET['request']) && $_GET['request']=='getUser'){
@@ -117,16 +121,15 @@
         echo json_encode($user);
     }
     
-    parse_str(file_get_contents('php://input'), $_PUT);
     // echo json_encode($_PUT);
 
-    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_GET['request']) && $_GET['request'] == 'modifyAccount') {
-        $name = $_GET['name'];
-        $lastname = $_GET['lastname'];
-        $email = $_GET['email'];
-        $idPerso = $_GET['idPerso'];
-        $birthdate = $_GET['birthdate'];
-        $telephone = $_GET['telephone'];
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($_PUT['request']) && $_PUT['request'] == 'modifyAccount') {
+        $name = $_PUT['name'];
+        $lastname = $_PUT['lastname'];
+        $email = $_PUT['email'];
+        $idPerso = $_PUT['idPerso'];
+        $birthdate = $_PUT['birthdate'];
+        $telephone = $_PUT['telephone'];
 
         $age = date_diff(date_create($birthdate), date_create('today'))->y;
         if($name == '' || $lastname == '' || $email == '' || $idPerso == '' || $birthdate == '' || $telephone == '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($telephone) != 10 || strlen($birthdate) != 10 || $age < 5 || $age > 100 ){
@@ -146,11 +149,11 @@
         }
     }
 
-    if(isset($_POST['request']) && $_POST['request'] == 'modifyPassword'){
-        $hash = dbGetPassword($dbConnection, $_POST['id']);
-        $goodPassword = password_verify($_POST['password1'], $hash);
+    if( $type = 'PUT' && isset($_PUT['request']) && $_PUT['request'] == 'modifyPassword'){
+        $hash = dbGetPassword($dbConnection, $_PUT['id']);
+        $goodPassword = password_verify($_PUT['password1'], $hash);
         if($goodPassword){
-            $modified = dbModifyPassword($dbConnection, $_POST['id'], password_hash($_POST['password2'], PASSWORD_DEFAULT));
+            $modified = dbModifyPassword($dbConnection, $_PUT['id'], password_hash($_PUT['password2'], PASSWORD_DEFAULT));
             echo json_encode($modified);
         }
         else{
@@ -162,6 +165,55 @@
         $friend = dbGetUser($dbConnection, $_GET['idPerso']);
         echo json_encode($friend);
     }
+
+    if(isset($_GET['request']) && $_GET['request'] == 'demandeAmiAttente'){
+        $demandeAmi = dbGetDemandeAmis($dbConnection, $_GET['idPerso']);
+        echo json_encode($demandeAmi);
+    }
+
+    if(isset($_GET['request']) && $_GET['request'] == 'demandeAmiEnvoye'){
+        $demandeAmi = dbGetDemandeAmisEnvoye($dbConnection, $_GET['idPerso']);
+        echo json_encode($demandeAmi);
+    }
+
+    if(isset($_GET['request']) && $_GET['request'] == 'ami'){
+        $friend = dbGetFriends($dbConnection, $_GET['idPerso']);
+        echo json_encode($friend);
+    }
+
+    if(isset($_GET['request']) && $_GET['request'] == 'addFriendAccount'){
+        $addFriend = dbRechercheFriend($dbConnection, $_GET['recherche']);
+        echo json_encode($addFriend);
+    }
+    if(isset($_POST['request']) && $_POST['request']=='addFriendToList'){
+        $addfriend = dbAddFriendToList($dbConnection, $_POST['idPerso'], $_POST['idFriend']);
+        echo json_encode($addfriend);
+    }
+
+    if(isset($_PUT['request']) && $_PUT['request'] == 'AcceptAmi'){
+        $refuseAmi = dbAcceptAmi($dbConnection, $_PUT['idPerso'], $_PUT['idfriend']);
+        echo json_encode($refuseAmi);
+    }
+
+    if(isset($_PUT['request']) && $_PUT['request'] == 'RefuseAmi'){
+        $refuseAmi = dbRefuseAmi($dbConnection, $_PUT['idPerso'], $_PUT['idfriend']);
+        echo json_encode($refuseAmi);
+    }
+    if($type = 'DELETE' && isset($_GET['request']) && $_GET['request'] == 'annulerDemandeAmi'){
+        $annulerDemandeAmi = dbAnnulerDemandeAmi($dbConnection, $_GET['idPerso'], $_GET['id_friend']);
+        echo json_encode($annulerDemandeAmi);
+    }
+    if($type = 'DELETE' && isset($_GET['request']) && $_GET['request'] == 'deleteBothFriend'){
+        $annulerDemandeAmi = dbDeleteAmiBothSide($dbConnection, $_GET['idPerso'], $_GET['id_friend']);
+        echo json_encode($annulerDemandeAmi);
+    }
+
+    if(isset($_GET['request']) && $_GET['request'] == 'accountOfFriend'){
+        $accountFriend = dbGetAccountFriend($dbConnection, $_GET['idFriend']);
+        echo json_encode($accountFriend);
+    }
+    
+
     
     // $name = $_POST['name'];
         // $id_playlist = $_POST['id_playlist'];

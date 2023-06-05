@@ -100,7 +100,7 @@ function playMusicResponse(data) {
     musicPlaying.play();
     let id_user = document.getElementById('id_perso').value;
     let dataSend = 'request=upDateHistory&idMusic='+data[0]['music_id']+'&idPerso='+id_user;
-    ajaxRequest('POST','php/request.php',updateNbPlay,dataSend);
+    ajaxRequest('PUT','php/request.php',updateNbPlay,dataSend);
 }
 
 function updateNbPlay(data) {

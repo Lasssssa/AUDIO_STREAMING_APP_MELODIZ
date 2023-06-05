@@ -1,5 +1,5 @@
 import { playMusic, likeMusic,addModal, deleteMusic, addNewPlaylist} from './update.js';
-import { getPlaylistAccueil, getOneArtist, getOneAlbum,getSearchAlbum ,getSearchArtist,getSearchMusic} from './get.js';
+import { getPlaylistAccueil, getOneArtist, getOneAlbum,getSearchAlbum ,getSearchArtist,getSearchMusic, getAccountFriend} from './get.js';
 import { ajaxRequest } from './ajax.js';
 
 
@@ -166,7 +166,7 @@ export function displayPlaylist(data) {
             let playlist_title = data[i].playlist_picture;
 
             let cardDiv = document.createElement('div');
-            cardDiv.classList.add('card','onclick');
+            cardDiv.classList.add('card','onclicktest');
             cardDiv.id = 'playlist_' + id;
             cardDiv.style.minWidth = '250px';
             cardDiv.style.minHeight = '250px';
@@ -518,7 +518,7 @@ function modifyPlaylist(id_playlist){
 
     let data = 'request='+request+'&id_playlist='+id_playlist+'&name='+name+'&image='+image+'&id_user='+id_user;
 
-    ajaxRequest('POST', 'php/request.php', modifyPlaylistResponse, data);
+    ajaxRequest('PUT', 'php/request.php', modifyPlaylistResponse, data);
 }
 
 function modifyPlaylistResponse(data){
@@ -1526,6 +1526,7 @@ export function displayRechercheAlbum(data){
 }
 
 export function displayAccountFriend(data){
+    console.log(data);
     let containerDiv = document.getElementById('container');
     containerDiv.innerHTML = "";
 
@@ -1537,6 +1538,7 @@ export function displayAccountFriend(data){
     // Création de la première partie partFriend
     const partFriendDiv1 = document.createElement('div');
     partFriendDiv1.classList.add('partFriend');
+    partFriendDiv1.id = 'partFriendAdd';
     friendDiv.appendChild(partFriendDiv1);
 
     // Création du titre h1
@@ -1564,6 +1566,14 @@ export function displayAccountFriend(data){
     demandeAmiButton.textContent = 'Ajouter';
     demandeAmiDiv.appendChild(demandeAmiButton);
 
+    demandeAmiButton.addEventListener('click', function () {
+        let demandeAmiText = document.getElementById('demandeAmiText').value;
+        if(demandeAmiText != ''){
+            addFriendAccount(demandeAmiText);
+        }
+    });
+
+
     // Création de la deuxième partie partFriend
     const partFriendDiv2 = document.createElement('div');
     partFriendDiv2.classList.add('partFriend');
@@ -1575,50 +1585,14 @@ export function displayAccountFriend(data){
     const demandesAttenteH2 = document.createElement('h2');
     demandesAttenteH2.textContent = 'Demande d\'amis en attente :';
     partFriendDiv2.appendChild(demandesAttenteH2);
-
-    // Création de la div demandeAmi pour une demande en attente spécifique
-
-    //-----------------------------------------------------------------------------------Demande d'ami en attente d'être accepté
     
-    // const demandeAmiDiv2 = document.createElement('div');
-    // demandeAmiDiv2.classList.add('demandeAmi');
-    // demandeAmiDiv2.setAttribute('id', 'demandeAmi');
-    // partFriendDiv2.appendChild(demandeAmiDiv2);
 
-    // // Création du paragraphe pour le nom de l'ami en attente
-    // const demandeAmiP = document.createElement('p');
-    // demandeAmiP.textContent = 'Théo Porodo';
-    // demandeAmiDiv2.appendChild(demandeAmiP);
-
-    // // Création du bouton acceptAmi avec span
-    // const acceptAmiButton = document.createElement('button');
-    // acceptAmiButton.classList.add('btn', 'btn-success');
-    // acceptAmiButton.setAttribute('id', 'acceptAmi');
-    // demandeAmiDiv2.appendChild(acceptAmiButton);
-
-    // const acceptAmiSpan = document.createElement('span');
-    // acceptAmiSpan.classList.add('material-symbols-outlined');
-    // acceptAmiSpan.textContent = 'done';
-    // acceptAmiButton.appendChild(acceptAmiSpan);
-
-    // // Création du bouton refuserAmi avec span
-    // const refuserAmiButton = document.createElement('button');
-    // refuserAmiButton.classList.add('btn', 'btn-danger');
-    // refuserAmiButton.setAttribute('id', 'refuserAmi');
-    // demandeAmiDiv2.appendChild(refuserAmiButton);
-
-    // const refuserAmiSpan = document.createElement('span');
-    // refuserAmiSpan.classList.add('material-symbols-outlined');
-    // refuserAmiSpan.textContent = 'close';
-    // refuserAmiButton.appendChild(refuserAmiSpan);
-
-    //------------------------------------------------------------------------------------------------------------------------------------
-
+    containerDiv.appendChild(friendDiv);
 
     // Création de la troisième partie partFriend
     const partFriendDiv3 = document.createElement('div');
     partFriendDiv3.classList.add('partFriend');
-    partFriendDiv3.id = 'demandeAmi';
+    partFriendDiv3.id = 'demandeAmiEnvoye';
     friendDiv.appendChild(partFriendDiv3);
 
     // Création du titre h2 pour les demandes envoyées
@@ -1626,34 +1600,11 @@ export function displayAccountFriend(data){
     demandesEnvoyeesH2.textContent = 'Demande d\'amis envoyées :';
     partFriendDiv3.appendChild(demandesEnvoyeesH2);
 
-    //-----------------------------------------------------------------------------------Demande d'ami en attente d'être accepté de l'autre côté
-
-    // Création de la div demandeAmi pour une demande envoyée spécifique
-    // const demandeAmiDiv3 = document.createElement('div');
-    // demandeAmiDiv3.classList.add('demandeAmi');
-    // partFriendDiv3.appendChild(demandeAmiDiv3);
-
-    // // Création du paragraphe pour le nom de l'ami envoyé
-    // const demandeAmiP2 = document.createElement('p');
-    // demandeAmiP2.textContent = 'Théo Porodo';
-    // demandeAmiDiv3.appendChild(demandeAmiP2);
-
-    // // Création du bouton annuler avec span
-    // const annulerButton = document.createElement('button');
-    // annulerButton.classList.add('btn', 'btn-danger');
-    // annulerButton.setAttribute('id', 'annuler');
-    // demandeAmiDiv3.appendChild(annulerButton);
-
-    // const annulerSpan = document.createElement('span');
-    // annulerSpan.classList.add('material-symbols-outlined');
-    // annulerSpan.textContent = 'block';
-    // annulerButton.appendChild(annulerSpan);
-
-    //------------------------------------------------------------------------------------------------------------------------------------
 
     // Création de la quatrième partie partFriend
     const partFriendDiv4 = document.createElement('div');
     partFriendDiv4.classList.add('partFriend');
+    partFriendDiv4.id = 'ami';
     friendDiv.appendChild(partFriendDiv4);
 
     // Création du titre h2 pour les amis
@@ -1661,49 +1612,13 @@ export function displayAccountFriend(data){
     amisH2.textContent = 'Amis :';
     partFriendDiv4.appendChild(amisH2);
 
-    //-----------------------------------------------------------------------------------Ami accepté
+    getDemandeAmiAttente(data[0].id);
+    getDemandeAmiEnvoye(data[0].id);
 
-    // Création de la div accepted pour un ami spécifique
-    // const acceptedDiv = document.createElement('div');
-    // acceptedDiv.classList.add('accepted');
-    // partFriendDiv4.appendChild(acceptedDiv);
+    getAmi(data[0].id);
 
-    // // Création du titre h2 pour le nom de l'ami
-    // const amiH2 = document.createElement('h2');
-    // amiH2.textContent = 'Théo Porodo';
-    // acceptedDiv.appendChild(amiH2);
 
-    // // Création du bouton pour le compte de l'ami avec span
-    // const compteButton = document.createElement('button');
-    // compteButton.classList.add('btn', 'btn-danger');
-    // acceptedDiv.appendChild(compteButton);
 
-    // const compteSpan = document.createElement('span');
-    // compteSpan.classList.add('material-symbols-outlined');
-    // compteSpan.textContent = 'account_circle';
-    // compteButton.appendChild(compteSpan);
-
-    // // Création du bouton chat avec span
-    // const chatButton = document.createElement('button');
-    // chatButton.classList.add('btn', 'btn-danger');
-    // chatButton.setAttribute('id', 'chat');
-    // acceptedDiv.appendChild(chatButton);
-
-    // const chatSpan = document.createElement('span');
-    // chatSpan.classList.add('material-symbols-outlined');
-    // chatSpan.textContent = 'chat';
-    // chatButton.appendChild(chatSpan);
-
-    // // Création du bouton deleteFriend avec span
-    // const deleteFriendButton = document.createElement('button');
-    // deleteFriendButton.classList.add('btn', 'btn-danger');
-    // deleteFriendButton.setAttribute('id', 'deleteFriend');
-    // acceptedDiv.appendChild(deleteFriendButton);
-
-    // const deleteFriendSpan = document.createElement('span');
-    // deleteFriendSpan.classList.add('material-symbols-outlined');
-    // deleteFriendSpan.textContent = 'delete';
-    // deleteFriendButton.appendChild(deleteFriendSpan);
 
     //------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1785,4 +1700,303 @@ export function displayAccountFriend(data){
     // sendButton.textContent = 'Envoyer';
     // chatForm.appendChild(sendButton);
 
+}
+
+function addFriendAccount(recherche){
+    ajaxRequest('GET','php/request.php?request=addFriendAccount&recherche='+recherche,displayAddFriendAccount);
+}
+
+function displayAddFriendAccount(data){
+    let partFriendAdd = document.getElementById('partFriendAdd');
+    if(data.length !=0){
+        for(let i=0; i<data.length; i++){
+            const friendDiv = document.createElement('div');
+            friendDiv.classList.add('addingFriend');
+            partFriendAdd.appendChild(friendDiv);
+
+            const friendName = document.createElement('p');
+            friendName.textContent = data[i].user_firstname + ' ' + data[i].user_lastname;
+            friendDiv.appendChild(friendName);
+
+            const friendButton = document.createElement('button');
+            friendButton.classList.add('btn', 'btn-danger');
+            friendButton.setAttribute('id', 'addFriend');
+            friendButton.setAttribute('value', data[i].idPerso);
+            friendButton.textContent = 'Ajouter';
+            friendDiv.appendChild(friendButton);
+            
+            friendButton.addEventListener('click', function(){
+                addFriendToList(data[i].id);
+            });
+        }
+    }
+}
+
+function addFriendToList(id){
+    let idPerso = document.getElementById('id_perso').value;
+    ajaxRequest('POST','php/request.php',displayAddFriendToList,'request=addFriendToList&idFriend='+id+'&idPerso='+idPerso);
+}
+
+function displayAddFriendToList(data){
+    if(data[0] == 1){
+        alert('Demande d\'ami envoyée');
+        getAccountFriend(data[1]);
+    }else{
+        alert('Demande d\'ami déjà envoyée');
+    }
+}
+function getAmi(id){
+    ajaxRequest('GET','php/request.php?request=ami&idPerso='+id,displayAmi);
+}
+
+function getDemandeAmiEnvoye(id){
+    ajaxRequest('GET','php/request.php?request=demandeAmiEnvoye&idPerso='+id,displayDemandeAmiEnvoye);
+}
+
+function getDemandeAmiAttente(id){
+    ajaxRequest('GET','php/request.php?request=demandeAmiAttente&idPerso='+id,displayDemandeAmiAttente);
+}
+
+function displayAmi(data){
+    let ami = document.getElementById('ami');
+    if(data.length == 0){
+        const demandeAmiDiv = document.createElement('div');
+        demandeAmiDiv.classList.add('demandeAmi');
+        demandeAmiDiv.setAttribute('id', 'demandeAmi');
+        demandeAmiEnvoye.appendChild(demandeAmiDiv);
+
+        const demandeAmiP = document.createElement('p');
+        demandeAmiP.textContent = 'Aucun ami';
+        demandeAmiDiv.appendChild(demandeAmiP);
+
+        ami.appendChild(demandeAmiDiv);
+    }
+    else{
+        for(let i = 0   ; i < data.length ; i++){
+            const acceptedDiv = document.createElement('div');
+            acceptedDiv.classList.add('accepted');
+            ami.appendChild(acceptedDiv);
+
+            // Création du titre h2 pour le nom de l'ami
+            const amiH2 = document.createElement('h2');
+            amiH2.textContent = data[i].user_firstname + ' ' + data[i].user_lastname;
+            acceptedDiv.appendChild(amiH2);
+
+            // Création du bouton pour le compte de l'ami avec span
+            const compteButton = document.createElement('button');
+            compteButton.classList.add('btn', 'btn-danger');
+            acceptedDiv.appendChild(compteButton);
+
+            compteButton.addEventListener('click', function(){
+                getAccountOfFriend(data[i].id);
+            });
+
+            const compteSpan = document.createElement('span');
+            compteSpan.classList.add('material-symbols-outlined');
+            compteSpan.textContent = 'account_circle';
+            compteButton.appendChild(compteSpan);
+
+
+            // Création du bouton chat avec span
+            const chatButton = document.createElement('button');
+            chatButton.classList.add('btn', 'btn-danger');
+            chatButton.setAttribute('id', 'chat');
+            acceptedDiv.appendChild(chatButton);
+
+            const chatSpan = document.createElement('span');
+            chatSpan.classList.add('material-symbols-outlined');
+            chatSpan.textContent = 'chat';
+            chatButton.appendChild(chatSpan);
+
+            // Création du bouton deleteFriend avec span
+            const deleteFriendButton = document.createElement('button');
+            deleteFriendButton.classList.add('btn', 'btn-danger');
+            deleteFriendButton.setAttribute('id', 'deleteFriend');
+            acceptedDiv.appendChild(deleteFriendButton);
+
+            deleteFriendButton.addEventListener('click', function(){
+                deleteBothFriend(data[i].id);
+            });
+
+            const deleteFriendSpan = document.createElement('span');
+            deleteFriendSpan.classList.add('material-symbols-outlined');
+            deleteFriendSpan.textContent = 'delete';
+            deleteFriendButton.appendChild(deleteFriendSpan);
+
+            ami.appendChild(acceptedDiv);
+        }
+    }
+}
+
+function getAccountOfFriend(id){
+    console.log(id);
+    ajaxRequest('GET','php/request.php?request=accountOfFriend&idFriend='+id,displayAccountOfFriend);
+}
+
+function displayAccountOfFriend(data){
+    console.log(data);
+}
+
+function deleteBothFriend(id_friend){
+    let idPerso = document.getElementById('id_perso').value;
+    ajaxRequest('DELETE','php/request.php?request=deleteBothFriend&id_friend='+id_friend+'&idPerso='+idPerso,displayDeleteBothFriend,);
+}
+
+function displayDeleteBothFriend(data){
+    if(data[0] == 1){
+        alert('Ami supprimé');
+        getAccountFriend(data[1]);
+    }else{
+        alert('Erreur lors de la suppression de l\'ami');
+    }
+}
+function displayDemandeAmiEnvoye(data){
+    let demandeAmiEnvoye = document.getElementById('demandeAmiEnvoye');
+
+    if(data.length == 0){
+        const demandeAmiDiv = document.createElement('div');
+        demandeAmiDiv.classList.add('demandeAmi');
+        demandeAmiDiv.setAttribute('id', 'demandeAmi');
+        demandeAmiEnvoye.appendChild(demandeAmiDiv);
+
+        const demandeAmiP = document.createElement('p');
+        demandeAmiP.textContent = 'Aucune demande d\'ami envoyée';
+        demandeAmiDiv.appendChild(demandeAmiP);
+
+        demandeAmiEnvoye.appendChild(demandeAmiDiv);
+    }else{
+        for(let i=0;i<data.length;i++){
+            // Création de la div demandeAmi pour une demande envoyée spécifique
+            const demandeAmiDiv3 = document.createElement('div');
+            demandeAmiDiv3.classList.add('demandeAmi');
+            demandeAmiEnvoye.appendChild(demandeAmiDiv3);
+
+            // Création du paragraphe pour le nom de l'ami envoyé
+            const demandeAmiP2 = document.createElement('p');
+            demandeAmiP2.textContent = data[i].user_firstname + ' '+ data[i].user_lastname;
+            demandeAmiDiv3.appendChild(demandeAmiP2);
+
+            // Création du bouton annuler avec span
+            const annulerButton = document.createElement('button');
+            annulerButton.classList.add('btn', 'btn-danger');
+            annulerButton.setAttribute('id', 'annuler');
+            demandeAmiDiv3.appendChild(annulerButton);
+
+            annulerButton.addEventListener('click', function(){7
+                let id_perso = document.getElementById('id_perso').value;
+                annulerDemandeAmi(data[i].id,id_perso);
+            });
+
+            const annulerSpan = document.createElement('span');
+            annulerSpan.classList.add('material-symbols-outlined');
+            annulerSpan.textContent = 'block';
+            annulerButton.appendChild(annulerSpan);
+
+            demandeAmiEnvoye.appendChild(demandeAmiDiv3);
+
+        }
+    }
+
+}
+
+function annulerDemandeAmi(id_friend,id_perso){
+    ajaxRequest('DELETE','php/request.php?request=annulerDemandeAmi&idPerso='+id_perso+'&id_friend='+id_friend,displayAnnuler);
+}
+
+function displayAnnuler(data){
+    console.log(data);  
+    if(data[0] == 1){
+        alert('Demande d\'ami annulée');
+        getAccountFriend(data[1]);
+    }else{
+        console.log('Erreur');
+    }
+}
+
+function displayDemandeAmiAttente(data){
+    let demandeAmiAttente = document.getElementById('demandeAmiAttente');
+    if(data.length == 0){
+        const demandeAmiDiv2 = document.createElement('div');
+        demandeAmiDiv2.classList.add('demandeAmi');
+        demandeAmiDiv2.setAttribute('id', 'demandeAmi');
+        demandeAmiAttente.appendChild(demandeAmiDiv2);
+
+        const demandeAmiP = document.createElement('p');
+        demandeAmiP.textContent = 'Aucune demande d\'ami en attente';
+        demandeAmiDiv2.appendChild(demandeAmiP);
+
+        demandeAmiAttente.appendChild(demandeAmiDiv2);
+
+    }else{
+        for(let i = 0; i < data.length; i++){
+            const demandeAmiDiv2 = document.createElement('div');
+            demandeAmiDiv2.classList.add('demandeAmi');
+            demandeAmiDiv2.setAttribute('id', 'demandeAmi');
+
+            // Création du paragraphe pour le nom de l'ami en attente
+            const demandeAmiP = document.createElement('p');
+            demandeAmiP.textContent = data[i].user_firstname + ' ' + data[i].user_lastname;
+            demandeAmiDiv2.appendChild(demandeAmiP);
+
+            // Création du bouton acceptAmi avec span
+            const acceptAmiButton = document.createElement('button');
+            acceptAmiButton.classList.add('btn', 'btn-success');
+            acceptAmiButton.setAttribute('id', 'acceptAmi');
+            demandeAmiDiv2.appendChild(acceptAmiButton);
+
+            acceptAmiButton.addEventListener('click', function(){
+                let id = data[i].id;
+                let id2 = document.getElementById('id_perso').value;
+                let dataSend = 'request=AcceptAmi&idPerso='+id2+'&idfriend='+id;
+                console.log(dataSend);
+                ajaxRequest('PUT','php/request.php',displayAcceptAmi,dataSend);
+            });
+
+            const acceptAmiSpan = document.createElement('span');
+            acceptAmiSpan.classList.add('material-symbols-outlined');
+            acceptAmiSpan.textContent = 'done';
+            acceptAmiButton.appendChild(acceptAmiSpan);
+
+            // Création du bouton refuserAmi avec span
+            const refuserAmiButton = document.createElement('button');
+            refuserAmiButton.classList.add('btn', 'btn-danger');
+            refuserAmiButton.setAttribute('id', 'refuserAmi');
+            demandeAmiDiv2.appendChild(refuserAmiButton);
+
+            const refuserAmiSpan = document.createElement('span');
+            refuserAmiSpan.classList.add('material-symbols-outlined');
+            refuserAmiSpan.textContent = 'close';
+            refuserAmiButton.appendChild(refuserAmiSpan);
+
+            refuserAmiButton.addEventListener('click', function(){
+                let id = data[i].id;
+                let id2 = document.getElementById('id_perso').value;
+                let dataSend = 'request=RefuseAmi&idPerso='+id2+'&idfriend='+id;
+                console.log(dataSend);
+                ajaxRequest('PUT','php/request.php',displayRefuseAmi,dataSend);
+            });
+
+            demandeAmiAttente.appendChild(demandeAmiDiv2);
+        }
+    }
+}
+
+function displayAcceptAmi(data){
+    // console.log(data);
+    if(data[0]==1){
+        alert('Ami accepté');
+        getAccountFriend(data[1])
+    }else{
+        alert('Erreur lors de la requête');
+    }
+}
+
+function displayRefuseAmi(data){
+    console.log(data);
+    if(data[0]==1){
+        alert('Ami refusé');
+        getAccountFriend(data[1])
+    }else{
+        alert('Erreur lors de la requête');
+    }
 }

@@ -754,6 +754,39 @@
         return true;
     }
 
+    function dbAddFriendToList($db,$idPerso,$idFriend){
+        try{
+            $query = 'SELECT * FROM etre_ami WHERE id = :idPerso AND id_user = :idFriend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->bindParam(':idFriend', $idFriend);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if(count($result) == 0){
+            try{
+                $query = 'INSERT INTO etre_ami (id, id_user, isaccept) VALUES (:idFriend, :idPerso, \'false\')';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':idFriend', $idFriend);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->execute();
+            }
+            catch(Exception $e){
+                echo $e->getMessage();
+            }
+            if($statement->rowCount() == 1){
+                return [true,$idPerso];
+            }else{
+                return [false,$idPerso];
+            }
+        }
+        else{
+            return [false,$idPerso];
+        }
+    }
     function dbGetDemandeAmis($db,$id){
         try{
             $query = 'SELECT * from etre_ami ea JOIN utilisateur u ON u.id = ea.id_user  WHERE ea.id = :id AND isaccept = \'false\'';
@@ -793,4 +826,103 @@
         return $result;
     }
     
+
+    function dbRechercheFriend($db,$recherche){
+        $recherche = '%'.$recherche.'%';
+        try{
+            $query = 'SELECT user_firstname, user_lastname, id FROM utilisateur WHERE user_firstname LIKE :recherche OR user_lastname LIKE :recherche';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':recherche', $recherche);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbAcceptAmi($db,$id,$idFriend){
+        try{
+            $query = 'UPDATE etre_ami SET isaccept = \'true\' WHERE id = :id AND id_user = :idFriend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':idFriend', $idFriend);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        try{
+            $query = 'INSERT INTO etre_ami (id, id_user, isaccept) VALUES (:idFriend, :id, \'true\')';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idFriend', $idFriend);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return [true,$id];
+    }
+
+    function dbRefuseAmi($db,$id,$idFriend){
+        try{
+            $query = 'DELETE FROM etre_ami WHERE id = :id AND id_user = :idFriend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':idFriend', $idFriend);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return [true,$id];
+    }
+
+    function dbAnnulerDemandeAmi($db,$idPerso,$id_Friend){
+        try{
+            $query = 'DELETE FROM etre_ami WHERE id = :id_Friend AND id_user = :idPerso';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->bindParam(':id_Friend', $id_Friend);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return [true,$idPerso];
+    }
+
+    function dbDeleteAmiBothSide($db,$idPerso,$id_friend){
+        try{
+            $query = 'DELETE FROM etre_ami WHERE id = :id_friend AND id_user = :idPerso';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        try{
+            $query = 'DELETE FROM etre_ami WHERE id = :idPerso AND id_user = :id_friend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->execute();
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return [true,$idPerso];
+    }
+
+    function dbGetAccountFriend($db,$idFriend){
+        try{
+            $query = 'SELECT * FROM utilisateur u JOIN playlist p ON u.id = p.id WHERE id = :idFriend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idFriend', $idFriend);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+
     ?>

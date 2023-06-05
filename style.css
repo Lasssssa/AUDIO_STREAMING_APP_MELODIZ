@@ -17,6 +17,12 @@
 .import{
     margin-top: 3%;
 }
+.titleMusic{
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin:auto;
+}
 .ppV2{
     text-align: center;
     align-items: center;
@@ -115,9 +121,21 @@
     column-gap: 15%;
 }
 
+.addingFriend{
+    display: flex;
+    flex-direction: row;
+    column-gap: 2%;
+    margin: 2%;
+    text-align: center;
+}
+
 .onclicktest{
     cursor: pointer;
+    transition: transform 0.3s;
     /* background-color: red; */
+}
+.onclicktest:hover{
+    transform: scale(1.1);
 }
 .ecart{
     margin-left:5%;

@@ -299,7 +299,7 @@ export function displayAccount(data){
         }
         else {
             let requete = 'request=modifyPassword&password1='+password1+'&password2='+password2+'&id='+data[0]['id'];
-            ajaxRequest('POST','php/request.php',displayModifyPassword,requete);
+            ajaxRequest('PUT','php/request.php',displayModifyPassword,requete);
         }
     });
     let errorForm = document.createElement('div');
@@ -353,7 +353,7 @@ export function displayAccount(data){
         let telephone = document.getElementById('telephoneForm').value;
         data = 'request=modifyAccount&name='+name+'&lastname='+lastname+'&email='+email+'&idPerso='+id_user+'&birthdate='+birthdate+'&telephone='+telephone;
         console.log(data);
-        ajaxRequest('PUT', 'php/request.php?'+data, displayModifyAccount);
+        ajaxRequest('PUT', 'php/request.php', displayModifyAccount,data);
     });
 
 }
