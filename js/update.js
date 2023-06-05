@@ -1,7 +1,9 @@
 import {ajaxRequest} from "./ajax.js";
 import { displayOnePlaylist } from "./display.js";
 import { getLastEcoute } from "./get.js";
+import {nextMusicResponse} from "./accueil.js";
 
+//FONCTION QUI PERMET DE LIKE UNE MUSIQUE
 export function likeMusic(idMusic,page) {
     let id_user = document.getElementById('id_perso').value;
     let data = 'request=likeMusic&idPerso='+id_user+'&idMusic='+idMusic;
@@ -25,6 +27,7 @@ export function likeMusic(idMusic,page) {
     }
 }
 
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE FRIEND
 function likeMusicFriend(data) {
     let buttonModif = document.getElementById('likeAmi_'+data[0]);
     if(data[1] == 1){
@@ -34,7 +37,7 @@ function likeMusicFriend(data) {
     }
 }
 
-
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE RECHERCHE
 function likeMusicRecherche(data) {
     let buttonModif = document.getElementById('likeRecherche_'+data[0]);
     if(data[1] == 1){
@@ -44,6 +47,7 @@ function likeMusicRecherche(data) {
     }
 }
 
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE ARTISTE
 function likeMusicArtist(data) {
     // console.log(data);
     let buttonModif = document.getElementById('likeArtist_'+data[0]);
@@ -54,6 +58,7 @@ function likeMusicArtist(data) {
     }
 }
 
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE PLAYLIST
 export function likeMusicPlaylist(data){
     let buttonModif = document.getElementById('likePlaylist_'+data[0]);
     if(data[1] == 1){
@@ -62,6 +67,8 @@ export function likeMusicPlaylist(data){
         buttonModif.innerHTML = '<i class="material-icons">favorite_border</i>';
     }
 }
+
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE ACCUEIL
 export function likeMusicAccueil(data) {
     let buttonModif = document.getElementById('like_'+data[0]);
     if(data[1] == 1){
@@ -70,6 +77,8 @@ export function likeMusicAccueil(data) {
         buttonModif.innerHTML = '<i class="material-icons">favorite_border</i>';
     }
 }
+
+//FONCTION QUI MODIFIE LE LIKE SUR LA PAGE ALBUM
 export function likeMusicAlbum(data) {
     let buttonModif = document.getElementById('likeAlbum_'+data[0]);
     if(data[1] == 1){
@@ -79,11 +88,35 @@ export function likeMusicAlbum(data) {
     }
 }
 
+export function playAlbum(id_album){
+    let id_user = document.getElementById('id_perso').value;
+    let data = '?request=playAlbum&idAlbum='+id_album+'&idPerso='+id_user;
+    ajaxRequest('GET','php/request.php'+data,playAlbumResponse);
+}
+
+export function playPlaylist(id_playlist){
+    let id_user = document.getElementById('id_perso').value;
+    let data = '?request=playPlaylist&idPlaylist='+id_playlist+'&idPerso='+id_user;
+    ajaxRequest('GET','php/request.php'+data,playPlaylistResponse);
+}
+
+function playPlaylistResponse(data){
+    let id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getNextMusique&idPerso='+id_perso, nextMusicResponse);
+}
+
+function playAlbumResponse(data){
+    let id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getNextMusique&idPerso='+id_perso, nextMusicResponse);
+}
+
+//FONCTION QUI PERMET DE LANCER UNE MUSIQUE
 export function playMusic(id_music) {
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=playMusic&idMusic='+id_music+'&idPerso='+id_user,playMusicResponse);
 }
 
+//FONCTION QUI PERMET DE LANCER UNE MUSIQUE (AFFICHAGE)
 function playMusicResponse(data) {
     let imgMusic = document.getElementById('imgMusic');
     let titleMusic = document.getElementById('titleMusic');
@@ -95,13 +128,7 @@ function playMusicResponse(data) {
 
     imgMusic.src = data[0]['album_chemin'];
     titleMusic.textContent = data[0]['music_title'];
-    // let artistname = '';
-    // if(data[0].artist_lastname == null){
-    //     artistname = artistMusic.textContent = data[0]['artist_firstname'];
-    // }else{
-    //     artistname = artistMusic.textContent = data[0]['artist_firstname'] + ' ' + data[0]['artist_lastname'];
-    // }
-    // artistMusic.textContent = artistname;
+    
     musicPlaying.src = data[0]['music_play_chemin'];
     if(data[0].isliked == 1){
         buttonLiked.innerHTML = '<i class="material-icons">favorite</i>';
@@ -116,6 +143,7 @@ function playMusicResponse(data) {
     ajaxRequest('PUT','php/request.php',updateNbPlay,dataSend);
 }
 
+//FONCTION QUI PERMET DE RAFFRAICHIR LA PAGE ACCUEIL LORS DE LA MUSIQUE
 function updateNbPlay(data) {
     let lastEcoute = document.querySelectorAll('.lastEcoute');
     // console.log(lastEcoute);
@@ -124,10 +152,13 @@ function updateNbPlay(data) {
     }
 }
 
+//FONCTION QUI AJOUTE LES MODALS
 export function addModal($id_music){
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=playlistWithMusic&id_perso='+id_user+'&idMusic='+$id_music,addModalDisplay);
 }
+
+//FONCTION QUI AJOUTE LES MODALS (AFFICHAGE)
 function addModalDisplay(data){
     // console.log(data);
     let container = document.getElementById('container');
@@ -213,7 +244,7 @@ function addModalDisplay(data){
     container.appendChild(modal);
 }
 
-
+//FONCTION QUI AJOUTE UNE PLAYLIST AJAX
 function addPlaylist(id_playlist,id_music,page){
     let id_user = document.getElementById('id_perso').value;
     let data = 'request=addToPlaylist&idPlaylist='+id_playlist+'&idMusic='+id_music+'&idPerso='+id_user;
@@ -223,6 +254,7 @@ function addPlaylist(id_playlist,id_music,page){
     }
 }
 
+//FONCTION QUI UPDATE L'AFFICHAGE DES ALBUMS
 function updatePlaylistAlbum(data){
     let buttonModal = document.getElementById('addPlaylistAlbumModal'+data[1]+data[0]);
     if(data[2]==true){
@@ -233,18 +265,23 @@ function updatePlaylistAlbum(data){
 
 }
 
+//FONCCTION QUI DELETE UNE MUSIQUE D'UNE PLAYLIST AJAX
 export function deleteMusic(id_music,id_playlist){
     // console.log(id_music+' '+id_playlist);
     ajaxRequest('DELETE','php/request.php?request=deleteMusicFromPlaylist&idMusic='+id_music+'&idPlaylist='+id_playlist,deleteMusicDisplay);
 }
 
+//FONCTION QUI UPDATE L'AFFICHAGE DES MUSIQUES D'UNE PLAYLIST APRES SUPPRESSION
 function deleteMusicDisplay(data){
     displayOnePlaylist(data);
 }
 
+//FONCTION AJAX QUI AJOUTE UNE NOUVELLE PLAYLIST
 export function addNewPlaylist(id_user){
 
 }
+
+//FONCTION QUI AJOUTE LES MODALS PLAYLIST
 export function addModalPLaylist(){
     let container = document.getElementById('container');
     let html = '';

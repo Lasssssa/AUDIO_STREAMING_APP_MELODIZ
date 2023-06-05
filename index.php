@@ -20,20 +20,9 @@
         $db = dbConnect();
         changePath($db, $_SESSION['id'], $chemin);
     }
-
-    // if(isset($_POST['submit_playlist']))
-    // {
-    //     move_uploaded_file($_FILES['photo_playlist']['tmp_name'], 'playlist/test.png');
-    // }
     
 ?>
 
-<!-- 
-    - Footbar :
-        - Next
-        - Previous 
-        - Like 
- -->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -50,24 +39,25 @@
     </head>
     <body>
 
-    <!-- Button trigger modal -->
+    <!-- Ajout du modal pour l'ajout de playlist (commun à toutes les playlists) -->
 
-        <!-- Modal -->
         <div class="modal fade" id="modalPlaylist" tabindex="1" aria-labelledby="modalPlaylist" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
+                    <!-- Titre du modal  -->
                     <h1 class="modal-title fs-5" id="exampleModalLabel">AJOUTER UNE PLAYLIST À VOTRE COMPTE</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Input de type text : -->
+                    <!-- Entrée de type text -->
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label">Nom de la playlist :</label>
                         <input type="text" class="form-control" id="namePlaylist">
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <!-- Footer du modal -->
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">FERMER</button>
                     <button type="button" id="addPlaylistButton" class="btn btn-danger colorRed">AJOUTER</button>
                 </div>
@@ -75,9 +65,11 @@
             </div>
         </div>
 
+        <!-- INPUT de type HIDDEN afin de pouvoir récupérer l'ID du perso en JS et l'input de type choice pour le choix de la recherche -->
         <input type="hidden" id="id_perso" value="<?php echo $_SESSION['id'] ?>">
         <input type="hidden" id="choice" value="musique">
         
+        <!-- NAVBAR COMMUNE A TOUTES LES PAGES -->
         <nav class="navbar navbar-expand-lg navbar-light bg-danger fixed-top">
             <div class="container">
                 <button class="btn clear" id="reset">
@@ -109,10 +101,13 @@
                 </div>
             </div>
         </nav>
+
+        <!-- DIV pour les errors -->
         <div id="errors">
             
         </div>
 
+        <!-- DIV container qui va être la base de toutes les pages -->
         <div id="container">
         
             <div class="friendAccount">
@@ -120,6 +115,8 @@
             </div>
 
         </div>
+
+        <!-- FOOTBAR pour la lecture de la musique -->
 
         <div class="footbar bg-danger">
             <div class="row">
@@ -139,7 +136,10 @@
                     </button>
                 </div>
                     <div class="col-5 text-center">
-                    <button type="button" class="btn clear" id="playMusic"><i class="material-icons">play_arrow</i></button><br>
+                    <button type="button" class="btn clear" id="previousMusic" style="margin-right:20px;"><i class="material-icons">skip_previous</i></button>
+                    <button type="button" class="btn clear" id="playMusic" style="margin-right:20px;margin-left:20px"><i class="material-icons">play_arrow</i></button>
+                    <button type="button" class="btn clear" id="nextMusic" style="margin-left:20px;"><i class="material-icons">skip_next</i></button>
+                    <br>
                     <label for="volume" id="start">0:00</label>
                     <input type="range" class="progressBar" id="progressMusic" min="0" max="100" step="1" value="0" style="width: 500px; accent-color: #000000;">
                     <label for="volume" id="end">1:00</label>

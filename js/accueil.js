@@ -1,26 +1,29 @@
 import { ajaxRequest } from './ajax.js';
 import {getLastEcoute, getOneAlbum, getCurrentUser, getSearchMusic, getSearchAlbum, getSearchArtist, getAccountFriend} from './get.js';
-import {} from './update.js'
+import {playMusic} from './update.js'
 import {} from './display.js';
 import {displayAccount} from './perso.js';
 
+//LANCE LA FONCTION AU CHARGEMENT DE LA PAGE
 getLastEcoute();
   
 
-let playMusic = document.getElementById('playMusic');
+//RECUPERE LES MUSIC EN COURS--------------------------------------
+let playMusic1 = document.getElementById('playMusic');
 let musicPlaying = document.getElementById('musicPlaying');
 // console.log(playMusic);
 
-playMusic.addEventListener('click', function() {
+playMusic1.addEventListener('click', function() {
   if(musicPlaying.paused){
     musicPlaying.play();
-    playMusic.innerHTML = '<i class="material-icons">pause</i>';
+    playMusic1.innerHTML = '<i class="material-icons">pause</i>';
     }else{
     musicPlaying.pause();
-    playMusic.innerHTML = '<i class="material-icons">play_arrow</i>';
+    playMusic1.innerHTML = '<i class="material-icons">play_arrow</i>';
     }
 });
 
+//CHANGEMENT DU VOLUME--------------------------------------
 let changeVolume = document.getElementById('changeVolume');
 
 changeVolume.addEventListener('input', function() {
@@ -28,6 +31,7 @@ changeVolume.addEventListener('input', function() {
     }
 );
 
+//MUTE DE LA MUSIQUE ---------------------------------------------
 let mute = document.getElementById('mute');
 
 mute.addEventListener('click', function() {
@@ -41,12 +45,16 @@ mute.addEventListener('click', function() {
     }
 );
 
+//RESET DE LA PAGE --> ACCUEIL ---------------------------------------------
+
 let reset = document.getElementById('reset');
 
 reset.addEventListener('click', function() {
     getLastEcoute();
     }
 );
+
+//RECHERCHE D'UNE MUSIQUE, ALBUM OU ARTISTE ---------------------------------------------
 
 let recherche = document.getElementById('recherche');
 let rechercheText = document.getElementById('rechercheText');
@@ -70,6 +78,8 @@ rechercheText.addEventListener('input', function() {
     }
 );
 
+//AJOUT D'UNE PLAYLIST
+
 let addPlaylistButton = document.getElementById('addPlaylistButton');
 
 addPlaylistButton.addEventListener('click', function() {
@@ -80,6 +90,8 @@ addPlaylistButton.addEventListener('click', function() {
     }
 );
 
+
+//LISTENER SUR LE BOUTON COMPTE
 let persoAccount = document.getElementById('persoAccount');
 
 persoAccount.addEventListener('click', function() {
@@ -88,6 +100,7 @@ persoAccount.addEventListener('click', function() {
     }
 );
 
+//LISTENER SUR LE BOUTON AMIS
 let friend = document.getElementById('friend');
 
 friend.addEventListener('click', function() {
@@ -96,6 +109,8 @@ friend.addEventListener('click', function() {
     }
 );
 
+
+//AUDIO - AJOUT DES LISTENER POUR TENIR AU COURANT LA PROGRESSE BAR-----------------------------------------------------------
 const audio = document.getElementById('musicPlaying');
 const progressBar = document.getElementById('progressMusic');
 
@@ -116,6 +131,19 @@ audio.addEventListener('timeupdate', function() {
   progressBar.value = progress;
 });
 
+progressBar.addEventListener('input', function() {
+    const progressValue = progressBar.value;
+    const duration = audio.duration;
+    const currentTime = (progressValue / 100) * duration;
+  
+    audio.currentTime = currentTime;
+  });
+
+  audio.addEventListener('ended', function() {
+    const id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getNextMusique&idPerso=' + id_perso, nextMusicResponse);
+  });
+
 function addPlaylistResponse(data){
     getLastEcoute();
 }
@@ -131,3 +159,32 @@ function formatTime(time) {
   }
 
 
+// -------------------------------------------------------Ajout du listener sur le bouton de lecture (previous, play, next)---------------------------------------------
+
+let previousMusic = document.getElementById('previousMusic');
+
+previousMusic.addEventListener('click', function() {
+    let id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getLastMusique&idPerso='+id_perso, previousMusicResponse);
+    }
+);
+
+function previousMusicResponse(data){
+    if(data == "false"){
+        getLastEcoute();
+    }else{
+        playMusic(data.music_id);
+    }
+}
+
+let nextMusic = document.getElementById('nextMusic');
+
+nextMusic.addEventListener('click', function() {
+    let id_perso = document.getElementById('id_perso').value;
+    ajaxRequest('GET', 'php/request.php?request=getNextMusique&idPerso='+id_perso, nextMusicResponse);
+    }
+);
+
+export function nextMusicResponse(data){
+    playMusic(data.music_id);
+}

@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS music_cree CASCADE;
 DROP TABLE IF EXISTS music_contenu CASCADE;
 DROP TABLE IF EXISTS etre_ami CASCADE;
 DROP TABLE IF EXISTS discussion CASCADE;
+DROP TABLE IF EXISTS liste_attente CASCADE;
 
 ------------------------------------------------------------
 --        Script Postgre 
@@ -160,4 +161,17 @@ CREATE TABLE public.discussion(
 
 	,CONSTRAINT discussion_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
 	,CONSTRAINT discussion_User0_FK FOREIGN KEY (id_User) REFERENCES public.utilisateur(id)
+)WITHOUT OIDS;
+
+------------------------------------------------------------
+-- Table: liste_attente
+------------------------------------------------------------
+CREATE TABLE public.liste_attente(
+	id           INT  NOT NULL ,
+	music_id     INT  NOT NULL ,
+	date_ajout   DATE  NOT NULL  ,
+	CONSTRAINT liste_attente_PK PRIMARY KEY (id,music_id)
+
+	,CONSTRAINT liste_attente_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
+	,CONSTRAINT liste_attente_Music0_FK FOREIGN KEY (music_id) REFERENCES public.Music(music_id)
 )WITHOUT OIDS;

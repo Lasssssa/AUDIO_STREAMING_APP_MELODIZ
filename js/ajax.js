@@ -1,3 +1,5 @@
+
+// FONCTION DE REQUETE AJAX
 export function ajaxRequest(type, url, callback, data = null)
 {
   let xhr;
@@ -28,6 +30,7 @@ export function ajaxRequest(type, url, callback, data = null)
   xhr.send(data);
 }
 
+//FONCTION D'ERREUR
 export function httpErrors(errorCode){
     let error =  "";
     switch(errorCode){
@@ -38,6 +41,7 @@ export function httpErrors(errorCode){
     document.getElementById('errors').innerHTML +=  '<div class="alert alert-danger" role="alert">'+error+'</div>';
 }
 
+//FONCTION DE CLEAR EN CAS D'ERROR
 function clearErrors(){
     document.getElementById('errors').innerHTML = "";
 }

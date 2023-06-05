@@ -2,6 +2,7 @@
 import { ajaxRequest } from "./ajax.js";
 
 
+//FONCTION JS QUI PERMET DE RETOURNER L'AGE A PARTIR DE LA DATE DE NAISSANCE
 function calculateAge(dateOfBirth) {
     const today = new Date();
     const birthDate = new Date(dateOfBirth);
@@ -15,6 +16,7 @@ function calculateAge(dateOfBirth) {
     return age;
 }
 
+//FONCTION D'AFFICHAGE DES INFORMATIONS PERSONNELLES
 export function displayAccount(data){
     console.log(data);
     let container = document.getElementById('container');
@@ -358,6 +360,7 @@ export function displayAccount(data){
 
 }
 
+//FONCTION DE DISPLAY DE PASSWORD MODIFIE
 function displayModifyPassword(data){
     let errorForm = document.getElementById('errorForm');
     errorForm.innerHTML = '';
@@ -374,7 +377,7 @@ function displayModifyPassword(data){
     }
 }
 
-
+//FONCTION DE DISPLAY DE ACCOUNT MODIFIE
 function displayModifyAccount(data){
     let id_perso = document.getElementById('id_perso').value;
     if(data[0] == true){

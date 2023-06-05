@@ -1,10 +1,9 @@
-import { playMusic, likeMusic,addModal, deleteMusic, addNewPlaylist} from './update.js';
+import { playMusic, likeMusic,addModal, deleteMusic, addNewPlaylist,playAlbum, playPlaylist} from './update.js';
 import { getPlaylistAccueil, getOneArtist, getOneAlbum,getSearchAlbum ,getSearchArtist,getSearchMusic, getAccountFriend} from './get.js';
 import { ajaxRequest } from './ajax.js';
 
-
+//FONCTION QUI VA AFFICHER LES DERNIERES ECOUTES PUIS FAIT APPEL A LA FONCTION QUI VA AFFICHER LES PLAYLISTS
 export function displayLastEcoute(data) {
-    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = "";
 
@@ -41,7 +40,6 @@ export function displayLastEcoute(data) {
 
             let image = document.createElement('img');
             image.classList.add('card-img-top');
-            // console.log(data[i].album_chemin);
             image.src = data[i].album_chemin;
             image.alt = 'Card image cap';
             image.style.maxWidth = '250px';
@@ -85,6 +83,7 @@ export function displayLastEcoute(data) {
             playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
             ecartedDiv.appendChild(playButton);
 
+
             let likeButton = document.createElement('button');
             likeButton.classList.add('btn', 'btn-danger', 'colorRed');
             likeButton.type = 'submit';
@@ -96,6 +95,18 @@ export function displayLastEcoute(data) {
                 likeButton.innerHTML = '<span class="material-symbols-outlined">favorite</span>';
             }
             ecartedDiv.appendChild(likeButton);
+
+            let addFileButton = document.createElement('button');
+            addFileButton.classList.add('btn', 'btn-danger', 'colorRed');
+            addFileButton.type = 'submit';
+            addFileButton.id = 'play_' + id;
+            addFileButton.innerHTML = '<span class="material-symbols-outlined">queue_music</span>';
+            ecartedDiv.appendChild(addFileButton);
+
+            addFileButton.addEventListener('click', function() {
+                addMusicToQueue(id);
+            });
+            
 
             cardBodyDiv.appendChild(ecartedDiv);
             cardDiv.appendChild(cardBodyDiv);
@@ -124,6 +135,17 @@ export function displayLastEcoute(data) {
     getPlaylistAccueil();
 }
 
+function addMusicToQueue(id_music){
+    let id_perso = document.getElementById('id_perso').value;
+    let data = 'request=addMusicToQueue&id_music='+id_music+'&id_perso='+id_perso;
+    ajaxRequest('POST','php/request.php',addMusicToFileDisplay,data);
+}
+
+function addMusicToFileDisplay(data){
+    console.log(data);
+}
+
+//FONCTION QUI VA AFFICHER LES PLAYLISTS
 export function displayPlaylist(data) {
     let container = document.getElementById('container');
 
@@ -134,7 +156,6 @@ export function displayPlaylist(data) {
 
 
     divPlaylist.classList.add('d-flex', 'flex-row');
-    //Style : écarter les éléments de 50px 
     divPlaylist.style.margin = '15px 0px';
     let titleHeading = document.createElement('h2');
     titleHeading.margin = '0px 25px';
@@ -151,9 +172,6 @@ export function displayPlaylist(data) {
     divPlaylist.appendChild(buttonAdd);
 
     lastEcouteDiv.appendChild(divPlaylist);
-
-    
-
     if (data.length > 0) {
         let sliderDiv = document.createElement('div');
         sliderDiv.classList.add('d-flex', 'flex-row', 'sliderTest');
@@ -213,11 +231,13 @@ export function displayPlaylist(data) {
     container.appendChild(lastEcouteDiv);
 }
 
+//FONCTION QUI VA ALLER RECUPERER UNE PLAYLIST EN FONCTION DE SON ID
 export function displayOnePlaylist(id_playlist) {
     let id = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=getOnePLaylist&idPlaylist=' + id_playlist+'&idPerso='+id,displayOnePlaylistResponse);
 }
 
+//FONCTION QUI VA AFFICHER UNE PLAYLIST EN PARTICULIER 
 export function displayOnePlaylistResponse(data) {
     let container = document.getElementById('container');
     container.innerHTML = '';
@@ -260,6 +280,21 @@ export function displayOnePlaylistResponse(data) {
 
     addModalModifyPlaylist(data[0].playlist_id,data[0].playlist_name);
 
+    let buttonPlaylist = document.createElement('button');
+    buttonPlaylist.className = 'btn btn-danger colorRed little center';
+    buttonPlaylist.id = 'playAlbum_' + data[0].album_id;
+    let iTag = document.createElement('i');
+    iTag.classList.add('material-icons');
+    iTag.textContent = 'play_arrow';
+    buttonPlaylist.appendChild(iTag);
+    infoPlaylistDiv.appendChild(buttonPlaylist);
+
+    buttonPlaylist.addEventListener('click', function() {
+        playPlaylist(data[0].playlist_id);
+    });
+
+    
+
     topPlaylistDiv.appendChild(infoPlaylistDiv);
 
     container.appendChild(topPlaylistDiv);
@@ -267,7 +302,7 @@ export function displayOnePlaylistResponse(data) {
     let musicDiv = document.createElement('div');
     musicDiv.classList.add('music');
 
-    let headers = ['#', '', 'Titre', 'Artiste', 'Album', 'Durée', 'Date d\'ajout', 'Like', 'Supprimer'];
+    let headers = ['#', '', 'Titre', 'Artiste', 'Album', 'Durée', 'Date d\'ajout', 'Like', 'Supprimer','File'];
 
     for (let header of headers) {
     let headerDiv = document.createElement('div');
@@ -394,11 +429,22 @@ export function displayOnePlaylistResponse(data) {
                 deleteMusic(data[i].music_id,data[0].playlist_id);
             });
 
+            let queueButton = document.createElement('button');
+            queueButton.classList.add('btn', 'btn-danger', 'colorRed', 'queue', 'little', 'center');
+            queueButton.id = 'queuePlaylist_' + data[i].music_id;
+            queueButton.innerHTML = '<span class="material-symbols-outlined">queue_music</span>';
+            musicDiv.appendChild(queueButton);
+
+            queueButton.addEventListener('click', function() {
+                addMusicToQueue(data[i].music_id);
+            });
+
             container.appendChild(musicDiv);
         }
     }
 }
 
+//
 function addModalModifyPlaylist(id_playlist, playlist_title){
     let container = document.getElementById('container');
 
@@ -572,6 +618,7 @@ function deletePlaylistResponse(data){
         alert('Une erreur est survenue, vous ne pouvez pas supprimer votre playlist !');
     }
 }
+
 export function displayOneArtistResponse(data){
     // console.log(data);
     let container = document.getElementById('container');
@@ -747,6 +794,11 @@ export function displayOneArtistResponse2(data){
     playlistHeader.innerHTML = '<h2>Playlist</h2>';
     musicContainer.appendChild(playlistHeader);
 
+    let addToQueue = document.createElement('div');
+    addToQueue.classList.add('center');
+    addToQueue.innerHTML = '<h2>File</h2>';
+    musicContainer.appendChild(addToQueue);
+
     container.appendChild(musicContainer);
 
     for (let i = 0; i < data.length; i++) {
@@ -850,6 +902,19 @@ export function displayOneArtistResponse2(data){
 
         addModal(data[i].music_id);
 
+        let queueButton = document.createElement('button');
+        queueButton.className = 'btn btn-danger colorRed little center';
+        queueButton.id = 'queueAlbum_' + data[i].music_id;
+        let queueIcon = document.createElement('span');
+        queueIcon.className = 'material-icons';
+        queueIcon.textContent = 'queue_music';
+        queueButton.appendChild(queueIcon);
+        musicDiv.appendChild(queueButton);
+
+        queueButton.addEventListener('click', function() {
+            addMusicToQueue(data[i].music_id);
+        });
+
 
         container.appendChild(musicDiv);
     }
@@ -895,6 +960,19 @@ export function displayOneAlbumResponse(data){
     styleH2.textContent = 'Style: ' + data[0].album_style;
     infoPlaylistDiv.appendChild(styleH2);
 
+    let buttonPlaylist = document.createElement('button');
+    buttonPlaylist.className = 'btn btn-danger colorRed little center';
+    buttonPlaylist.id = 'playAlbum_' + data[0].album_id;
+    let iTag = document.createElement('i');
+    iTag.classList.add('material-icons');
+    iTag.textContent = 'play_arrow';
+    buttonPlaylist.appendChild(iTag);
+    infoPlaylistDiv.appendChild(buttonPlaylist);
+
+    buttonPlaylist.addEventListener('click', function() {
+        playAlbum(data[0].id_album);
+    });
+
     topPlaylistDiv.appendChild(infoPlaylistDiv);
     container.appendChild(topPlaylistDiv);
 
@@ -902,7 +980,7 @@ export function displayOneAlbumResponse(data){
     let musicArtistDiv = document.createElement('div');
     musicArtistDiv.className = 'musicArtist';
 
-    let headers = ['#', '<span class="material-symbols-outlined">image</span>', 'Titre', 'Artiste', 'Durée', 'Like', 'Ajouter'];
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>', 'Titre', 'Artiste', 'Durée', 'Like', 'Ajouter','File'];
 
     for (let headerText of headers) {
     let headerDiv = document.createElement('div');
@@ -1008,6 +1086,20 @@ export function displayOneAlbumResponse(data){
 
         addModal(data[i].music_id);
 
+        let queueButton = document.createElement('button');
+        queueButton.className = 'btn btn-danger colorRed little center';
+        queueButton.id = 'queueAlbum_' + data[i].music_id;
+        let queueIcon = document.createElement('span');
+        queueIcon.className = 'material-icons';
+        queueIcon.textContent = 'queue_music';
+        queueButton.appendChild(queueIcon);
+        musicArtistItemDiv.appendChild(queueButton);
+
+        queueButton.addEventListener('click', function () {
+            let music_id = data[i].music_id;
+            addMusicToQueue(music_id);
+        });
+
         container.appendChild(musicArtistItemDiv);
         }
 }
@@ -1042,7 +1134,6 @@ export function displayRechercheMusic(data){
 
     buttonMusique.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
-        // console.log(recherche);
         getSearchMusic(recherche);
         let choice = document.getElementById('choice');
         choice.value = 'musique';
@@ -1142,6 +1233,12 @@ export function displayRechercheMusic(data){
         h2Center8.textContent = 'Playlist';
         centerDiv8.appendChild(h2Center8);
 
+        let centerDiv9 = document.createElement('div');
+        centerDiv9.classList.add('center');
+        let h2Center9 = document.createElement('h2');
+        h2Center9.textContent = 'File';
+        centerDiv9.appendChild(h2Center9);
+
         musicArDiv.appendChild(centerDiv1);
         musicArDiv.appendChild(centerDiv2);
         musicArDiv.appendChild(centerDiv3);
@@ -1150,6 +1247,7 @@ export function displayRechercheMusic(data){
         musicArDiv.appendChild(centerDiv6);
         musicArDiv.appendChild(centerDiv7);
         musicArDiv.appendChild(centerDiv8);
+        musicArDiv.appendChild(centerDiv9);
 
         rechercheDiv.appendChild(musicArDiv);
 
@@ -1269,7 +1367,21 @@ export function displayRechercheMusic(data){
             addButton.setAttribute('data-bs-target', '#modalAlbum_'+data[i].music_id+'');
             centerDiv8.appendChild(addButton);
 
-            addModal(data[i].music_id);
+            let centerDiv9 = document.createElement('div');
+            centerDiv9.classList.add('center');
+            let addToQueue = document.createElement('button');
+            addToQueue.className = 'btn btn-danger colorRed little center';
+            addToQueue.id = 'addQueue_' + data[i].music_id;
+            let addQueueIcon = document.createElement('span');
+            addQueueIcon.className = 'material-icons';
+            addQueueIcon.textContent = 'queue_music';
+            addToQueue.appendChild(addQueueIcon);
+            centerDiv9.appendChild(addToQueue);
+
+            addToQueue.addEventListener('click', function () {
+                let music_id = data[i].music_id;
+                addMusicToQueue(music_id);
+            });
 
             addModal(data[i].music_id);
 
@@ -1281,6 +1393,7 @@ export function displayRechercheMusic(data){
             musicArDiv.appendChild(centerDiv6);
             musicArDiv.appendChild(centerDiv7);
             musicArDiv.appendChild(centerDiv8);
+            musicArDiv.appendChild(centerDiv9);
 
             container.appendChild(musicArDiv);
         }
@@ -1655,10 +1768,16 @@ function addFriendAccount(recherche){
 
 function displayAddFriendAccount(data){
     let partFriendAdd = document.getElementById('partFriendAdd');
+    
+    let result = document.getElementById('result');
+    if(result != null){
+        partFriendAdd.removeChild(result);
+    }
     if(data.length !=0){
         for(let i=0; i<data.length; i++){
             const friendDiv = document.createElement('div');
             friendDiv.classList.add('addingFriend');
+            friendDiv.id = 'result';
             partFriendAdd.appendChild(friendDiv);
 
             const friendName = document.createElement('p');
