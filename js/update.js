@@ -20,7 +20,20 @@ export function likeMusic(idMusic,page) {
     if(page == 'recherche'){
         ajaxRequest('POST','php/request.php',likeMusicRecherche,data);
     }
+    if(page == 'ami'){
+        ajaxRequest('POST','php/request.php',likeMusicFriend,data);
+    }
 }
+
+function likeMusicFriend(data) {
+    let buttonModif = document.getElementById('likeAmi_'+data[0]);
+    if(data[1] == 1){
+        buttonModif.innerHTML = '<i class="material-icons">favorite</i>';
+    }else{
+        buttonModif.innerHTML = '<i class="material-icons">favorite_border</i>';
+    }
+}
+
 
 function likeMusicRecherche(data) {
     let buttonModif = document.getElementById('likeRecherche_'+data[0]);

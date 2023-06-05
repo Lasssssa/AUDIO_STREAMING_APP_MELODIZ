@@ -212,6 +212,28 @@
         $accountFriend = dbGetAccountFriend($dbConnection, $_GET['idFriend']);
         echo json_encode($accountFriend);
     }
+    if(isset($_GET['request']) && $_GET['request'] == 'getMessage'){
+        $message = dbGetMessageBetweenFriend($dbConnection, $_GET['idPerso'], $_GET['idFriend']);
+        echo json_encode($message);
+    }
+    if(isset($_GET['request']) && $_GET['request'] == 'onePlaylistFriend'){
+        $playlist = dbGetPlaylistFriend($dbConnection,$_GET['idPlaylist']);
+        echo json_encode($playlist);
+    }
+    if(isset($_GET['request']) && $_GET['request'] == 'chat'){
+        $chat = dbGetAccountFriend($dbConnection,$_GET['idFriend']);
+        echo json_encode($chat);
+    }
+    if(isset($_POST['request']) && $_POST['request']=='addMessage'){
+        $addMessage = dbAddMessage($dbConnection, $_POST['idPerso'], $_POST['idFriend'], $_POST['message']);
+        echo json_encode($_POST['idFriend']);
+    }
+    // $chat = dbGetChat($dbConnection,1,2);
+    //     echo json_encode($chat);
+
+
+
+
     
 
     

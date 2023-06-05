@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS historique CASCADE;
 DROP TABLE IF EXISTS music_cree CASCADE;
 DROP TABLE IF EXISTS music_contenu CASCADE;
 DROP TABLE IF EXISTS etre_ami CASCADE;
-DROP TABLE IF EXISTS discuter CASCADE;
+DROP TABLE IF EXISTS discussion CASCADE;
 
 ------------------------------------------------------------
 --        Script Postgre 
@@ -149,15 +149,15 @@ CREATE TABLE public.etre_ami(
 
 
 ------------------------------------------------------------
--- Table: discuter
+-- Table: discussion
 ------------------------------------------------------------
-CREATE TABLE public.discuter(
-	id                INT  NOT NULL ,
-	id_User           INT  NOT NULL ,
-	date_discussion   DATE  NOT NULL ,
-	message_text              VARCHAR (250) NOT NULL  ,
-	CONSTRAINT discuter_PK PRIMARY KEY (id,id_User)
+CREATE TABLE public.discussion(
+	date_discussion   TIMESTAMP  NOT NULL ,
+	message_text      VARCHAR (250) NOT NULL ,
+	id                INT   ,
+	id_User           INT    ,
+	CONSTRAINT discussion_PK PRIMARY KEY (date_discussion)
 
-	,CONSTRAINT discuter_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
-	,CONSTRAINT discuter_User0_FK FOREIGN KEY (id_User) REFERENCES public.utilisateur(id)
+	,CONSTRAINT discussion_User_FK FOREIGN KEY (id) REFERENCES public.utilisateur(id)
+	,CONSTRAINT discussion_User0_FK FOREIGN KEY (id_User) REFERENCES public.utilisateur(id)
 )WITHOUT OIDS;

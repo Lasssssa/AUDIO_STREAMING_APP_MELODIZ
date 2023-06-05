@@ -913,7 +913,7 @@
 
     function dbGetAccountFriend($db,$idFriend){
         try{
-            $query = 'SELECT * FROM utilisateur u JOIN playlist p ON u.id = p.id WHERE id = :idFriend';
+            $query = 'SELECT DISTINCT * FROM utilisateur u JOIN playlist p ON u.id = p.id WHERE u.id = :idFriend';
             $statement = $db->prepare($query);
             $statement->bindParam(':idFriend', $idFriend);
             $statement->execute();
@@ -924,5 +924,76 @@
         return $result;
     }
 
+    function dbGetPlaylistFriend($db,$idPlaylist){
+        try{
+            $query = 'SELECT DISTINCT * FROM playlist p JOIN utilisateur ul ON ul.id = p.id JOIN music_contenu mc ON p.playlist_id = mc.playlist_id JOIN music m ON m.music_id = mc.music_id JOIN album a ON m.id_album = a.id_album JOIN artiste ar ON ar.artiste_id = a.artiste_id WHERE p.playlist_id = :idPlaylist';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPlaylist', $idPlaylist);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if(count($result) ==0){
+            $query = 'SELECT DISTINCT * FROM playlist p JOIN utilisateur u ON u.id = p.id WHERE p.playlist_id = :idPlaylist';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPlaylist', $idPlaylist);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $result;
+    }
+
+    function dbGetMessageBetweenFriend($db,$idPerso,$id_friend){
+        try{
+            $query = 'SELECT * FROM discussion m JOIN utilisateur u ON u.id = m.id_user WHERE (m.id_user = :idPerso AND m.id = :id_friend) OR (m.id_user = :id_friend AND m.id = :idPerso) ORDER BY m.date_discussion ASC';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
+    }
+
+    function dbGetChat($db,$idPerso,$id_friend){
+        try{
+            $query = 'SELECT * FROM discussion m JOIN utilisateur u ON u.id = m.id_user WHERE (m.id_user = :idPerso AND m.id = :id_friend) OR (m.id_user = :id_friend AND m.id = :idPerso) ORDER BY m.date_discussion ASC';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPerso', $idPerso);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+        if(count($result) ==0){
+            $query = 'SELECT * FROM utilisateur WHERE id = :id_friend';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $result;
+    }
+
+    function dbAddMessage($db,$id_perso,$id_friend,$message){
+        $date = date("Y-m-d H:i:s");
+        try{
+            $query = 'INSERT INTO discussion (id, id_user, message_text, date_discussion) VALUES (:id_friend, :id_perso, :messageText, :dateAjd)';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':id_friend', $id_friend);
+            $statement->bindParam(':id_perso', $id_perso);
+            $statement->bindParam(':messageText', $message);
+            $statement->bindParam(':dateAjd', $date);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return true;
+    }
 
     ?>

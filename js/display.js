@@ -1533,6 +1533,7 @@ export function displayAccountFriend(data){
     // Création de la div friend
     const friendDiv = document.createElement('div');
     friendDiv.classList.add('friend');
+    friendDiv.id = 'friendDiv';
     containerDiv.appendChild(friendDiv);
 
     // Création de la première partie partFriend
@@ -1616,90 +1617,6 @@ export function displayAccountFriend(data){
     getDemandeAmiEnvoye(data[0].id);
 
     getAmi(data[0].id);
-
-
-
-
-    //------------------------------------------------------------------------------------------------------------------------------------
-
-
-    //-----------------------------------------------------------------------------------Appelé que par le bouton chat
-    // Création du titre h2 pour le chat
-    // const chatH2 = document.createElement('h2');
-    // chatH2.textContent = 'Chat :';
-    // friendDiv.appendChild(chatH2);
-
-    // // Création de la div chat
-    // const chatDiv = document.createElement('div');
-    // chatDiv.classList.add('chat');
-    // friendDiv.appendChild(chatDiv);
-
-    // // Création de la div chatMessage
-    // const chatMessageDiv = document.createElement('div');
-    // chatMessageDiv.classList.add('chatMessage');
-    // chatDiv.appendChild(chatMessageDiv);
-
-    // // Création du formulaire
-    // const chatForm = document.createElement('form');
-    // chatMessageDiv.appendChild(chatForm);
-
-    // // Création du groupe de saisie pour l'historique des messages
-    // const inputGroup1 = document.createElement('div');
-    // inputGroup1.classList.add('input-group', 'mb-3');
-    // chatForm.appendChild(inputGroup1);
-
-    // const inputGroupPrepend1 = document.createElement('div');
-    // inputGroupPrepend1.classList.add('input-group-prepend');
-    // inputGroup1.appendChild(inputGroupPrepend1);
-
-    // const historiqueLabel = document.createElement('span');
-    // historiqueLabel.classList.add('input-group-text');
-    // historiqueLabel.setAttribute('id', 'basic-addon1');
-    // historiqueLabel.textContent = "L'historique de vos messages avec : Théo Porodo";
-    // inputGroupPrepend1.appendChild(historiqueLabel);
-
-    // // Création de la zone de texte pour l'historique des messages
-    // const historiqueTextarea = document.createElement('textarea');
-    // historiqueTextarea.classList.add('form-control');
-    // historiqueTextarea.setAttribute('rows', '10');
-    // historiqueTextarea.setAttribute('id', 'chat-friend');
-    // historiqueTextarea.setAttribute('readonly', true);
-    // chatForm.appendChild(historiqueTextarea);
-
-    // // Création du groupe de saisie pour le message
-    // const inputGroup2 = document.createElement('div');
-    // inputGroup2.classList.add('input-group', 'mb-3');
-    // chatForm.appendChild(inputGroup2);
-
-    // const inputGroupPrepend2 = document.createElement('div');
-    // inputGroupPrepend2.classList.add('input-group-prepend');
-    // inputGroup2.appendChild(inputGroupPrepend2);
-
-    // const messageLabel = document.createElement('span');
-    // messageLabel.classList.add('input-group-text');
-    // messageLabel.setAttribute('id', 'basic-addon1');
-    // messageLabel.setAttribute('name', 'message');
-    // messageLabel.textContent = 'Message';
-    // inputGroupPrepend2.appendChild(messageLabel);
-
-    // // Création de l'entrée de texte pour le message
-    // const messageInput = document.createElement('input');
-    // messageInput.setAttribute('type', 'text');
-    // messageInput.classList.add('form-control');
-    // messageInput.setAttribute('id', 'text-message');
-    // messageInput.setAttribute('placeholder', 'Entrez votre message');
-    // messageInput.setAttribute('required', true);
-    // messageInput.setAttribute('autofocus', true);
-    // inputGroup2.appendChild(messageInput);
-
-    // // Création du bouton d'envoi du message
-    // const sendButton = document.createElement('button');
-    // sendButton.setAttribute('type', 'submit');
-    // sendButton.classList.add('btn', 'btn-danger', 'float-right');
-    // sendButton.setAttribute('id', 'send-message');
-    // sendButton.textContent = 'Envoyer';
-    // chatForm.appendChild(sendButton);
-
 }
 
 function addFriendAccount(recherche){
@@ -1803,6 +1720,10 @@ function displayAmi(data){
             chatButton.setAttribute('id', 'chat');
             acceptedDiv.appendChild(chatButton);
 
+            chatButton.addEventListener('click', function(){
+                getChat(data[i].id);
+            });
+
             const chatSpan = document.createElement('span');
             chatSpan.classList.add('material-symbols-outlined');
             chatSpan.textContent = 'chat';
@@ -1828,6 +1749,125 @@ function displayAmi(data){
     }
 }
 
+function getChat(id_friend){
+    let id_user = document.getElementById('id_perso').value;
+    ajaxRequest('GET','php/request.php?request=chat&idFriend='+id_friend+'&idPerso='+id_user,displayChat);
+}
+
+function displayChat(data){
+    console.log('displayChat : ');
+    console.log(data);
+    let friendDiv = document.getElementById('friendDiv');
+    const chatH2 = document.createElement('h2');
+    chatH2.textContent = 'Chat :';
+    friendDiv.appendChild(chatH2);
+
+    // Création de la div chat
+    const chatDiv = document.createElement('div');
+    chatDiv.classList.add('chat');
+    friendDiv.appendChild(chatDiv);
+
+    // Création de la div chatMessage
+    const chatMessageDiv = document.createElement('div');
+    chatMessageDiv.classList.add('chatMessage');
+    chatDiv.appendChild(chatMessageDiv);
+
+    // Création du formulaire
+    const chatForm = document.createElement('form');
+    chatMessageDiv.appendChild(chatForm);
+
+    // Création du groupe de saisie pour l'historique des messages
+    const inputGroup1 = document.createElement('div');
+    inputGroup1.classList.add('input-group', 'mb-3');
+    chatForm.appendChild(inputGroup1);
+
+    const inputGroupPrepend1 = document.createElement('div');
+    inputGroupPrepend1.classList.add('input-group-prepend');
+    inputGroup1.appendChild(inputGroupPrepend1);
+
+    const historiqueLabel = document.createElement('span');
+    historiqueLabel.classList.add('input-group-text');
+    historiqueLabel.setAttribute('id', 'basic-addon1');
+    historiqueLabel.textContent = "L'historique de vos messages :";
+    inputGroupPrepend1.appendChild(historiqueLabel);
+
+    // Création de la zone de texte pour l'historique des messages
+    const historiqueTextarea = document.createElement('textarea');
+    historiqueTextarea.classList.add('form-control');
+    historiqueTextarea.setAttribute('rows', '10');
+    historiqueTextarea.setAttribute('id', 'chat-friend');
+    historiqueTextarea.setAttribute('readonly', true);
+    chatForm.appendChild(historiqueTextarea);
+
+    let idperso = document.getElementById('id_perso').value;
+    let idfriend = data[0].id;
+
+    getChatFriend(idperso,idfriend);
+
+    // Création du groupe de saisie pour le message
+    const inputGroup2 = document.createElement('div');
+    inputGroup2.classList.add('input-group', 'mb-3');
+    chatForm.appendChild(inputGroup2);
+
+    const inputGroupPrepend2 = document.createElement('div');
+    inputGroupPrepend2.classList.add('input-group-prepend');
+    inputGroup2.appendChild(inputGroupPrepend2);
+
+    const messageLabel = document.createElement('span');
+    messageLabel.classList.add('input-group-text');
+    messageLabel.setAttribute('id', 'basic-addon1');
+    messageLabel.setAttribute('name', 'message');
+    messageLabel.textContent = 'Message';
+    inputGroupPrepend2.appendChild(messageLabel);
+
+    // Création de l'entrée de texte pour le message
+    const messageInput = document.createElement('input');
+    messageInput.setAttribute('type', 'text');
+    messageInput.classList.add('form-control');
+    messageInput.setAttribute('id', 'text-message');
+    messageInput.setAttribute('placeholder', 'Entrez votre message');
+    messageInput.setAttribute('required', true);
+    messageInput.setAttribute('autofocus', true);
+    inputGroup2.appendChild(messageInput);
+
+    // Création du bouton d'envoi du message
+    const sendButton = document.createElement('button');
+    sendButton.setAttribute('type', 'submit');
+    sendButton.classList.add('btn', 'btn-danger', 'float-right');
+    sendButton.setAttribute('id', 'send-message');
+    sendButton.textContent = 'Envoyer';
+    chatForm.appendChild(sendButton);
+
+    sendButton.addEventListener('click', function(){
+        event.preventDefault();
+        let message = document.getElementById('text-message').value;
+        let id_perso = document.getElementById('id_perso').value;
+        addMessage(data[0].id,id_perso,message);
+    });
+}
+
+function getChatFriend(idPerso,idFriend){
+    console.log(idPerso+' '+idFriend);
+    ajaxRequest('GET','php/request.php?request=getMessage&idFriend='+idFriend+'&idPerso='+idPerso,updateChat);
+}
+
+function addMessage(idFriend,idPerso,message){
+    ajaxRequest('POST','php/request.php',getChat,'request=addMessage&idFriend='+idFriend+'&idPerso='+idPerso+'&message='+message);
+}
+
+
+function updateChat(data){
+    console.log(data);
+    let element = document.getElementById("chat-friend");
+    element.value = "";
+    let size = data.length;
+    for (let i = 0; i < size; i++) {
+        // element.value += data[i]['nickname']+" : "+json[i]['message']+"\n";
+        element.value += data[i].date_discussion + ' - '+data[i].user_firstname+' '+data[i].user_lastname+ ' : '+data[i].message_text+"\n";
+    }
+    element.scrollTop = element.scrollHeight;
+}
+
 function getAccountOfFriend(id){
     console.log(id);
     ajaxRequest('GET','php/request.php?request=accountOfFriend&idFriend='+id,displayAccountOfFriend);
@@ -1835,6 +1875,289 @@ function getAccountOfFriend(id){
 
 function displayAccountOfFriend(data){
     console.log(data);
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
+    let artistDiv = document.createElement('div');
+    artistDiv.classList.add('artist');
+
+    let topPlaylistDiv = document.createElement('div');
+    topPlaylistDiv.classList.add('topPlaylist');
+
+    let imgDiv = document.createElement('div');
+    imgDiv.classList.add('img');
+
+    let img = document.createElement('img');
+    img.src = data[0].user_chemin;
+    img.style.maxWidth = '250px';
+    img.style.maxHeight = '250px';
+    imgDiv.appendChild(img);
+    topPlaylistDiv.appendChild(imgDiv);
+
+    let infoPlaylistDiv = document.createElement('div');
+    infoPlaylistDiv.classList.add('infoPlaylist');
+
+    let h1 = document.createElement('h1');
+    h1.textContent = data[0].user_firstname + ' ' + data[0].user_lastname;
+    infoPlaylistDiv.appendChild(h1);
+
+    let h2 = document.createElement('h2');
+    h2.textContent = 'Membre depuis : ' + data[0].creation_date;
+    infoPlaylistDiv.appendChild(h2);
+
+    topPlaylistDiv.appendChild(infoPlaylistDiv);
+    artistDiv.appendChild(topPlaylistDiv);
+
+    let albumPartDiv = document.createElement('div');
+    albumPartDiv.classList.add('albumPart');
+
+    let h1Album = document.createElement('h1');
+    h1Album.textContent = 'Playlist de ' + data[0].user_firstname + ' ' + data[0].user_lastname;
+    albumPartDiv.appendChild(h1Album);
+    artistDiv.appendChild(albumPartDiv);
+
+    let sliderTestDiv = document.createElement('div');
+    sliderTestDiv.classList.add('d-flex', 'flex-row', 'sliderTest');
+
+    if(data.length == 0){
+        let playlistVide = document.createElement('p');
+        playlistVide.textContent = 'Aucune playlist';
+        sliderTestDiv.appendChild(playlistVide);
+    }
+    else{
+        for(let i = 0 ; i < data.length ; i++){
+            let titlePlaylist = data[i].playlist_name;
+            let imgSrc = data[i].playlist_picture;
+            let date = data[i].playlist_creation;
+
+            let cardDiv = document.createElement('div');
+            cardDiv.classList.add('card', 'onclicktest', 'center');
+            cardDiv.style.minWidth = '250px';
+            cardDiv.style.minHeight = '250px';
+            cardDiv.style.maxWidth = '250px';
+            cardDiv.style.margin = '0px 15px';
+
+            let cardImg = document.createElement('img');
+            cardImg.classList.add('card-img-top');
+            cardImg.src = imgSrc;
+            cardImg.style.maxWidth = '250px';
+            cardImg.style.maxHeight = '250px';
+            cardDiv.appendChild(cardImg);
+
+            cardImg.addEventListener('click', function() {
+                getOnePlaylistFriend(data[i].playlist_id);
+            });
+
+            let cardBodyDiv = document.createElement('div');
+            cardBodyDiv.classList.add('card-body');
+
+            let cardTitle = document.createElement('h5');
+            cardTitle.classList.add('card-title');
+            cardTitle.textContent = titlePlaylist;
+            cardBodyDiv.appendChild(cardTitle);
+
+            let cardText = document.createElement('p');
+            cardText.classList.add('card-text', 'centerText');
+            cardText.innerHTML = '<p>' +date+ '</p>';
+            cardBodyDiv.appendChild(cardText);
+
+            cardDiv.appendChild(cardBodyDiv);
+            sliderTestDiv.appendChild(cardDiv);
+        }
+        artistDiv.appendChild(sliderTestDiv);
+
+    }
+    container.appendChild(artistDiv);
+
+}
+
+function getOnePlaylistFriend(id){
+    ajaxRequest('GET','php/request.php?request=onePlaylistFriend&idPlaylist='+id,displayOnePlaylistFriend);
+}
+
+function displayOnePlaylistFriend(data){
+    console.log(data);
+    let container = document.getElementById('container');
+    container.innerHTML = '';
+
+    let topPlaylistDiv = document.createElement('div');
+    topPlaylistDiv.classList.add('topPlaylist');
+
+    let imgDiv = document.createElement('div');
+    imgDiv.classList.add('img');
+
+    let img = document.createElement('img');
+    if(data.length == 0){
+        img.src = data.playlist_picture;
+    }else{
+        img.src = data[0].playlist_picture;
+    }
+    img.style.maxWidth = '250px';
+    img.style.maxHeight = '250px';
+    imgDiv.appendChild(img);
+
+    topPlaylistDiv.appendChild(imgDiv);
+
+    let infoPlaylistDiv = document.createElement('div');
+    infoPlaylistDiv.classList.add('infoPlaylist');
+
+    let h1 = document.createElement('h1');
+    if(data.length == 0){
+        h1.textContent = data.playlist_name;
+    }else{
+        h1.textContent = data[0].playlist_name;
+    }
+    infoPlaylistDiv.appendChild(h1);
+
+    let h2 = document.createElement('h2');
+    if(data.length == 0){
+        h2.textContent = data.user_firstname + ' ' + data.user_lastname;
+    }else{
+        h2.textContent = data[0].user_firstname + ' ' + data[0].user_lastname;
+    }
+    infoPlaylistDiv.appendChild(h2);
+
+    let dateH2 = document.createElement('h2');
+    if(data.length == 0){
+        dateH2.textContent = 'Date: ' + data.playlist_creation;
+    }else{
+        dateH2.textContent = 'Date: ' + data[0].playlist_creation;
+    }
+    infoPlaylistDiv.appendChild(dateH2);
+
+    let button = document.createElement('button');
+    button.classList.add('btn', 'btn-danger', 'colorRed', 'center');
+    button.setAttribute('data-bs-toggle', 'modal');
+    button.setAttribute('data-bs-target', '#modalModifyPlaylist');
+    button.innerHTML = '<span class="material-symbols-outlined">play_circle</span>&nbsp&nbsp Modifier';
+    infoPlaylistDiv.appendChild(button);
+
+    topPlaylistDiv.appendChild(infoPlaylistDiv);
+
+    container.appendChild(topPlaylistDiv);
+
+    let musicDiv = document.createElement('div');
+    musicDiv.classList.add('musicAr');
+
+    let headers = ['#', '', 'Titre', 'Artiste', 'Album', 'Durée', 'Date d\'ajout', 'Like'];
+
+    for (let header of headers) {
+    let headerDiv = document.createElement('div');
+    headerDiv.classList.add('center');
+    let h2 = document.createElement('h2');
+    if(header == '') {
+        h2.innerHTML = '<span class="material-symbols-outlined">image</span>';
+    }
+    else{
+        h2.textContent = header;
+    }
+    headerDiv.appendChild(h2);
+    musicDiv.appendChild(headerDiv);
+    }
+
+    container.appendChild(musicDiv);
+    // console.log(data);
+    let size = data.length;
+    let isValid = data.music_id != null;
+    if(data.length != 0 && isValid){
+            
+        for (let i = 0; i < size; i++) {
+            let musicDiv = document.createElement('div');
+            musicDiv.classList.add('musicAr');
+
+            let playButton = document.createElement('button');
+            playButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');
+            playButton.innerHTML = '<span class="material-symbols-outlined">play_circle</span>';
+            musicDiv.appendChild(playButton);
+
+            playButton.addEventListener('click', function() {
+                playMusic(data[i].music_id);
+            });
+
+            let img = document.createElement('img');
+            img.classList.add('center');
+            img.src = data[i].album_chemin;
+            img.style.maxWidth = '50px';
+            img.style.maxHeight = '50px';
+            musicDiv.appendChild(img);
+
+            img.addEventListener('click', function() {
+                getOneAlbum(data[i].id_album);
+            });
+
+            let titleDiv = document.createElement('div');
+            titleDiv.classList.add('title', 'center');
+            let h2 = document.createElement('h2');
+            h2.textContent = data[i].music_title;
+            titleDiv.appendChild(h2);
+            musicDiv.appendChild(titleDiv);
+
+            titleDiv.addEventListener('click', function() {
+                getOneAlbum(data[i].id_album);
+            });
+
+            let artistDiv = document.createElement('div');
+            artistDiv.classList.add('artist', 'center');
+            h2 = document.createElement('h2');
+            if(data[i].artiste_lastname == null) {
+                h2.textContent = data[i].artiste_name;
+            }else {
+                h2.textContent =  data[i].artiste_name+ ' '+data[i].artiste_lastname;;
+            }
+            artistDiv.appendChild(h2);
+            artistDiv.addEventListener('click', function() {
+                getOneArtist(data[i].artiste_id);
+            });
+
+            musicDiv.appendChild(artistDiv);
+
+            let albumDiv = document.createElement('div');
+            albumDiv.classList.add('center');
+            h2 = document.createElement('h2');
+            h2.textContent = data[i].album_title;
+            albumDiv.appendChild(h2);
+            albumDiv.addEventListener('click', function() {
+                getOneAlbum(data[i].id_album);
+            });
+            musicDiv.appendChild(albumDiv);
+
+            let durationDiv = document.createElement('div');
+            durationDiv.classList.add('duration', 'center');
+            h2 = document.createElement('h2');
+            h2.textContent = data[i].music_duration;
+            durationDiv.appendChild(h2);
+            musicDiv.appendChild(durationDiv);
+
+            let dateDiv = document.createElement('div');
+            dateDiv.classList.add('date', 'center');
+            h2 = document.createElement('h2');
+            h2.textContent = data[i].date_ajout;
+            dateDiv.appendChild(h2);
+            musicDiv.appendChild(dateDiv);
+
+            let likeButton = document.createElement('button');
+            likeButton.classList.add('btn', 'btn-danger', 'colorRed', 'like', 'little', 'center');
+            likeButton.id = 'likeAmi_' + data[i].music_id;
+            let iTag = document.createElement('i');
+            iTag.classList.add('material-icons');
+
+            if(data[i].isliked == 1) {
+                iTag.textContent = 'favorite';
+            }
+            else{
+                iTag.textContent = 'favorite_border';
+            }
+            likeButton.appendChild(iTag);
+            musicDiv.appendChild(likeButton);
+
+            likeButton.addEventListener('click', function() {
+                likeMusic(data[i].music_id,'ami');
+            });
+
+
+            container.appendChild(musicDiv);
+        }
+    }
 }
 
 function deleteBothFriend(id_friend){
