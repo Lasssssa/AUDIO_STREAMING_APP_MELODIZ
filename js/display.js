@@ -1755,9 +1755,9 @@ function getChat(id_friend){
 }
 
 function displayChat(data){
-    console.log('displayChat : ');
-    console.log(data);
     let friendDiv = document.getElementById('friendDiv');
+
+    friendDiv.innerHTML = '';
     const chatH2 = document.createElement('h2');
     chatH2.textContent = 'Chat :';
     friendDiv.appendChild(chatH2);
