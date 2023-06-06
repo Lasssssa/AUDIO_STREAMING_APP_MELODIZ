@@ -207,6 +207,7 @@ function startGameResponse(data,i=0,find=true){
     if(find==false){
         scoreValue -=1;
     }
+    console.log(data);
     let id_perso = document.getElementById('id_perso').value;
     let container = document.getElementById('container');
     container.innerHTML = '';
@@ -275,7 +276,7 @@ function startGameResponse(data,i=0,find=true){
         let reponse = document.getElementById('inputText').value;
         let messageResponse = document.getElementById('messageResponse');
         messageResponse.innerHTML = '';
-        if(reponse != data[i].music_title){
+        if(reponse.toLowerCase() != (data[i].music_title).toLowerCase()){
             let alert = document.createElement('div');
             alert.setAttribute('id', 'alert');
             alert.setAttribute('class', 'alert alert-danger');
@@ -291,12 +292,12 @@ function startGameResponse(data,i=0,find=true){
             messageResponse.appendChild(alert);
             scoreValue+=1;
             let artiste = document.getElementById('inputArtist').value;
-            let album = document.getElementById('inputAlbum').value;
-            if(artiste == data[i].artiste_name || artiste == data[i].artiste_lastname){
+            if(artiste.toLowerCase() == (data[i].artiste_name).toLowerCase() || artiste.toLowerCase() == (data[i].artiste_lastname).toLowerCase()){
                 scoreValue+=1;
             }
+            console.log('newgame')
             document.getElementById('gameScoreValue').value = scoreValue;
-            startGameResponse(data, i+1);
+            startGameResponse(data,i+1,true);
         }
     });
 
