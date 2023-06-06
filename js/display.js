@@ -929,6 +929,7 @@ export function displayOneAlbumResponse(data){
 
     let img = document.createElement('img');
     img.src = data[0].album_chemin;
+    img.classList.add('onclicktest');
     img.style.maxWidth = '250px';
     img.style.maxHeight = '250px';
     imgDiv.appendChild(img);
