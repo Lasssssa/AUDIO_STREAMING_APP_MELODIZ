@@ -522,14 +522,14 @@ function addModalModifyPlaylist(id_playlist, playlist_title){
     
     form.appendChild(inputHidden);
     
-    let imageButton = document.createElement('button');
-    imageButton.type = 'submit';
-    imageButton.name = 'submit_playlist';
-    imageButton.classList.add('btn', 'btn-danger', 'colorRed');
-    imageButton.id = 'submit_playlist';
-    imageButton.textContent = 'Ajouter l\'image';
+    // let imageButton = document.createElement('button');
+    // imageButton.type = 'submit';
+    // imageButton.name = 'submit_playlist';
+    // imageButton.classList.add('btn', 'btn-danger', 'colorRed');
+    // imageButton.id = 'submit_playlist';
+    // imageButton.textContent = 'Ajouter l\'image';
     
-    form.appendChild(imageButton);
+    // form.appendChild(imageButton);
 
     //Création d'un bouton pour supprimer la playlist
     let deleteButton = document.createElement('button');
@@ -918,7 +918,7 @@ export function displayOneArtistResponse2(data){
 }
 
 export function displayOneAlbumResponse(data){
-    // console.log(data);
+    console.log(data);
     
     let container = document.getElementById('container');
     container.innerHTML = '';

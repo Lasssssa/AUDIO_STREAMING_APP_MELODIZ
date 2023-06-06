@@ -150,7 +150,6 @@
      margin: 5%;
     text-align: center; 
 } */
-
 .music{
    background-color: #EDF2F4;
    display : grid;
@@ -274,9 +273,6 @@
     background-color: blue;
 }
 
-audio{
-    display: none;
-  }
 
   body{
     background-color: #F8F3F3;

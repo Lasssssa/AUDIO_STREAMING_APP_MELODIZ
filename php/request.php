@@ -297,4 +297,9 @@
         echo json_encode($playPlaylist);
     }
 
+    if(isset($_GET['request']) && $_GET['request'] == 'getGame'){
+        $tenMusic = dbGetTenMusic($dbConnection);
+        echo json_encode($tenMusic);
+    }
+
 ?>

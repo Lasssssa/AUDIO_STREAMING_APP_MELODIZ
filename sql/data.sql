@@ -306,7 +306,7 @@ INSERT INTO music(music_title,music_duration,id_album,music_play_chemin) VALUES
 ('Gun salute','2:34',29,'music/defaut.mp3'),
 ('Si tu savais','2:34',29,'music/defaut.mp3'),
 
-('La vie de rêve','2:34',30,'music/defaut.mp'),
+('La vie de rêve','2:34',30,'music/defaut.mp3'),
 ('Shape of You', '3:53', 31, 'music/defaut.mp3'),
 ('Castle on the Hill', '4:21', 31, 'music/defaut.mp3'),
 ('Galway Girl', '2:50', 31, 'music/defaut.mp3'),
@@ -537,7 +537,7 @@ INSERT INTO music(music_title,music_duration,id_album,music_play_chemin) VALUES
 ('Congratulations', '3:41', 76, 'music/defaut.mp3'),
 ('Stitches', '3:26', 77, 'music/defaut.mp3'),
 ('Treat You Better', '3:07', 77, 'music/defaut.mp3'),
-('In My Blood', '3:31', 77, 'music/in_my_bdefautlood.mp3'),
+('In My Blood', '3:31', 77, 'music/defaut.mp3'),
 ('Lost in Japan', '3:21', 77, 'music/defaut.mp3'),
 ('If I Can''t Have You', '3:11', 77, 'music/defaut.mp3'),
 ('Bodak Yellow', '3:44', 78, 'music/defaut.mp3'),

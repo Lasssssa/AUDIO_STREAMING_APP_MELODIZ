@@ -151,7 +151,7 @@
                 ) pc ON pc.music_id = m.music_id
                 WHERE h.id = :id
                 ORDER BY h.last_ecoute DESC
-                LIMIT 10';
+                LIMIT 15';
             $statement = $db->prepare($query);
             $statement->bindParam(':id', $id);
             $statement->bindParam(':playlist_id', $id_PlaylistLike);
@@ -489,7 +489,7 @@
     
         $totalMusics = intval($countResult['total']);
     
-        if ($totalMusics > 10) {
+        if ($totalMusics > 15) {
             // Requête SQL pour sélectionner la musique la plus ancienne de la personne donnée
             $sql = "SELECT * FROM historique WHERE id = :personId ORDER BY last_ecoute ASC LIMIT 1";
             $stmt = $db->prepare($sql);
@@ -575,45 +575,95 @@
         return $img;
     }
 
+    //FONCTION QUI VA ENLEVER LES CHIFFRES D'UNE CHAINE DE CARACTERE POUR VOIR SI C'EST UN NOMBRE
+    function is_numericText($text){
+        $text = str_replace('0','',$text);
+        $text = str_replace('1','',$text);
+        $text = str_replace('2','',$text);
+        $text = str_replace('3','',$text);
+        $text = str_replace('4','',$text);
+        $text = str_replace('5','',$text);
+        $text = str_replace('6','',$text);
+        $text = str_replace('7','',$text);
+        $text = str_replace('8','',$text);
+        $text = str_replace('9','',$text);
+        if($text == ''){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     //FONCTION DE RECHERCHE DE MUSIQUE
     function dbRechercheMusic($db, $recherche,$idPerso){
         $id_playlist = getLikePlaylist($db,$idPerso);
-        $recherche = '%'.$recherche.'%';
-        try{
+        if (strlen($recherche) == 4 && is_numericText($recherche)) {
+            // $recherche = $recherche . '%';
             $query = 'SELECT DISTINCT music.*, album.*, artiste.*, 
                 CASE WHEN music.music_id IN (
                     SELECT music_id FROM music_contenu WHERE playlist_id = :id_playlistlike
                 ) THEN TRUE ELSE FALSE END AS isliked
-            FROM music
-            JOIN album ON music.id_album = album.id_album
-            JOIN artiste ON album.artiste_id = artiste.artiste_id
-            WHERE LOWER(music.music_title) LIKE LOWER(:recherche)';
+                FROM music
+                JOIN album ON music.id_album = album.id_album
+                JOIN artiste ON album.artiste_id = artiste.artiste_id
+                WHERE EXTRACT(YEAR FROM album.album_creation) = :recherche';
             $statement = $db->prepare($query);
             $statement->bindParam(':recherche', $recherche);
             $statement->bindParam(':id_playlistlike', $id_playlist);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
-            echo $e->getMessage();
+            return $result;
+        }else{
+            $recherche = '%'.$recherche.'%';
+            try{
+                $query = 'SELECT DISTINCT music.*, album.*, artiste.*, 
+                    CASE WHEN music.music_id IN (
+                        SELECT music_id FROM music_contenu WHERE playlist_id = :id_playlistlike
+                    ) THEN TRUE ELSE FALSE END AS isliked
+                FROM music
+                JOIN album ON music.id_album = album.id_album
+                JOIN artiste ON album.artiste_id = artiste.artiste_id
+                WHERE LOWER(music.music_title) LIKE LOWER(:recherche)';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':recherche', $recherche);
+                $statement->bindParam(':id_playlistlike', $id_playlist);
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+            return $result;
         }
-        return $result;
     }
 
     //FONCTION DE RECHERCHE D'ALBUM
     function dbRechercheAlbum($db,$recherche){
-        $recherche = '%'.$recherche.'%';
-        try{
-            $query = 'SELECT DISTINCT album.*, artiste.* FROM album
-            JOIN artiste ON album.artiste_id = artiste.artiste_id
-            WHERE LOWER(album.album_title) LIKE LOWER(:recherche)';
+        if (strlen($recherche) == 4 && is_numericText($recherche)) {
+            // $recherche = $recherche . '%';
+            $query = 'SELECT DISTINCT album.*, artiste.*
+                FROM album
+                JOIN artiste ON album.artiste_id = artiste.artiste_id
+                WHERE EXTRACT(YEAR FROM album.album_creation) = :recherche';
             $statement = $db->prepare($query);
             $statement->bindParam(':recherche', $recherche);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        }catch(Exception $e){
-            echo $e->getMessage();
+            return $result;
+        }else{
+            $recherche = '%'.$recherche.'%';
+            try{
+                $query = 'SELECT DISTINCT album.*, artiste.* FROM album
+                JOIN artiste ON album.artiste_id = artiste.artiste_id
+                WHERE LOWER(album.album_title) LIKE LOWER(:recherche)';
+                $statement = $db->prepare($query);
+                $statement->bindParam(':recherche', $recherche);
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+            return $result;
         }
-        return $result;
     }
 
     //FONCTION DE RECHERCHE D'ARTISTE
@@ -1211,6 +1261,20 @@
             echo $e->getMessage();
         }
         return true;
+    }
+
+    //FONCTION QUI RENVOI 10 MUSIQUES ALEATOIRE
+    function dbGetTenMusic($db){
+        try{
+            $query = 'SELECT * FROM music m JOIN album a ON a.id_album = m.id_album JOIN artiste ar ON ar.artiste_id = a.artiste_id ORDER BY RANDOM() LIMIT 10';
+            $statement = $db->prepare($query);
+            $statement->execute();
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+        return $result;
     }
 
     ?>

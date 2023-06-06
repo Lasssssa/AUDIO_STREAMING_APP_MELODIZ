@@ -21,12 +21,6 @@
         changePath($db, $_SESSION['id'], $chemin);
     }
 
-    if(isset($_POST['submit_playlist']) && isset($_FILES['photo_playlist']) && !empty($_FILES['photo_playlist']['name'])){
-        $chemin = 'playlist/playlist_'.$_POST['id_playlist'].'.png';
-        move_uploaded_file($_FILES['photo_playlist']['tmp_name'], $chemin);
-        $dbConnection = dbConnect();
-        changePathPlaylist($db, $_POST['id_playlist'], $chemin);
-    }
     
 ?>
 
@@ -85,13 +79,16 @@
                     </span>
                 </button>
 
-                <div class="col-6 d-flex justify-content-center">
+                <div class="col-5 d-flex justify-content-center">
                     <input type="text" class="form-control" id="rechercheText">
-                    <button class="btn btn-secondary" id="recherche">
-                        <span class="material-symbols-outlined">search</span>
-                    </button>
                 </div>
 
+                <div class="col-1 d-flex justify-content-center">
+                    <button class="btn btn-secondary" id="game">
+                        <span class="material-symbols-outlined">smart_toy</span>
+                    </button>
+
+                </div>
                 <div class="col-3 d-flex justify-content-end">
                     <div class="dropdown">
                         <a class="nav-link dropdown-toggle text-center" id="nameAccount" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -117,6 +114,7 @@
         <!-- DIV container qui va être la base de toutes les pages -->
         <div id="container">
         
+            
             <div class="friendAccount">
 
             </div>
@@ -151,7 +149,6 @@
                     <input type="range" class="progressBar" id="progressMusic" min="0" max="100" step="1" value="0" style="width: 500px; accent-color: #000000;">
                     <label for="volume" id="end">1:00</label>
                 </div>
-S
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <audio class="music" id="musicPlaying" src="xxx.mp3"></audio>
                     <button type="button" class="btn clear" id="mute"><i class="material-icons">volume_up</i></button>
