@@ -292,28 +292,52 @@
     //FONCTION QUI RECUPERE LES INFORMATIONS D'UNE PLAYLIST EN AJOUTANT SI LA MUSIQUE EST DANS LA PLAYLIST LIKE
     function dbGetOnePlaylist($dbConnection,$idPlaylist,$idPerso){
         $id_titre_like = getLikePlaylist($dbConnection,$idPerso);
+
         try{
-            $query = 'SELECT *, 
-            CASE WHEN EXISTS (
-                SELECT 1 FROM playlist a
-                LEFT JOIN music_contenu ON a.playlist_id = music_contenu.playlist_id
-                WHERE a.playlist_id = :idPlaylistLike AND music_contenu.music_id = music.music_id
-            ) THEN 1 ELSE 0 END AS isliked
-            FROM playlist a
-            LEFT JOIN music_contenu ON a.playlist_id = music_contenu.playlist_id
-            LEFT JOIN music ON music_contenu.music_id = music.music_id
-            LEFT JOIN album ON music.id_album = album.id_album
-            LEFT JOIN artiste ON album.artiste_id = artiste.artiste_id
-            LEFT JOIN utilisateur ON a.id = utilisateur.id
-            WHERE a.playlist_id = :idPlaylist AND a.id = :idPerso';
+            $query = 'SELECT * FROM music_contenu WHERE playlist_id = :idPlaylist';
             $statement = $dbConnection->prepare($query);
             $statement->bindParam(':idPlaylist', $idPlaylist);
-            $statement->bindParam(':idPerso', $idPerso);
-            $statement->bindParam(':idPlaylistLike', $id_titre_like);
             $statement->execute();
             $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         }catch(Exception $e){
             echo $e->getMessage();
+        }
+        if(count($result) > 0){
+            try{
+                $query = 'SELECT *, 
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM playlist a
+                    LEFT JOIN music_contenu ON a.playlist_id = music_contenu.playlist_id
+                    WHERE a.playlist_id = :idPlaylistLike AND music_contenu.music_id = music.music_id
+                ) THEN 1 ELSE 0 END AS isliked
+                FROM playlist a
+                LEFT JOIN music_contenu ON a.playlist_id = music_contenu.playlist_id
+                LEFT JOIN music ON music_contenu.music_id = music.music_id
+                LEFT JOIN album ON music.id_album = album.id_album
+                LEFT JOIN artiste ON album.artiste_id = artiste.artiste_id
+                LEFT JOIN utilisateur ON a.id = utilisateur.id
+                WHERE a.playlist_id = :idPlaylist AND a.id = :idPerso';
+                $statement = $dbConnection->prepare($query);
+                $statement->bindParam(':idPlaylist', $idPlaylist);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->bindParam(':idPlaylistLike', $id_titre_like);
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+        }
+        else{
+            try{
+                $query = 'SELECT * FROM playlist a JOIN utilisateur u ON u.id = a.id WHERE a.playlist_id = :idPlaylist AND a.id = :idPerso';
+                $statement = $dbConnection->prepare($query);
+                $statement->bindParam(':idPlaylist', $idPlaylist);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->execute();
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
         }
         return $result;
     }

@@ -34,6 +34,9 @@
         echo json_encode($playlist);
     }
 
+    // $playlist = dbGetOnePlaylist($dbConnection, 8,1);
+    //     echo json_encode($playlist);
+
     //REQUETE POUR RECUPERER UN ARTISTE EN PARTICULIER
     if(isset($_GET['request']) && $_GET['request'] == 'getOneArtist'){
         $artist = dbGetOneArtist($dbConnection, $_GET['idArtist']);

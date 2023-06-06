@@ -232,11 +232,13 @@ export function displayPlaylist(data) {
 //FONCTION QUI VA ALLER RECUPERER UNE PLAYLIST EN FONCTION DE SON ID
 export function displayOnePlaylist(id_playlist) {
     let id = document.getElementById('id_perso').value;
+    console.log(id_playlist);
     ajaxRequest('GET','php/request.php?request=getOnePLaylist&idPlaylist=' + id_playlist+'&idPerso='+id,displayOnePlaylistResponse);
 }
 
 //FONCTION QUI VA AFFICHER UNE PLAYLIST EN PARTICULIER 
 export function displayOnePlaylistResponse(data) {
+    console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -608,6 +610,7 @@ function deletePlaylist(id_playlist){
 
 //FONCTION QUI RECUPERE LES DONNES DE LA PLAYLIST SUPPRIMER 
 function deletePlaylistResponse(data){
+    console.log(data);
     if(data == 1){
         window.location.reload();
     }else{
