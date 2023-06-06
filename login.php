@@ -54,10 +54,9 @@
             </div>
             <div class="centerLogin">
                 <div class="imgLogin">
-                    <img src="img/logo.png" alt="logo" width="150px">
+                    <img src="img/melodiz.png" alt="logo" width="250px">
                 </div>
                 <div class="titleLogin">
-                    <h1>MÉLODIZ</h1>
                 </div>
                 <div class="loginBox shadow">
                     <h1>CONNEXION</h1>

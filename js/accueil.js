@@ -11,7 +11,6 @@ getLastEcoute();
 //RECUPERE LES MUSIC EN COURS--------------------------------------
 let playMusic1 = document.getElementById('playMusic');
 let musicPlaying = document.getElementById('musicPlaying');
-// console.log(playMusic);
 
 playMusic1.addEventListener('click', function() {
   if(musicPlaying.paused){
@@ -205,7 +204,6 @@ function startGame(){
 
 let scoreValue = 0;
 function startGameResponse(data,i=0,find=true){
-    console.log(data);
     if(find==false){
         scoreValue -=1;
     }
@@ -296,7 +294,6 @@ function startGameResponse(data,i=0,find=true){
             let album = document.getElementById('inputAlbum').value;
             if(artiste == data[i].artiste_name || artiste == data[i].artiste_lastname){
                 scoreValue+=1;
-                console.log('artiste');
             }
             document.getElementById('gameScoreValue').value = scoreValue;
             startGameResponse(data, i+1);

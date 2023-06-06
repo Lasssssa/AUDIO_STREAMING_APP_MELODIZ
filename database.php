@@ -151,7 +151,7 @@
                 ) pc ON pc.music_id = m.music_id
                 WHERE h.id = :id
                 ORDER BY h.last_ecoute DESC
-                LIMIT 15';
+                LIMIT 20';
             $statement = $db->prepare($query);
             $statement->bindParam(':id', $id);
             $statement->bindParam(':playlist_id', $id_PlaylistLike);
@@ -489,7 +489,7 @@
     
         $totalMusics = intval($countResult['total']);
     
-        if ($totalMusics > 15) {
+        if ($totalMusics > 20) {
             // Requête SQL pour sélectionner la musique la plus ancienne de la personne donnée
             $sql = "SELECT * FROM historique WHERE id = :personId ORDER BY last_ecoute ASC LIMIT 1";
             $stmt = $db->prepare($sql);

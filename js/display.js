@@ -88,7 +88,6 @@ export function displayLastEcoute(data) {
             likeButton.classList.add('btn', 'btn-danger', 'colorRed');
             likeButton.type = 'submit';
             likeButton.id = 'like_' + id;
-            // console.log(data[i]);
             if (data[i].isliked == true) {
                 likeButton.innerHTML = '<i class="material-icons">favorite</i>';
             } else {
@@ -142,7 +141,6 @@ function addMusicToQueue(id_music){
 }
 
 function addMusicToFileDisplay(data){
-    console.log(data);
 }
 
 //FONCTION QUI VA AFFICHER LES PLAYLISTS
@@ -319,7 +317,6 @@ export function displayOnePlaylistResponse(data) {
     }
 
     container.appendChild(musicDiv);
-    // console.log(data);
     let size = data.length;
     if(data[0].music_id != null) {
             
@@ -425,7 +422,6 @@ export function displayOnePlaylistResponse(data) {
             musicDiv.appendChild(deleteButton);
 
             deleteButton.addEventListener('click', function() {
-                // console.log('coucou');
                 deleteMusic(data[i].music_id,data[0].playlist_id);
             });
 
@@ -444,7 +440,7 @@ export function displayOnePlaylistResponse(data) {
     }
 }
 
-//
+//FONCTION QUI AJOUTE DES MODALS POUR LA MODIFICATION DE PLAYLIST
 function addModalModifyPlaylist(id_playlist, playlist_title){
     let container = document.getElementById('container');
 
@@ -583,6 +579,7 @@ function addModalModifyPlaylist(id_playlist, playlist_title){
 
 }
 
+//FONCTION QUI MODIFIE LES PLAYLIST A L'AIDE D'UNE REQUETE PUT
 function modifyPlaylist(id_playlist){
     let name = document.getElementById('namePlaylistModal').value;
     let image = document.getElementById('imagePlaylist').files[0];
@@ -594,20 +591,22 @@ function modifyPlaylist(id_playlist){
     ajaxRequest('PUT', 'php/request.php', modifyPlaylistResponse, data);
 }
 
+//FONCTION QUI RECUPERE LES DONNES D'UNE PLAYLIST MODIFIEES
 function modifyPlaylistResponse(data){
     if(data == 1){
         window.location.reload();
     }else{
         alert('Une erreur est survenue, vous ne pouvez pas modifier votre playlist !');
     }
-    // console.log(data);
 }
 
+//FONCTION QUI SUPPRIME UNE PLAYLIST A L'AIDE D'UNE REQUETE DELETE
 function deletePlaylist(id_playlist){
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('DELETE','php/request.php?request=deletePlaylist&id_playlist='+id_playlist+'&id_user='+id_user,deletePlaylistResponse);
 }
 
+//FONCTION QUI RECUPERE LES DONNES DE LA PLAYLIST SUPPRIMER 
 function deletePlaylistResponse(data){
     if(data == 1){
         window.location.reload();
@@ -616,8 +615,8 @@ function deletePlaylistResponse(data){
     }
 }
 
+//FONCTION DE DISPLAY D'UN ARTISTE EN RECUPERANT LES DONNEES
 export function displayOneArtistResponse(data){
-    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -713,7 +712,6 @@ export function displayOneArtistResponse(data){
 
         cardImg.addEventListener('click', function() {
             getOneAlbum(data[i].id_album);
-            // console.log('coucou');
         });
 
         let cardBodyDiv = document.createElement('div');
@@ -738,8 +736,8 @@ export function displayOneArtistResponse(data){
     container.appendChild(artistDiv);
 }
 
+//DEUXIEME PARTIE DE LA FONCTION DE DISPLAY D'UN ARTSITE
 export function displayOneArtistResponse2(data){
-    // console.log(data);
     let container = document.getElementById('top3');
     container.innerHTML = '';
 
@@ -917,9 +915,8 @@ export function displayOneArtistResponse2(data){
     }
 }
 
+//FONCTION QUI DISPLAY UN ALBUM
 export function displayOneAlbumResponse(data){
-    console.log(data);
-    
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -1044,7 +1041,6 @@ export function displayOneAlbumResponse(data){
         musicArtistItemDiv.appendChild(artistDiv);
 
         h2.addEventListener('click', function () {
-            // console.log('test');
             let artist_id = data[i].artiste_id;
             getOneArtist(artist_id);
         });
@@ -1101,6 +1097,7 @@ export function displayOneAlbumResponse(data){
         }
 }
 
+//FONCTION DE DISPLAY DE RECHERCHE DE MUSIC
 export function displayRechercheMusic(data){
     let container = document.getElementById('container');
     container.innerHTML = '';
@@ -1397,8 +1394,8 @@ export function displayRechercheMusic(data){
     }
 }
 
+//FONCTION DE DISPLAY DE RECHERCHE D'ARTISTE
 export function displayRechercheArtist(data){
-    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -1428,7 +1425,6 @@ export function displayRechercheArtist(data){
 
     buttonMusique.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
-        // console.log(recherche);
         getSearchMusic(recherche);
         let choice = document.getElementById('choice');
         choice.value = 'musique';
@@ -1532,8 +1528,8 @@ export function displayRechercheArtist(data){
     }
 }
 
+//FONCTION DE DISPLAY DE RECHERCHE D'UN ALBUM
 export function displayRechercheAlbum(data){
-    // console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -1563,7 +1559,7 @@ export function displayRechercheAlbum(data){
 
     buttonMusique.addEventListener('click', function () {
         let recherche = document.getElementById('rechercheText').value;
-        // console.log(recherche);
+
         getSearchMusic(recherche);
         let choice = document.getElementById('choice');
         choice.value = 'musique';
@@ -1665,8 +1661,8 @@ export function displayRechercheAlbum(data){
     }
 }
 
+//FONCTION DE DISPLAY DE LA PARTIE AMIS
 export function displayAccountFriend(data){
-    console.log(data);
     let containerDiv = document.getElementById('container');
     containerDiv.innerHTML = "";
 
@@ -1759,10 +1755,12 @@ export function displayAccountFriend(data){
     getAmi(data[0].id);
 }
 
+//FONCTION D'AJOUT D'AMIS A L'AIDE D'UNE REQUETE GET SUR UNE RECHERCHE
 function addFriendAccount(recherche){
     ajaxRequest('GET','php/request.php?request=addFriendAccount&recherche='+recherche,displayAddFriendAccount);
 }
 
+//FONCTION DE DISPLAY D'AJOUT D'AMIS
 function displayAddFriendAccount(data){
     let partFriendAdd = document.getElementById('partFriendAdd');
     
@@ -1795,11 +1793,13 @@ function displayAddFriendAccount(data){
     }
 }
 
+//FONCTION D'AJOUT D'AMIS UTILISANT LA REQUETE POST
 function addFriendToList(id){
     let idPerso = document.getElementById('id_perso').value;
     ajaxRequest('POST','php/request.php',displayAddFriendToList,'request=addFriendToList&idFriend='+id+'&idPerso='+idPerso);
 }
 
+//FONCTION DE DISPLAY D'AMI AJOUTE
 function displayAddFriendToList(data){
     if(data[0] == 1){
         alert('Demande d\'ami envoyée');
@@ -1808,18 +1808,23 @@ function displayAddFriendToList(data){
         alert('Demande d\'ami déjà envoyée');
     }
 }
+
+//FONCTION QUI RECUPERE LES INFORMATIONS D'UN AMI
 function getAmi(id){
     ajaxRequest('GET','php/request.php?request=ami&idPerso='+id,displayAmi);
 }
 
+//FONCTION QUI RECUPERE LES DEMANDES D'AMIS ENVOYEES
 function getDemandeAmiEnvoye(id){
     ajaxRequest('GET','php/request.php?request=demandeAmiEnvoye&idPerso='+id,displayDemandeAmiEnvoye);
 }
 
+//FONCTION QUI RECUPERE LES DEMANDES D'AMIS EN ATTENTE
 function getDemandeAmiAttente(id){
     ajaxRequest('GET','php/request.php?request=demandeAmiAttente&idPerso='+id,displayDemandeAmiAttente);
 }
 
+//FONCTION QUI DISPLAY LE COMPTE D'UN AMI
 function displayAmi(data){
     let ami = document.getElementById('ami');
     if(data.length == 0){
@@ -1895,11 +1900,13 @@ function displayAmi(data){
     }
 }
 
+//FONCTION QUI RECUPERE LE CHAT 
 function getChat(id_friend){
     let id_user = document.getElementById('id_perso').value;
     ajaxRequest('GET','php/request.php?request=chat&idFriend='+id_friend+'&idPerso='+id_user,displayChat);
 }   
 
+//FONCTION DE DISPLAY DE CHAT ENTRE LES PERSONNES
 function displayChat(data){
     let friendDiv = document.getElementById('friendDiv');
 
@@ -1992,34 +1999,34 @@ function displayChat(data){
     });
 }
 
+//FONCTION QUI GET LE CHAT ENTRE DEUX FRIENDS
 function getChatFriend(idPerso,idFriend){
-    console.log(idPerso+' '+idFriend);
     ajaxRequest('GET','php/request.php?request=getMessage&idFriend='+idFriend+'&idPerso='+idPerso,updateChat);
 }
 
+//FONCTION QUI AJOUTE UN MESSAGE AU CHAT
 function addMessage(idFriend,idPerso,message){
     ajaxRequest('POST','php/request.php',getChat,'request=addMessage&idFriend='+idFriend+'&idPerso='+idPerso+'&message='+message);
 }
 
+//FONCTION QUI UPDATE UN CHAT
 function updateChat(data){
-    console.log(data);
     let element = document.getElementById("chat-friend");
     element.value = "";
     let size = data.length;
     for (let i = 0; i < size; i++) {
-        // element.value += data[i]['nickname']+" : "+json[i]['message']+"\n";
         element.value += data[i].date_discussion + ' - '+data[i].user_firstname+' '+data[i].user_lastname+ ' : '+data[i].message_text+"\n";
     }
     element.scrollTop = element.scrollHeight;
 }
 
+//FONCTION QUI RECUPERE LE COMPTE D'UN AMI AVEC UNE REQUETE GET
 function getAccountOfFriend(id){
-    console.log(id);
     ajaxRequest('GET','php/request.php?request=accountOfFriend&idFriend='+id,displayAccountOfFriend);
 }
 
+//FONCTION QUI DISPLAY LE COMPTE D'UN AMI (PLAYLIST ECT...)
 function displayAccountOfFriend(data){
-    console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -2116,12 +2123,13 @@ function displayAccountOfFriend(data){
 
 }
 
+//FONCTION QUI RECUPERE UNE PLAYLIST D'AMI EN PARTICULIER
 function getOnePlaylistFriend(id){
     ajaxRequest('GET','php/request.php?request=onePlaylistFriend&idPlaylist='+id,displayOnePlaylistFriend);
 }
 
+//FONCTION QUI DISPLAY UNE PLAYLIST D'AMI EN PARTICULIER
 function displayOnePlaylistFriend(data){
-    console.log(data);
     let container = document.getElementById('container');
     container.innerHTML = '';
 
@@ -2195,12 +2203,8 @@ function displayOnePlaylistFriend(data){
     }
 
     container.appendChild(musicDiv);
-    // console.log(data);
     let size = data.length;
-    console.log('Data :');
-    console.log(data);
     let isValid = data[0].music_id != null;
-    console.log(isValid);
     if(data.length != 0 && isValid){
             
         for (let i = 0; i < size; i++) {
@@ -2302,11 +2306,13 @@ function displayOnePlaylistFriend(data){
     }
 }
 
+//FONCTION QUI DELETE UN AMI
 function deleteBothFriend(id_friend){
     let idPerso = document.getElementById('id_perso').value;
     ajaxRequest('DELETE','php/request.php?request=deleteBothFriend&id_friend='+id_friend+'&idPerso='+idPerso,displayDeleteBothFriend,);
 }
 
+//FONCTION DE DISPLAY DE SUPPRESSION D'AMI
 function displayDeleteBothFriend(data){
     if(data[0] == 1){
         alert('Ami supprimé');
@@ -2315,6 +2321,8 @@ function displayDeleteBothFriend(data){
         alert('Erreur lors de la suppression de l\'ami');
     }
 }
+
+//FONCTION DE DISPLAY DES DEMANDES D'AMIS ENVOYÉES
 function displayDemandeAmiEnvoye(data){
     let demandeAmiEnvoye = document.getElementById('demandeAmiEnvoye');
 
@@ -2364,12 +2372,13 @@ function displayDemandeAmiEnvoye(data){
 
 }
 
+//FONCTION QUI ANNULE UNE DEMANDE D'AMI
 function annulerDemandeAmi(id_friend,id_perso){
     ajaxRequest('DELETE','php/request.php?request=annulerDemandeAmi&idPerso='+id_perso+'&id_friend='+id_friend,displayAnnuler);
 }
 
+//FONCTION DE DISPLAY DE DEMANDE D'AMI ANNULEE
 function displayAnnuler(data){
-    console.log(data);  
     if(data[0] == 1){
         alert('Demande d\'ami annulée');
         getAccountFriend(data[1]);
@@ -2378,6 +2387,7 @@ function displayAnnuler(data){
     }
 }
 
+//FONCTION DE DISPLAY DE DEMANDE D'AMI EN ATTENTE COTE AUTRE
 function displayDemandeAmiAttente(data){
     let demandeAmiAttente = document.getElementById('demandeAmiAttente');
     if(data.length == 0){
@@ -2413,7 +2423,6 @@ function displayDemandeAmiAttente(data){
                 let id = data[i].id;
                 let id2 = document.getElementById('id_perso').value;
                 let dataSend = 'request=AcceptAmi&idPerso='+id2+'&idfriend='+id;
-                console.log(dataSend);
                 ajaxRequest('PUT','php/request.php',displayAcceptAmi,dataSend);
             });
 
@@ -2437,7 +2446,6 @@ function displayDemandeAmiAttente(data){
                 let id = data[i].id;
                 let id2 = document.getElementById('id_perso').value;
                 let dataSend = 'request=RefuseAmi&idPerso='+id2+'&idfriend='+id;
-                console.log(dataSend);
                 ajaxRequest('PUT','php/request.php',displayRefuseAmi,dataSend);
             });
 
@@ -2446,8 +2454,8 @@ function displayDemandeAmiAttente(data){
     }
 }
 
+//FONCTION DE DISPLAY D'AMI ACCEPTÉ
 function displayAcceptAmi(data){
-    // console.log(data);
     if(data[0]==1){
         alert('Ami accepté');
         getAccountFriend(data[1])
@@ -2456,8 +2464,8 @@ function displayAcceptAmi(data){
     }
 }
 
+//FONCTION DE DISPLAY D'AMI REFUSÉ
 function displayRefuseAmi(data){
-    console.log(data);
     if(data[0]==1){
         alert('Ami refusé');
         getAccountFriend(data[1])
