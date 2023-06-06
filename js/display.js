@@ -137,10 +137,11 @@ export function displayLastEcoute(data) {
 function addMusicToQueue(id_music){
     let id_perso = document.getElementById('id_perso').value;
     let data = 'request=addMusicToQueue&id_music='+id_music+'&id_perso='+id_perso;
-    ajaxRequest('POST','php/request.php',addMusicToFileDisplay,data);
+    ajaxRequest('POST','php/request.php',addMusicToQueueDisplay,data);
 }
 
-function addMusicToFileDisplay(data){
+function addMusicToQueueDisplay(data){
+    //VIDE
 }
 
 //FONCTION QUI VA AFFICHER LES PLAYLISTS
@@ -302,18 +303,21 @@ export function displayOnePlaylistResponse(data) {
     let musicDiv = document.createElement('div');
     musicDiv.classList.add('music');
 
-    let headers = ['#', '', 'Titre', 'Artiste', 'Album', 'Durée', 'Date d\'ajout', 'Like', 'Supprimer','File'];
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>',
+     '<span class="material-symbols-outlined">match_case</span>', 
+     '<span class="material-symbols-outlined">person</span>', 
+     '<span class="material-symbols-outlined">library_music</span>', 
+     '<span class="material-symbols-outlined">schedule</span>', 
+     '<span class="material-symbols-outlined">date_range</span>',
+      '<span class="material-symbols-outlined">favorite</span>', 
+      '<span class="material-symbols-outlined">delete</span>',
+      '<span class="material-symbols-outlined">queue_music</span>'];
 
     for (let header of headers) {
     let headerDiv = document.createElement('div');
     headerDiv.classList.add('center');
     let h2 = document.createElement('h2');
-    if(header == '') {
-        h2.innerHTML = '<span class="material-symbols-outlined">image</span>';
-    }
-    else{
-        h2.textContent = header;
-    }
+    h2.innerHTML = header;
     headerDiv.appendChild(h2);
     musicDiv.appendChild(headerDiv);
     }
@@ -744,60 +748,29 @@ export function displayOneArtistResponse2(data){
     let container = document.getElementById('top3');
     container.innerHTML = '';
 
-    let musicContainer = document.createElement('div');
-    musicContainer.classList.add('music');
+    let musicDiv = document.createElement('div');
+    musicDiv.classList.add('music');
 
-    let numberHeader = document.createElement('div');
-    numberHeader.classList.add('center');
-    numberHeader.innerHTML = '<h2>#</h2>';
-    musicContainer.appendChild(numberHeader);
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>',
+     '<span class="material-symbols-outlined">match_case</span>', 
+     '<span class="material-symbols-outlined">person</span>', 
+     '<span class="material-symbols-outlined">library_music</span>', 
+     '<span class="material-symbols-outlined">schedule</span>', 
+     '<span class="material-symbols-outlined">date_range</span>',
+      '<span class="material-symbols-outlined">favorite</span>', 
+      '<span class="material-symbols-outlined">delete</span>',
+      '<span class="material-symbols-outlined">queue_music</span>'];
 
-    let imageHeader = document.createElement('div');
-    imageHeader.classList.add('center');
-    imageHeader.innerHTML = '<span class="material-symbols-outlined">image</span>';
-    musicContainer.appendChild(imageHeader);
+    for (let header of headers) {
+    let headerDiv = document.createElement('div');
+    headerDiv.classList.add('center');
+    let h2 = document.createElement('h2');
+    h2.innerHTML = header;
+    headerDiv.appendChild(h2);
+    musicDiv.appendChild(headerDiv);
+    }
 
-    let titleHeader = document.createElement('div');
-    titleHeader.classList.add('center');
-    titleHeader.innerHTML = '<h2>Titre</h2>';
-    musicContainer.appendChild(titleHeader);
-
-    let artistHeader = document.createElement('div');
-    artistHeader.classList.add('center');
-    artistHeader.innerHTML = '<h2>Artiste</h2>';
-    musicContainer.appendChild(artistHeader);
-
-    let albumHeader = document.createElement('div');
-    albumHeader.classList.add('center');
-    albumHeader.innerHTML = '<h2>Album</h2>';
-    musicContainer.appendChild(albumHeader);
-
-    let durationHeader = document.createElement('div');
-    durationHeader.classList.add('center');
-    durationHeader.innerHTML = '<h2>Durée</h2>';
-    musicContainer.appendChild(durationHeader);
-
-    let albumCreationHeader = document.createElement('div');
-    albumCreationHeader.classList.add('center');
-    albumCreationHeader.innerHTML = '<h2>Album Création</h2>';
-    musicContainer.appendChild(albumCreationHeader);
-
-    let likeHeader = document.createElement('div');
-    likeHeader.classList.add('center');
-    likeHeader.innerHTML = '<h2>Like</h2>';
-    musicContainer.appendChild(likeHeader);
-
-    let playlistHeader = document.createElement('div');
-    playlistHeader.classList.add('center');
-    playlistHeader.innerHTML = '<h2>Playlist</h2>';
-    musicContainer.appendChild(playlistHeader);
-
-    let addToQueue = document.createElement('div');
-    addToQueue.classList.add('center');
-    addToQueue.innerHTML = '<h2>File</h2>';
-    musicContainer.appendChild(addToQueue);
-
-    container.appendChild(musicContainer);
+    container.appendChild(musicDiv);
 
     for (let i = 0; i < data.length; i++) {
         let title_music = data[i].music_title;
@@ -975,24 +948,27 @@ export function displayOneAlbumResponse(data){
     container.appendChild(topPlaylistDiv);
 
     // Création de la liste des musiques d'artistes
-    let musicArtistDiv = document.createElement('div');
-    musicArtistDiv.className = 'musicArtist';
+    let musicDiv = document.createElement('div');
+    musicDiv.classList.add('musicArtist');
 
-    let headers = ['#', '<span class="material-symbols-outlined">image</span>', 'Titre', 'Artiste', 'Durée', 'Like', 'Ajouter','File'];
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>',
+     '<span class="material-symbols-outlined">match_case</span>', 
+     '<span class="material-symbols-outlined">person</span>',  
+     '<span class="material-symbols-outlined">schedule</span>', 
+      '<span class="material-symbols-outlined">favorite</span>', 
+      '<span class="material-symbols-outlined">delete</span>',
+      '<span class="material-symbols-outlined">queue_music</span>'];
 
-    for (let headerText of headers) {
+    for (let header of headers) {
     let headerDiv = document.createElement('div');
-    headerDiv.className = 'center';
+    headerDiv.classList.add('center');
     let h2 = document.createElement('h2');
-    if(headerText == '<span class="material-symbols-outlined">image</span>'){
-        h2.innerHTML = headerText;
-    }else{
-        h2.textContent = headerText;
-    }
+    h2.innerHTML = header;
     headerDiv.appendChild(h2);
-    musicArtistDiv.appendChild(headerDiv);
+    musicDiv.appendChild(headerDiv);
     }
-    container.appendChild(musicArtistDiv);
+
+    container.appendChild(musicDiv);
 
     for (let i = 0; i < data.length; i++) {
         let artist_lastname = data[i].artiste_lastname;
@@ -1179,75 +1155,28 @@ export function displayRechercheMusic(data){
         container.appendChild(rechercheDiv);
     }else{
 
-        let musicArDiv = document.createElement('div');
-        musicArDiv.classList.add('musicAr');
+        let musicDiv = document.createElement('div');
+        musicDiv.classList.add('musicAr');
+    
+        let headers = ['#', '<span class="material-symbols-outlined">image</span>',
+         '<span class="material-symbols-outlined">match_case</span>', 
+         '<span class="material-symbols-outlined">person</span>', 
+         '<span class="material-symbols-outlined">library_music</span>', 
+         '<span class="material-symbols-outlined">schedule</span>', 
+          '<span class="material-symbols-outlined">favorite</span>', 
+          '<span class="material-symbols-outlined">delete</span>',
+          '<span class="material-symbols-outlined">queue_music</span>'];
+    
+        for (let header of headers) {
+        let headerDiv = document.createElement('div');
+        headerDiv.classList.add('center');
+        let h2 = document.createElement('h2');
+        h2.innerHTML = header;
+        headerDiv.appendChild(h2);
+        musicDiv.appendChild(headerDiv);
+        }
 
-        let centerDiv1 = document.createElement('div');
-        centerDiv1.classList.add('center');
-        let h2Center1 = document.createElement('h2');
-        h2Center1.textContent = '#';
-        centerDiv1.appendChild(h2Center1);
-
-        let centerDiv2 = document.createElement('div');
-        centerDiv2.classList.add('center');
-        let spanCenter2 = document.createElement('span');
-        spanCenter2.classList.add('material-symbols-outlined');
-        spanCenter2.textContent = 'image';
-        centerDiv2.appendChild(spanCenter2);
-
-        let centerDiv3 = document.createElement('div');
-        centerDiv3.classList.add('center');
-        let h2Center3 = document.createElement('h2');
-        h2Center3.textContent = 'Titre';
-        centerDiv3.appendChild(h2Center3);
-
-        let centerDiv4 = document.createElement('div');
-        centerDiv4.classList.add('center');
-        let h2Center4 = document.createElement('h2');
-        h2Center4.textContent = 'Artiste';
-        centerDiv4.appendChild(h2Center4);
-
-        let centerDiv5 = document.createElement('div');
-        centerDiv5.classList.add('center');
-        let h2Center5 = document.createElement('h2');
-        h2Center5.textContent = 'Album';
-        centerDiv5.appendChild(h2Center5);
-
-        let centerDiv6 = document.createElement('div');
-        centerDiv6.classList.add('center');
-        let h2Center6 = document.createElement('h2');
-        h2Center6.textContent = 'Durée';
-        centerDiv6.appendChild(h2Center6);
-
-        let centerDiv7 = document.createElement('div');
-        centerDiv7.classList.add('center');
-        let h2Center7 = document.createElement('h2');
-        h2Center7.textContent = 'Like';
-        centerDiv7.appendChild(h2Center7);
-
-        let centerDiv8 = document.createElement('div');
-        centerDiv8.classList.add('center');
-        let h2Center8 = document.createElement('h2');
-        h2Center8.textContent = 'Playlist';
-        centerDiv8.appendChild(h2Center8);
-
-        let centerDiv9 = document.createElement('div');
-        centerDiv9.classList.add('center');
-        let h2Center9 = document.createElement('h2');
-        h2Center9.textContent = 'File';
-        centerDiv9.appendChild(h2Center9);
-
-        musicArDiv.appendChild(centerDiv1);
-        musicArDiv.appendChild(centerDiv2);
-        musicArDiv.appendChild(centerDiv3);
-        musicArDiv.appendChild(centerDiv4);
-        musicArDiv.appendChild(centerDiv5);
-        musicArDiv.appendChild(centerDiv6);
-        musicArDiv.appendChild(centerDiv7);
-        musicArDiv.appendChild(centerDiv8);
-        musicArDiv.appendChild(centerDiv9);
-
-        rechercheDiv.appendChild(musicArDiv);
+        rechercheDiv.appendChild(musicDiv);
 
         container.appendChild(rechercheDiv);
 
@@ -2188,32 +2117,34 @@ function displayOnePlaylistFriend(data){
     container.appendChild(topPlaylistDiv);
 
     let musicDiv = document.createElement('div');
-    musicDiv.classList.add('musicAr');
+    musicDiv.classList.add('musicArtist');
 
-    let headers = ['#', '', 'Titre', 'Artiste', 'Album', 'Durée', 'Date d\'ajout', 'Like'];
+    let headers = ['#', '<span class="material-symbols-outlined">image</span>',
+     '<span class="material-symbols-outlined">match_case</span>', 
+     '<span class="material-symbols-outlined">person</span>', 
+     '<span class="material-symbols-outlined">library_music</span>', 
+     '<span class="material-symbols-outlined">schedule</span>', 
+     '<span class="material-symbols-outlined">date_range</span>',
+      '<span class="material-symbols-outlined">favorite</span>'];
 
     for (let header of headers) {
     let headerDiv = document.createElement('div');
     headerDiv.classList.add('center');
     let h2 = document.createElement('h2');
-    if(header == '') {
-        h2.innerHTML = '<span class="material-symbols-outlined">image</span>';
-    }
-    else{
-        h2.textContent = header;
-    }
+    h2.innerHTML = header;
     headerDiv.appendChild(h2);
     musicDiv.appendChild(headerDiv);
     }
 
     container.appendChild(musicDiv);
+
     let size = data.length;
     let isValid = data[0].music_id != null;
     if(data.length != 0 && isValid){
             
         for (let i = 0; i < size; i++) {
             let musicDiv = document.createElement('div');
-            musicDiv.classList.add('musicAr');
+            musicDiv.classList.add('musicArtist');
 
             let playButton = document.createElement('button');
             playButton.classList.add('btn', 'btn-danger', 'colorRed', 'little', 'center');

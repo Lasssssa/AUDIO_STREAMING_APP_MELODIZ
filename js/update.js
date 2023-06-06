@@ -180,7 +180,7 @@ function addModalDisplay(data){
     let modalTitle = document.createElement('h5');
     modalTitle.classList.add('modal-title');
     modalTitle.id = 'exampleModalLabel';
-    modalTitle.textContent = 'AJOUT À UNE PLAYLIST';
+    modalTitle.innerHTML = '<span class="material-symbols-outlined">library_add</span>&nbsp AJOUT À UNE PLAYLIST';
 
     let closeButton = document.createElement('button');
     closeButton.setAttribute('type', 'button');
@@ -273,36 +273,4 @@ function deleteMusicDisplay(data){
 //FONCTION AJAX QUI AJOUTE UNE NOUVELLE PLAYLIST
 export function addNewPlaylist(id_user){
 
-}
-
-//FONCTION QUI AJOUTE LES MODALS PLAYLIST
-export function addModalPLaylist(){
-    let container = document.getElementById('container');
-    let html = '';
-    html += '<div class="modal" id="modalPlaylist" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">';
-    html += '<div class="modal-dialog" role="document">';
-    html += '<div class="modal-content">';
-    html += '<div class="modal-header">';
-    html += '<h5 class="modal-title" id="exampleModalLabel">AJOUTER UNE PLAYLIST</h5>';
-    html += '<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">';
-    html += '<span aria-hidden="true">&times;</span>';
-    html += '</button>';
-    html += '</div>';
-
-    html += '<div class="modal-body">';
-    html += '<div class="row">';
-    html += '<div class="col-12">';
-    html += '<input type="text" class="form-control" id="playlistName" placeholder="Nom de la playlist">';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="modal-footer">';
-    html += '<button type="button" class="btn btn-danger colorRed" data-bs-dismiss="modal">Ajouter</button>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-
-    container.innerHTML += html;
 }

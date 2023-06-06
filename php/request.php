@@ -45,6 +45,7 @@
 
     //REQUETE POUR RECUPERER LE TOP 3 DES MUSIQUES D'UN ARTISTE
     if(isset($_GET['request']) && $_GET['request'] == 'getTop3'){
+        //A IMPLÉMENTER DE FACON A RECUPERER LES 3 MUSIQUES LES PLUS ECOUTÉES
         $music = getTop3Music($dbConnection, $_GET['idArtist']);
         echo json_encode($music);
     }

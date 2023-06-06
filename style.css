@@ -151,7 +151,7 @@
     text-align: center; 
 } */
 .music{
-   background-color: #EDF2F4;
+   background-color: #E5E7E6;
    display : grid;
    grid-template-columns: 1fr 1fr 2fr 2fr 2fr 1fr 2fr 1fr 1fr 1fr;
    padding:5px;
@@ -163,15 +163,16 @@
     color: #2B2E42;
 }
 .musicAr{
-    background-color: #EDF2F4;
+    background-color: #E5E7E6;
     display : grid;
+    
     grid-template-columns: 1fr 1fr 2fr 2fr 2fr 1fr 1fr 1fr 1fr;
     padding:5px;
     margin:2%;
     max-height: 60px;
 }
 .musicArtist{
-    background-color: #EDF2F4;
+    background-color: #E5E7E6;
     display : grid;
     grid-template-columns: 1fr 1fr 2fr 2fr 1fr 1fr 1fr 1fr;
     padding:5px;
