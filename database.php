@@ -791,6 +791,19 @@
         return true;
     }
 
+    function changePathPlaylist($db,$idPlaylistlist,$chemin){
+        try{
+            $query = 'UPDATE playlist SET playlist_picture = :chemin WHERE playlist_id = :idPlaylist';
+            $statement = $db->prepare($query);
+            $statement->bindParam(':idPlaylist', $idPlaylistlist);
+            $statement->bindParam(':chemin', $chemin);
+            $statement->execute();
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     //FONCTION D'AJOUT D'UN AMI
     function dbAddFriendToList($db,$idPerso,$idFriend){
         try{

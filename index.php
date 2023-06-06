@@ -20,6 +20,13 @@
         $db = dbConnect();
         changePath($db, $_SESSION['id'], $chemin);
     }
+
+    if(isset($_POST['submit_playlist']) && isset($_FILES['photo_playlist']) && !empty($_FILES['photo_playlist']['name'])){
+        $chemin = 'playlist/playlist_'.$_POST['id_playlist'].'.png';
+        move_uploaded_file($_FILES['photo_playlist']['tmp_name'], $chemin);
+        $dbConnection = dbConnect();
+        changePathPlaylist($db, $_POST['id_playlist'], $chemin);
+    }
     
 ?>
 
@@ -144,7 +151,7 @@
                     <input type="range" class="progressBar" id="progressMusic" min="0" max="100" step="1" value="0" style="width: 500px; accent-color: #000000;">
                     <label for="volume" id="end">1:00</label>
                 </div>
-
+S
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <audio class="music" id="musicPlaying" src="xxx.mp3"></audio>
                     <button type="button" class="btn clear" id="mute"><i class="material-icons">volume_up</i></button>
