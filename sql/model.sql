@@ -73,7 +73,7 @@ CREATE TABLE public.music(
 	music_title      VARCHAR (50) NOT NULL ,
 	music_duration   TIME  NOT NULL ,
 	id_album         INT  NOT NULL  ,
-	music_play_chemin  VARCHAR (100) NOT NULL ,
+	music_play_chemin  VARCHAR (150) NOT NULL ,
 	CONSTRAINT music_PK PRIMARY KEY (music_id)
 
 	,CONSTRAINT music_album_FK FOREIGN KEY (id_album) REFERENCES public.album(id_album)
