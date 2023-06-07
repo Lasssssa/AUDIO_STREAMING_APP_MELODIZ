@@ -73,8 +73,8 @@ Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 - Leave the database using `\q`
 
 ### Create the table and fill it
-To create the table, use the file `model.sql` which is in the dir `sql`.
-To fill the database, use the file `data.sql` which is in the dir `sql` 
+- To create the table, use the file `model.sql` which is in the dir `sql`.
+- To fill the database, use the file `data.sql` which is in the dir `sql` 
 
 First move to that dir
 - `cd /var/www/html/projet_CIR2_web`
