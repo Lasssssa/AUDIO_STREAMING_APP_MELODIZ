@@ -26,7 +26,7 @@ You can test the site at 10.10.51.74
 
 ### Install postgresql Version : 13.11
 - `sudo apt-get install postgresql`
-- `sudo vi /etc/postgresql/13/main/pg_hba.conf`
+- `sudo nano /etc/postgresql/13/main/pg_hba.conf`
 
 Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 
