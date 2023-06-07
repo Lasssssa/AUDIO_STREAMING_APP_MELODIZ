@@ -973,9 +973,8 @@
     
     //FONCTION QUI CHERCHE UN AMI
     function dbRechercheFriend($db,$recherche){
-        $recherche = '%'.$recherche.'%';
         try{
-            $query = 'SELECT user_firstname, user_lastname, id FROM utilisateur WHERE user_firstname LIKE :recherche OR user_lastname LIKE :recherche';
+            $query = 'SELECT user_firstname, user_lastname, id FROM utilisateur WHERE user_mail = :recherche';
             $statement = $db->prepare($query);
             $statement->bindParam(':recherche', $recherche);
             $statement->execute();
