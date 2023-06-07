@@ -81,7 +81,7 @@ First move to that dir
 
 Then execute the file using : 
 - `psql -d musiquedb -U adminprojet -f model.sql`
-To fill the database : 
+- To fill the database : 
 - `psql -d musiquedb -U adminprojet -f data.sql`
 
 Now your server is all setup and you can start the application
