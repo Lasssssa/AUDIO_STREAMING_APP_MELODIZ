@@ -12,7 +12,7 @@ You can test the site at 10.10.51.74
 ### SSH VM connection part
 - To connect to the virtual machine : 
 - Use the command `ssh user1@10.10.51.74` in a linux console
-- User 1's password is: `mdpGroup`.
+- User 1's password is: `mdpGroupe`.
 - You can then access the application's source code in the following folder: `cd /var/www/html/projet_CIR2_web/`
 
 ### Database connection part
