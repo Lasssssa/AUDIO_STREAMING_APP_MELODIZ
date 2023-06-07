@@ -99,5 +99,5 @@ Now your server is all setup and you can start the application
 - Account 1 : theo@gmail.com --> mdp
 - Account 2 : vincent.rocher@gmail.com --> mdp
 
-##Repertory Github : 
+## Repertory Github : 
 https://github.com/Lasssssa/projet_CIR2_web/
