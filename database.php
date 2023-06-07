@@ -801,22 +801,38 @@
     //FONCTION QIU MODIFIE UN COMPTE
     function dbModifyAccount($dbConnection, $name,$lastname,$email,$idPerso,$birthdate,$telephone){
         try{
-            $query = 'UPDATE utilisateur SET user_firstname = :name, user_lastname = :lastname, user_mail = :email, user_birth = :birthdate, user_telephone = :telephone WHERE id = :idPerso';
+            $query = 'SELECT * FROM utilisateur WHERE user_mail = :email AND id != :idPerso';
             $statement = $dbConnection->prepare($query);
-            $statement->bindParam(':name', $name);
-            $statement->bindParam(':lastname', $lastname);
             $statement->bindParam(':email', $email);
-            $statement->bindParam(':birthdate', $birthdate);
-            $statement->bindParam(':telephone', $telephone);
             $statement->bindParam(':idPerso', $idPerso);
             $statement->execute();
-        }catch(Exception $e){
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
             echo $e->getMessage();
         }
-        if($statement->rowCount() == 1){
-            return true;
-        }else{
+        if(count($result) != 0){
             return false;
+        }
+        else{
+            try{
+                $query = 'UPDATE utilisateur SET user_firstname = :name, user_lastname = :lastname, user_mail = :email, user_birth = :birthdate, user_telephone = :telephone WHERE id = :idPerso';
+                $statement = $dbConnection->prepare($query);
+                $statement->bindParam(':name', $name);
+                $statement->bindParam(':lastname', $lastname);
+                $statement->bindParam(':email', $email);
+                $statement->bindParam(':birthdate', $birthdate);
+                $statement->bindParam(':telephone', $telephone);
+                $statement->bindParam(':idPerso', $idPerso);
+                $statement->execute();
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+            if($statement->rowCount() == 1){
+                return true;
+            }else{
+                return false;
+            }
         }
     }
 
