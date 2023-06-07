@@ -6,8 +6,8 @@ Creator of **Mélodiz** : Théo Porodo / Paul Brochoire / Matthieu Stéphant
 The original version of Mélodiz is currently available at 10.10.51.74 (ISEN network). 
 ### Web application test section 
 You can test the site at 10.10.51.74
-- Test account 1: theo@gmail.com --> mdp
-- Test account 2: vincent.rocher@gmail.com --> mdp
+- Test account 1: Email : theo@gmail.com | Password :  mdp
+- Test account 2: Email : vincent.rocher@gmail.com | Password : mdp
 
 ### SSH VM connection part
 - To connect to the virtual machine : 
