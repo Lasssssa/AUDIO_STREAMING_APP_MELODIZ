@@ -15,6 +15,11 @@ You can test the site at 10.10.51.74
 - User 1's password is: `mdpGroup`.
 - You can then access the application's source code in the following folder: `cd /var/www/html/projet_CIR2_web/`
 
+### Database connection part
+If you want to check some details about the database, you can connect to it :
+- `psql musiquedb adminprojet`
+- If the password is asked, here it is : 'mdpProjet'
+
 # Setup the linux machine
 
 ### Update
