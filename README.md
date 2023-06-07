@@ -98,3 +98,6 @@ Now your server is all setup and you can start the application
 - You can connect to it, here are the informations : 
 - Account 1 : theo@gmail.com --> mdp
 - Account 2 : vincent.rocher@gmail.com --> mdp
+
+##Repertory Github : 
+https://github.com/Lasssssa/projet_CIR2_web/
