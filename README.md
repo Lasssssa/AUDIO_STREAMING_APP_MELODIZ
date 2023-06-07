@@ -44,7 +44,7 @@ Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 ### Clone the repository
 - `cd /var/www/html`
 - `sudo git clone https://github.com/Lasssssa/projet_CIR2_web/` 
-This may take some time, as some of our music is stored on the server (in its entirety).
+- This may take some time, as some of our music is stored on the server (in its entirety).
 ### Update
 - `cd /var/www/html/projet_CIR2_web`
 - `sudo git pull https://github.com/Lasssssa/projet_CIR2_web/`
