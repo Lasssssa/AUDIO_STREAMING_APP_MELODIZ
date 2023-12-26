@@ -48,11 +48,11 @@ Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 - `apt-get install git git-core`
 ### Clone the repository
 - `cd /var/www/html`
-- `sudo git clone https://github.com/Lasssssa/AUDIO_STREAMING_APPLICATION_MELODIZ` 
+- `sudo git clone https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ` 
 - This may take some time, as some of our music is stored on the server (in its entirety).
 ### Update
 - `cd /var/www/html/MELODIZ_PROJET_CIR2_WEB`
-- `sudo git pull https://github.com/Lasssssa/AUDIO_STREAMING_APPLICATION_MELODIZ`
+- `sudo git pull https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ`
 
 # Setup the apache2 configuration
 
@@ -100,4 +100,4 @@ Now your server is all setup and you can start the application
 - Account 2 : vincent.rocher@gmail.com --> mdp
 
 ## Repertory Github : 
-https://github.com/Lasssssa/AUDIO_STREAMING_APPLICATION_MELODIZ
+https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ
