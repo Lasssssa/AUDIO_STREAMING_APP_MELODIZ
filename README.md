@@ -1,5 +1,14 @@
 # Mélodiz Project CIR2 - End Year Project
 
+# Goal of the project 
+
+The aim of this project was to create a Pronote-type curriculum management web application.
+The web application consists of three parts: the administrator part, the teacher part and the student part.
+The administrator section lets you create, modify and delete teacher and student accounts. It also lets you manage curricula (cycles, years, semesters, courses, exams, etc.).
+The teacher section enables teachers to enter grades for their students, enter assessments and view summaries.
+The student section enables students to see their marks for the different tests in the different courses.
+For each section, an account information page is available.
+
 # Testing the current VM : 10.10.51.74
 The original version of Mélodiz is currently available at 10.10.51.74 (ISEN network). 
 ### Web application test section 
