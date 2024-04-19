@@ -1,24 +1,27 @@
 # Mélodiz Project CIR2 - End Year Project
 
-Creator of **Mélodiz** : Théo Porodo / Paul Brochoire / Matthieu Stéphant
-
 # Testing the current VM : 10.10.51.74
 The original version of Mélodiz is currently available at 10.10.51.74 (ISEN network). 
 ### Web application test section 
 You can test the site at 10.10.51.74
-- Test account 1: Email : theo@gmail.com | Password :  mdp
-- Test account 2: Email : vincent.rocher@gmail.com | Password : mdp
+- Test account 1: Email : eleve@1.com | Password : mdpEleve1
+- Test account 2: Email : eleve@2.com | Password : mdpEleve2
 
 ### SSH VM connection part
 - To connect to the virtual machine : 
 - Use the command `ssh user1@10.10.51.74` in a linux console
-- User 1's password is: `mdpGroupe`.
-- You can then access the application's source code in the following folder: `cd /var/www/html/projet_CIR2_web/`
+- User 1's password is: `mdpGroupeWork3`.
+- You can then access the application's source code in the following folder: `cd /var/www/html/AUDIO_STREAMING_APP_MELODIZ/`
 
 ### Database connection part
 If you want to check some details about the database, you can connect to it :
 - `psql musiquedb adminprojet`
 - If the password is asked, here it is : 'mdpProjet'
+
+# Installation with Docker
+Unfortunately, this project has not been programmed with docker, so you need to set up your Linux machine.
+
+However, it's possible that a version with docker will be released one day.
 
 # Setup the linux machine
 
@@ -45,19 +48,19 @@ Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 
 # Clone the repository Github in apache
 ### Install git
-- `apt-get install git git-core`
+- `sudo apt-get install git git-core`
 ### Clone the repository
 - `cd /var/www/html`
 - `sudo git clone https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ` 
 - This may take some time, as some of our music is stored on the server (in its entirety).
 ### Update
-- `cd /var/www/html/MELODIZ_PROJET_CIR2_WEB`
+- `cd /var/www/html/AUDIO_STREAMING_APP_MELODIZ`
 - `sudo git pull https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ`
 
 # Setup the apache2 configuration
 
 ### To setup the server configuration :
-- Move to the directory : `cd /var/www/html/projet_CIR2_web`
+- Move to the directory : `cd /var/www/html/AUDIO_STREAMING_APP_MELODIZ`
 - Use the command : `cp 000-default.conf /etc/apache2/sites-enabled`
 - Restart apache2 : `sudo service apache2 restart`
 #### After that, don't forget to delete 000-default.conf from the repetory because that is not very safe to keep it here
@@ -77,7 +80,7 @@ Change `peer` to `trust` on the lines `local all postgres` and `local all all`
 - To fill the database, use the file `data.sql` which is in the dir `sql` 
 
 First move to that dir
-- `cd /var/www/html/projet_CIR2_web`
+- `cd /var/www/html/AUDIO_STREAMING_APP_MELODIZ`
 
 Then execute the file using : 
 - `psql -d musiquedb -U adminprojet -f model.sql`
@@ -96,8 +99,8 @@ Now your server is all setup and you can start the application
 
 - Once you've filled in the tables, you've created 2 test users, who you can connect to in order to test the connection functionality.
 - You can connect to it, here are the informations : 
-- Account 1 : theo@gmail.com --> mdp
-- Account 2 : vincent.rocher@gmail.com --> mdp
+- Account 1 : Login : eleve@1.com | Password mdpEleve1
+- Account 2 : Login : eleve@2.com | Password mdpEleve2
 
-## Repertory Github : 
+## Repository Github : 
 https://github.com/Lasssssa/AUDIO_STREAMING_APP_MELODIZ
