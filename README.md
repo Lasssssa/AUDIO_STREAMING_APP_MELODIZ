@@ -2,12 +2,18 @@
 
 # Goal of the project 
 
-The aim of this project was to create a Pronote-type curriculum management web application.
-The web application consists of three parts: the administrator part, the teacher part and the student part.
-The administrator section lets you create, modify and delete teacher and student accounts. It also lets you manage curricula (cycles, years, semesters, courses, exams, etc.).
-The teacher section enables teachers to enter grades for their students, enter assessments and view summaries.
-The student section enables students to see their marks for the different tests in the different courses.
-For each section, an account information page is available.
+The aim of this project was to create a web-based audio streaming application.
+The overall idea is to recreate an application such as Spotify or Deezer.
+The following main functionalities are available:
+- Create an account / Login
+- Listen to music
+- Create a playlist / Add music to the playlist
+- Liker music
+- View history
+- Search for music (with filters based on year, singer, etc.)
+- Search for playlists, artists or albums
+- Have a profile page
+- Add friends and chat with them
 
 # Testing the current VM : 10.10.51.74
 The original version of Mélodiz is currently available at 10.10.51.74 (ISEN network). 
